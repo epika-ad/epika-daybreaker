@@ -24,7 +24,7 @@ export const buttonVariants = cva(
         ],
         secondary: ["bg-accent text-foreground hover:bg-border", bubble],
         outline:
-          "border-2 border-border bg-background text-foreground hover:bg-accent",
+          "border border-border bg-background-dimmed/60 text-foreground backdrop-blur-xl hover:bg-accent",
         ghost: "text-foreground hover:bg-accent",
         destructive: [
           "bg-error text-error-foreground hover:bg-error/90",

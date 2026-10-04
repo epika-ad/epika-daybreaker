@@ -1,6 +1,7 @@
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import { CheckIcon, ChevronDownIcon } from "../icons";
 import { type ClassList, cn, type Styled } from "../utils";
+import { Highlight } from "../utils/highlight";
 import { item, popup } from "../utils/styles";
 
 export const Select = SelectPrimitive.Root;
@@ -14,7 +15,7 @@ export const SelectTrigger = ({
 }: SelectTrigger.Props) => (
   <SelectPrimitive.Trigger
     className={cn(
-      "flex h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-control border border-border bg-background px-3 text-foreground text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 data-disabled:cursor-not-allowed data-invalid:border-error data-disabled:opacity-50",
+      "flex h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-control border border-transparent bg-accent px-3 text-foreground text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 data-disabled:cursor-not-allowed data-invalid:border-error data-disabled:opacity-50",
       className,
       classList?.trigger,
     )}
@@ -56,6 +57,7 @@ export const SelectPopup = ({
   side,
   align,
   sideOffset = 4,
+  children,
   ...props
 }: SelectPopup.Props) => (
   <SelectPrimitive.Portal>
@@ -69,12 +71,15 @@ export const SelectPopup = ({
       <SelectPrimitive.Popup
         className={cn(
           popup,
-          "max-h-(--available-height) min-w-(--anchor-width) overflow-y-auto p-1",
+          "relative max-h-(--available-height) min-w-(--anchor-width) overflow-y-auto p-1.5",
           className,
           classList?.popup,
         )}
         {...props}
-      />
+      >
+        <Highlight />
+        {children}
+      </SelectPrimitive.Popup>
     </SelectPrimitive.Positioner>
   </SelectPrimitive.Portal>
 );
@@ -117,7 +122,7 @@ export const SelectGroupLabel = ({
 }: SelectGroupLabel.Props) => (
   <SelectPrimitive.GroupLabel
     className={cn(
-      "px-2 py-1.5 font-medium text-foreground-dimmed text-xs",
+      "px-3 py-1.5 font-medium text-foreground-dimmed text-xs",
       className,
     )}
     {...props}
@@ -132,7 +137,7 @@ export const SelectSeparator = ({
   ...props
 }: SelectSeparator.Props) => (
   <SelectPrimitive.Separator
-    className={cn("-mx-1 my-1 h-px bg-border", className)}
+    className={cn("-mx-1.5 my-1.5 h-px bg-border", className)}
     {...props}
   />
 );

@@ -9,33 +9,34 @@
 
 :root {
   --wz-background: oklch(1 0 0);
-  --wz-background-dimmed: oklch(0.97 0 0);
+  --wz-background-dimmed: oklch(0.965 0.005 286);
   --wz-foreground: oklch(0.145 0 0);
-  --wz-foreground-dimmed: oklch(0.45 0 0);
-  --wz-primary: oklch(0.205 0 0);
-  --wz-primary-dimmed: oklch(0.32 0 0);
-  --wz-primary-foreground: oklch(0.985 0 0);
-  --wz-accent: oklch(0.95 0 0);
-  --wz-border: oklch(0.9 0 0);
-  --wz-ring: oklch(0.6 0 0);
+  --wz-foreground-dimmed: oklch(0.45 0.01 286);
+  --wz-primary: oklch(0.55 0.22 258);
+  --wz-primary-dimmed: oklch(0.49 0.21 258);
+  --wz-primary-foreground: oklch(1 0 0);
+  /* fills and separators are translucent so they sit on any backdrop */
+  --wz-accent: oklch(0.57 0.02 286 / 0.14);
+  --wz-border: oklch(0.36 0.02 286 / 0.2);
+  --wz-ring: oklch(0.6 0.2 257);
   --wz-error: oklch(0.55 0.22 27);
   --wz-error-foreground: oklch(0.985 0 0);
   --wz-success: oklch(0.5 0.14 150);
   --wz-warning: oklch(0.55 0.13 70);
-  --wz-radius: 0.625rem;
+  --wz-radius: 0.875rem;
 }
 
 .dark {
-  --wz-background: oklch(0.13 0 0);
-  --wz-background-dimmed: oklch(0.175 0 0);
+  --wz-background: oklch(0 0 0);
+  --wz-background-dimmed: oklch(0.22 0.005 286);
   --wz-foreground: oklch(0.985 0 0);
-  --wz-foreground-dimmed: oklch(0.7 0 0);
-  --wz-primary: oklch(0.95 0 0);
-  --wz-primary-dimmed: oklch(0.82 0 0);
-  --wz-primary-foreground: oklch(0.18 0 0);
-  --wz-accent: oklch(0.24 0 0);
-  --wz-border: oklch(0.28 0 0);
-  --wz-ring: oklch(0.6 0 0);
+  --wz-foreground-dimmed: oklch(0.7 0.01 286);
+  --wz-primary: oklch(0.62 0.2 257);
+  --wz-primary-dimmed: oklch(0.68 0.18 256);
+  --wz-primary-foreground: oklch(1 0 0);
+  --wz-accent: oklch(0.6 0.02 286 / 0.26);
+  --wz-border: oklch(0.7 0.02 286 / 0.3);
+  --wz-ring: oklch(0.66 0.19 256);
   --wz-error: oklch(0.7 0.19 25);
   --wz-error-foreground: oklch(0.15 0 0);
   --wz-success: oklch(0.78 0.16 150);
@@ -61,7 +62,7 @@
 
   --radius-control: var(--wz-radius);
   --radius-item: calc(var(--wz-radius) - 4px);
-  --radius-surface: calc(var(--wz-radius) * 1.5);
+  --radius-surface: calc(var(--wz-radius) * 1.75);
 }
 
 @layer base {

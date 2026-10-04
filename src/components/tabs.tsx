@@ -15,7 +15,7 @@ export namespace Tabs {
 export const TabsList = ({ className, ...props }: TabsList.Props) => (
   <TabsPrimitive.List
     className={cn(
-      "inline-flex w-fit items-center gap-1 rounded-control bg-background-dimmed p-1",
+      "inline-flex w-fit items-center gap-1 rounded-full bg-accent p-1",
       className,
     )}
     {...props}
@@ -28,7 +28,7 @@ export namespace TabsList {
 export const Tab = ({ className, ...props }: Tab.Props) => (
   <TabsPrimitive.Tab
     className={cn(
-      "inline-flex h-8 cursor-pointer items-center justify-center rounded-item px-3 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground data-active:bg-background data-active:text-foreground",
+      "inline-flex h-8 cursor-pointer items-center justify-center rounded-full px-4 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground data-active:bg-background data-active:text-foreground dark:data-active:bg-white/20",
       focusRing,
       disabled,
       className,

@@ -26,7 +26,7 @@ export const DialogPopup = ({
         <DialogPrimitive.Close
           aria-label="Close"
           className={cn(
-            "absolute top-4 right-4 cursor-pointer rounded-item p-1 text-foreground-dimmed transition-colors hover:bg-accent hover:text-foreground",
+            "absolute top-4 right-4 cursor-pointer rounded-full bg-accent p-1 text-foreground-dimmed transition-colors hover:bg-border hover:text-foreground",
             focusRing,
             classList?.close,
           )}

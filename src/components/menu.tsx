@@ -1,6 +1,7 @@
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 import { CheckIcon } from "../icons";
 import { type ClassList, cn, type Styled } from "../utils";
+import { Highlight } from "../utils/highlight";
 import { item, popup } from "../utils/styles";
 
 export const Menu = MenuPrimitive.Root;
@@ -14,6 +15,7 @@ export const MenuPopup = ({
   side,
   align = "start",
   sideOffset = 4,
+  children,
   ...props
 }: MenuPopup.Props) => (
   <MenuPrimitive.Portal>
@@ -24,9 +26,17 @@ export const MenuPopup = ({
       className={cn("z-50", classList?.positioner)}
     >
       <MenuPrimitive.Popup
-        className={cn(popup, "min-w-40 p-1", className, classList?.popup)}
+        className={cn(
+          popup,
+          "relative min-w-40 p-1.5",
+          className,
+          classList?.popup,
+        )}
         {...props}
-      />
+      >
+        <Highlight />
+        {children}
+      </MenuPrimitive.Popup>
     </MenuPrimitive.Positioner>
   </MenuPrimitive.Portal>
 );
@@ -97,7 +107,7 @@ export const MenuGroupLabel = ({
 }: MenuGroupLabel.Props) => (
   <MenuPrimitive.GroupLabel
     className={cn(
-      "px-2 py-1.5 font-medium text-foreground-dimmed text-xs",
+      "px-3 py-1.5 font-medium text-foreground-dimmed text-xs",
       className,
     )}
     {...props}
@@ -109,7 +119,7 @@ export namespace MenuGroupLabel {
 
 export const MenuSeparator = ({ className, ...props }: MenuSeparator.Props) => (
   <MenuPrimitive.Separator
-    className={cn("-mx-1 my-1 h-px bg-border", className)}
+    className={cn("-mx-1.5 my-1.5 h-px bg-border", className)}
     {...props}
   />
 );

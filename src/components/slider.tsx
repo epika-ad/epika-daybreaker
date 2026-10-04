@@ -22,7 +22,7 @@ export const Slider = ({
       )}
       {...props}
     >
-      <SliderPrimitive.Control className="flex h-5 w-full touch-none select-none items-center data-disabled:pointer-events-none">
+      <SliderPrimitive.Control className="flex h-6 w-full touch-none select-none items-center data-disabled:pointer-events-none">
         <SliderPrimitive.Track
           className={cn(
             "relative h-1.5 w-full rounded-full bg-accent",
@@ -38,7 +38,7 @@ export const Slider = ({
               index={index}
               aria-label={label}
               className={cn(
-                "size-4 rounded-full border-2 border-primary bg-background has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:ring-offset-background",
+                "h-5 w-8 rounded-full border border-black/10 bg-white has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:ring-offset-background",
                 classList?.thumb,
               )}
             />

@@ -6,14 +6,16 @@ export const focusRing =
 export const disabled =
   "data-disabled:pointer-events-none data-disabled:opacity-50";
 
-export const popup =
-  "origin-(--transform-origin) rounded-control border border-border bg-background text-foreground outline-none transition-[scale,opacity] duration-150 data-starting-style:scale-95 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0";
+// Translucent blurred material for floating layers, with a specular top edge.
+export const glass =
+  "border border-border bg-background-dimmed/75 text-foreground backdrop-blur-2xl backdrop-saturate-200 shadow-[inset_0_1px_0_rgb(255_255_255/0.6)] dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.12)]";
+
+export const popup = `${glass} origin-(--transform-origin) rounded-2xl outline-none transition-[scale,opacity] duration-150 data-starting-style:scale-95 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0`;
 
 export const backdrop =
-  "fixed inset-0 z-50 bg-black/50 transition-opacity duration-200 data-starting-style:opacity-0 data-ending-style:opacity-0";
+  "fixed inset-0 z-50 bg-black/30 transition-opacity duration-200 data-starting-style:opacity-0 data-ending-style:opacity-0";
 
-export const modal =
-  "-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 z-50 grid w-[calc(100vw-2rem)] max-w-md gap-4 rounded-surface border border-border bg-background p-6 text-foreground outline-none transition-[scale,opacity] duration-200 data-starting-style:scale-95 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0";
+export const modal = `${glass} -translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 z-50 grid w-[calc(100vw-2rem)] max-w-md gap-4 rounded-surface p-6 outline-none transition-[scale,opacity] duration-200 data-starting-style:scale-95 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0`;
 
 export const item =
-  "flex cursor-default select-none items-center gap-2 rounded-item px-2 py-1.5 text-sm outline-none data-highlighted:bg-accent data-disabled:pointer-events-none data-disabled:opacity-50";
+  "flex cursor-default select-none items-center gap-2 rounded-item px-3 py-2 text-sm outline-none data-disabled:pointer-events-none data-disabled:opacity-50";

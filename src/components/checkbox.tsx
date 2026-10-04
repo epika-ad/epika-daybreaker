@@ -10,7 +10,7 @@ export const Checkbox = ({
 }: Checkbox.Props) => (
   <CheckboxPrimitive.Root
     className={cn(
-      "group inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-item border border-border bg-background text-primary-foreground transition-colors data-checked:border-primary data-indeterminate:border-primary data-checked:bg-primary data-indeterminate:bg-primary data-invalid:border-error",
+      "group inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-[7px] border border-border bg-background text-primary-foreground transition-colors data-checked:border-primary data-indeterminate:border-primary data-checked:bg-primary data-indeterminate:bg-primary data-invalid:border-error",
       focusRing,
       disabled,
       className,

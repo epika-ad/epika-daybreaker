@@ -1,5 +1,6 @@
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
 import { type ClassList, cn, type Styled } from "../utils";
+import { glass } from "../utils/styles";
 
 /** Wrap the app once so neighbouring tooltips share their open delay. */
 export const TooltipProvider = TooltipPrimitive.Provider;
@@ -23,7 +24,8 @@ export const TooltipPopup = ({
     >
       <TooltipPrimitive.Popup
         className={cn(
-          "origin-(--transform-origin) rounded-item bg-foreground px-2 py-1 text-background text-xs transition-[scale,opacity] duration-100 data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0",
+          glass,
+          "origin-(--transform-origin) rounded-full px-2.5 py-1 text-xs transition-[scale,opacity] duration-100 data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0",
           className,
           classList?.popup,
         )}
