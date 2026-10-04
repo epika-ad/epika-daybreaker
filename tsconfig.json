@@ -11,7 +11,13 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["vite/client", "vitest/globals", "@testing-library/jest-dom"]
+    "paths": { "woozui": ["./src/index.ts"] },
+    "types": [
+      "node",
+      "vite/client",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ]
   },
-  "include": ["src", ".storybook", "*.ts"]
+  "include": ["src", "site", "*.ts"]
 }

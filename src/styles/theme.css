@@ -9,37 +9,37 @@
 
 :root {
   --wz-background: oklch(1 0 0);
-  --wz-background-dimmed: oklch(0.97 0.004 265);
-  --wz-foreground: oklch(0.21 0.02 265);
-  --wz-foreground-dimmed: oklch(0.48 0.02 265);
-  --wz-primary: oklch(0.52 0.22 275);
-  --wz-primary-dimmed: oklch(0.45 0.22 275);
-  --wz-primary-foreground: oklch(0.99 0 0);
-  --wz-accent: oklch(0.94 0.008 265);
-  --wz-border: oklch(0.89 0.008 265);
-  --wz-ring: oklch(0.52 0.22 275);
-  --wz-error: oklch(0.53 0.22 27);
-  --wz-error-foreground: oklch(0.99 0 0);
+  --wz-background-dimmed: oklch(0.97 0 0);
+  --wz-foreground: oklch(0.145 0 0);
+  --wz-foreground-dimmed: oklch(0.45 0 0);
+  --wz-primary: oklch(0.205 0 0);
+  --wz-primary-dimmed: oklch(0.32 0 0);
+  --wz-primary-foreground: oklch(0.985 0 0);
+  --wz-accent: oklch(0.95 0 0);
+  --wz-border: oklch(0.9 0 0);
+  --wz-ring: oklch(0.6 0 0);
+  --wz-error: oklch(0.55 0.22 27);
+  --wz-error-foreground: oklch(0.985 0 0);
   --wz-success: oklch(0.5 0.14 150);
   --wz-warning: oklch(0.55 0.13 70);
-  --wz-radius: 0.5rem;
+  --wz-radius: 0.625rem;
 }
 
 .dark {
-  --wz-background: oklch(0.17 0.01 265);
-  --wz-background-dimmed: oklch(0.22 0.012 265);
-  --wz-foreground: oklch(0.96 0.005 265);
-  --wz-foreground-dimmed: oklch(0.72 0.015 265);
-  --wz-primary: oklch(0.72 0.15 275);
-  --wz-primary-dimmed: oklch(0.79 0.12 275);
-  --wz-primary-foreground: oklch(0.17 0.01 265);
-  --wz-accent: oklch(0.27 0.015 265);
-  --wz-border: oklch(0.32 0.015 265);
-  --wz-ring: oklch(0.72 0.15 275);
-  --wz-error: oklch(0.7 0.17 25);
-  --wz-error-foreground: oklch(0.17 0.01 265);
-  --wz-success: oklch(0.75 0.15 150);
-  --wz-warning: oklch(0.8 0.14 80);
+  --wz-background: oklch(0.13 0 0);
+  --wz-background-dimmed: oklch(0.175 0 0);
+  --wz-foreground: oklch(0.985 0 0);
+  --wz-foreground-dimmed: oklch(0.7 0 0);
+  --wz-primary: oklch(0.95 0 0);
+  --wz-primary-dimmed: oklch(0.82 0 0);
+  --wz-primary-foreground: oklch(0.18 0 0);
+  --wz-accent: oklch(0.24 0 0);
+  --wz-border: oklch(0.28 0 0);
+  --wz-ring: oklch(0.6 0 0);
+  --wz-error: oklch(0.7 0.19 25);
+  --wz-error-foreground: oklch(0.15 0 0);
+  --wz-success: oklch(0.78 0.16 150);
+  --wz-warning: oklch(0.82 0.15 80);
   color-scheme: dark;
 }
 

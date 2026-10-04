@@ -6,7 +6,7 @@ import { disabled, focusRing } from "../utils/styles";
 export const Toggle = ({ className, ...props }: Toggle.Props) => (
   <TogglePrimitive
     className={cn(
-      "inline-flex h-10 min-w-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-control px-3 font-medium text-foreground-dimmed text-sm transition-colors hover:bg-accent data-pressed:bg-accent data-pressed:text-foreground",
+      "inline-flex h-9 min-w-9 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-control px-3 font-medium text-foreground-dimmed text-sm transition-colors hover:bg-accent data-pressed:bg-accent data-pressed:text-foreground",
       focusRing,
       disabled,
       className,

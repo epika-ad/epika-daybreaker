@@ -14,7 +14,7 @@ export const SelectTrigger = ({
 }: SelectTrigger.Props) => (
   <SelectPrimitive.Trigger
     className={cn(
-      "flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-control border border-border bg-background px-3 text-foreground text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 data-disabled:cursor-not-allowed data-invalid:border-error data-disabled:opacity-50",
+      "flex h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-control border border-border bg-background px-3 text-foreground text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 data-disabled:cursor-not-allowed data-invalid:border-error data-disabled:opacity-50",
       className,
       classList?.trigger,
     )}

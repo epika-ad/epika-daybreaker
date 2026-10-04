@@ -68,7 +68,7 @@ describe("Button", () => {
     const button = screen.getByRole("button");
 
     expect(button).toHaveClass("h-20");
-    expect(button).not.toHaveClass("h-10");
+    expect(button).not.toHaveClass("h-9");
   });
 });
 

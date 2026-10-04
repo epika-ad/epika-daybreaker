@@ -90,12 +90,15 @@ Add the `dark` class to `<html>`, or let `ThemeProvider` manage it (light, dark,
 
 ```sh
 npm install
-npm run dev        # Storybook at http://localhost:6006
+npm run dev        # docs site at http://localhost:5173
 npm test           # unit tests
 npm run lint       # Biome
 npm run typecheck
 npm run build      # dist/ (JS, types, theme.css, styles.css)
+npm run build:site # static docs site in site-dist/
 ```
+
+The docs site lives in [site/](site/). Each file in [site/examples/](site/examples/) is both the live preview and the code shown on that component's page; list new components in [site/registry.ts](site/registry.ts).
 
 ## Release
 
