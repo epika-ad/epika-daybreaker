@@ -1,6 +1,6 @@
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { type ClassList, cn, type Styled } from "../utils";
-import { popup } from "../utils/styles";
+import { arrow, popup } from "../utils/styles";
 
 export const Popover = PopoverPrimitive.Root;
 export const PopoverTrigger = PopoverPrimitive.Trigger;
@@ -11,7 +11,8 @@ export const PopoverPopup = ({
   classList,
   side,
   align,
-  sideOffset = 8,
+  sideOffset = 12,
+  children,
   ...props
 }: PopoverPopup.Props) => (
   <PopoverPrimitive.Portal>
@@ -29,14 +30,17 @@ export const PopoverPopup = ({
           classList?.popup,
         )}
         {...props}
-      />
+      >
+        <PopoverPrimitive.Arrow className={cn(arrow, classList?.arrow)} />
+        {children}
+      </PopoverPrimitive.Popup>
     </PopoverPrimitive.Positioner>
   </PopoverPrimitive.Portal>
 );
 export namespace PopoverPopup {
   export type Props = Styled<PopoverPrimitive.Popup.Props> &
     Pick<PopoverPrimitive.Positioner.Props, "side" | "align" | "sideOffset"> & {
-      classList?: ClassList<"positioner" | "popup">;
+      classList?: ClassList<"positioner" | "popup" | "arrow">;
     };
 }
 
