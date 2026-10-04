@@ -28,7 +28,7 @@ export namespace TabsList {
 export const Tab = ({ className, ...props }: Tab.Props) => (
   <TabsPrimitive.Tab
     className={cn(
-      "inline-flex h-8 cursor-pointer items-center justify-center rounded-item px-3 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground data-active:bg-background data-active:text-foreground data-active:shadow-sm",
+      "inline-flex h-8 cursor-pointer items-center justify-center rounded-item px-3 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground data-active:bg-background data-active:text-foreground",
       focusRing,
       disabled,
       className,

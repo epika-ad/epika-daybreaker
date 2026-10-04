@@ -38,7 +38,7 @@ export const Slider = ({
               index={index}
               aria-label={label}
               className={cn(
-                "size-4 rounded-full border-2 border-primary bg-background shadow-sm has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:ring-offset-background",
+                "size-4 rounded-full border-2 border-primary bg-background has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:ring-offset-background",
                 classList?.thumb,
               )}
             />

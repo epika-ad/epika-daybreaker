@@ -15,7 +15,7 @@ export const Switch = ({ className, classList, ...props }: Switch.Props) => (
   >
     <SwitchPrimitive.Thumb
       className={cn(
-        "size-4.5 rounded-full bg-foreground-dimmed shadow-sm transition-[translate,background-color] data-checked:translate-x-5 data-checked:bg-primary-foreground",
+        "size-4.5 rounded-full bg-foreground-dimmed transition-[translate,background-color] data-checked:translate-x-5 data-checked:bg-primary-foreground",
         classList?.thumb,
       )}
     />

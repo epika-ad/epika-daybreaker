@@ -4,7 +4,7 @@ import { cn } from "../utils";
 export const Card = ({ className, ...props }: Card.Props) => (
   <div
     className={cn(
-      "flex flex-col gap-4 rounded-surface border border-border bg-background p-6 text-foreground shadow-sm",
+      "flex flex-col gap-4 rounded-surface border border-border bg-background p-6 text-foreground",
       className,
     )}
     {...props}

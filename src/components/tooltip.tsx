@@ -23,7 +23,7 @@ export const TooltipPopup = ({
     >
       <TooltipPrimitive.Popup
         className={cn(
-          "origin-(--transform-origin) rounded-item bg-foreground px-2 py-1 text-background text-xs shadow-md transition-[scale,opacity] duration-100 data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0",
+          "origin-(--transform-origin) rounded-item bg-foreground px-2 py-1 text-background text-xs transition-[scale,opacity] duration-100 data-ending-style:scale-95 data-starting-style:scale-95 data-ending-style:opacity-0 data-starting-style:opacity-0",
           className,
           classList?.popup,
         )}

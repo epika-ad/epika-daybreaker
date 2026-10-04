@@ -83,7 +83,7 @@ export const Logo = ({ className, ...props }: IconProps) => (
 );
 
 export const pill =
-  "rounded-full border border-border bg-background-dimmed/80 shadow-sm backdrop-blur-md";
+  "rounded-full border border-border bg-background-dimmed/80 backdrop-blur-md";
 
 export const focus =
   "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background";
