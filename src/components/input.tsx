@@ -1,13 +1,24 @@
 import { Input as InputPrimitive } from "@base-ui/react/input";
-import type { ComponentProps } from "react";
+import { type ComponentProps, useImperativeHandle, useRef } from "react";
 import { cn, type Styled } from "../utils";
+import { useInk } from "../utils/ink";
 
 const control =
-  "w-full rounded-control border border-transparent bg-accent px-3 text-foreground text-sm outline-none transition-colors placeholder:text-foreground-dimmed focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-error data-invalid:border-error";
+  "w-full rounded-control border border-transparent bg-accent px-3 text-foreground text-sm caret-primary outline-none transition-colors placeholder:text-foreground-dimmed focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-error data-invalid:border-error";
 
-export const Input = ({ className, ...props }: Input.Props) => (
-  <InputPrimitive className={cn(control, "h-9", className)} {...props} />
-);
+export const Input = ({ className, ref, ...props }: Input.Props) => {
+  const input = useRef<HTMLInputElement>(null);
+  useImperativeHandle(ref, () => input.current as HTMLInputElement);
+  useInk(input);
+
+  return (
+    <InputPrimitive
+      ref={input}
+      className={cn(control, "h-9", className)}
+      {...props}
+    />
+  );
+};
 export namespace Input {
   export type Props = Styled<InputPrimitive.Props>;
 }

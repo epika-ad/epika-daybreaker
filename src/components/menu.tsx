@@ -1,6 +1,7 @@
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 import { CheckIcon } from "../icons";
 import { type ClassList, cn, type Styled } from "../utils";
+import { ArrowShape } from "../utils/arrow";
 import { Highlight } from "../utils/highlight";
 import { arrow, item, popup } from "../utils/styles";
 
@@ -13,8 +14,8 @@ export const MenuPopup = ({
   className,
   classList,
   side,
-  align = "start",
-  sideOffset = 10,
+  align = "center",
+  sideOffset = 12,
   children,
   ...props
 }: MenuPopup.Props) => (
@@ -34,7 +35,9 @@ export const MenuPopup = ({
         )}
         {...props}
       >
-        <MenuPrimitive.Arrow className={cn(arrow, classList?.arrow)} />
+        <MenuPrimitive.Arrow className={cn(arrow, classList?.arrow)}>
+          <ArrowShape />
+        </MenuPrimitive.Arrow>
         <Highlight />
         {children}
       </MenuPrimitive.Popup>

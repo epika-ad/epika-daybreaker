@@ -12,10 +12,10 @@ export const glass =
 
 export const popup = `${glass} origin-(--transform-origin) rounded-2xl outline-none transition-[scale,opacity] duration-150 data-starting-style:scale-95 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0`;
 
-// The pointer on a popup, aimed at its trigger. Only the half outside the popup
-// is painted, in the glass colour as it looks over the page background.
+// Places a popup's pointer on the edge facing the trigger, overlapping the
+// border so the shape in utils/arrow.tsx can cover it.
 export const arrow =
-  "size-3 rotate-45 border-border border-t border-l bg-[color-mix(in_oklab,var(--wz-background-dimmed)_75%,var(--wz-background))] [clip-path:polygon(0_0,100%_0,0_100%)] data-[side=bottom]:-top-1.5 data-[side=top]:-bottom-1.5 data-[side=top]:rotate-225 data-[side=right]:-left-1.5 data-[side=right]:-rotate-45 data-[side=left]:-right-1.5 data-[side=left]:rotate-135";
+  "data-[side=bottom]:-top-2.75 data-[side=top]:-bottom-2.75 data-[side=top]:rotate-180 data-[side=right]:-left-4.25 data-[side=right]:-rotate-90 data-[side=left]:-right-4.25 data-[side=left]:rotate-90";
 
 export const backdrop =
   "fixed inset-0 z-50 bg-black/30 transition-opacity duration-200 data-starting-style:opacity-0 data-ending-style:opacity-0";

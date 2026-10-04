@@ -1,5 +1,6 @@
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { type ClassList, cn, type Styled } from "../utils";
+import { ArrowShape } from "../utils/arrow";
 import { arrow, popup } from "../utils/styles";
 
 export const Popover = PopoverPrimitive.Root;
@@ -31,7 +32,9 @@ export const PopoverPopup = ({
         )}
         {...props}
       >
-        <PopoverPrimitive.Arrow className={cn(arrow, classList?.arrow)} />
+        <PopoverPrimitive.Arrow className={cn(arrow, classList?.arrow)}>
+          <ArrowShape />
+        </PopoverPrimitive.Arrow>
         {children}
       </PopoverPrimitive.Popup>
     </PopoverPrimitive.Positioner>
