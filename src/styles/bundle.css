@@ -1,0 +1,6 @@
+/* Entry for the precompiled dist/styles.css: library classes only. */
+@import "tailwindcss" source(none);
+@import "./theme.css";
+@source "../components";
+@source "../utils";
+@source "../icons.tsx";

@@ -1,0 +1,19 @@
+import { Toggle as TogglePrimitive } from "@base-ui/react/toggle";
+import { cn, type Styled } from "../utils";
+import { disabled, focusRing } from "../utils/styles";
+
+/** A two-state button that stays pressed, e.g. bold in a text toolbar. */
+export const Toggle = ({ className, ...props }: Toggle.Props) => (
+  <TogglePrimitive
+    className={cn(
+      "inline-flex h-10 min-w-10 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-control px-3 font-medium text-foreground-dimmed text-sm transition-colors hover:bg-accent data-pressed:bg-accent data-pressed:text-foreground",
+      focusRing,
+      disabled,
+      className,
+    )}
+    {...props}
+  />
+);
+export namespace Toggle {
+  export type Props = Styled<TogglePrimitive.Props>;
+}

@@ -1,0 +1,72 @@
+/*
+ * woozui design tokens.
+ *
+ * Override any --wz-* variable to rebrand; components only ever read the
+ * semantic Tailwind colors mapped below, so light and dark follow for free.
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --wz-background: oklch(1 0 0);
+  --wz-background-dimmed: oklch(0.97 0.004 265);
+  --wz-foreground: oklch(0.21 0.02 265);
+  --wz-foreground-dimmed: oklch(0.48 0.02 265);
+  --wz-primary: oklch(0.52 0.22 275);
+  --wz-primary-dimmed: oklch(0.45 0.22 275);
+  --wz-primary-foreground: oklch(0.99 0 0);
+  --wz-accent: oklch(0.94 0.008 265);
+  --wz-border: oklch(0.89 0.008 265);
+  --wz-ring: oklch(0.52 0.22 275);
+  --wz-error: oklch(0.53 0.22 27);
+  --wz-error-foreground: oklch(0.99 0 0);
+  --wz-success: oklch(0.5 0.14 150);
+  --wz-warning: oklch(0.55 0.13 70);
+  --wz-radius: 0.5rem;
+}
+
+.dark {
+  --wz-background: oklch(0.17 0.01 265);
+  --wz-background-dimmed: oklch(0.22 0.012 265);
+  --wz-foreground: oklch(0.96 0.005 265);
+  --wz-foreground-dimmed: oklch(0.72 0.015 265);
+  --wz-primary: oklch(0.72 0.15 275);
+  --wz-primary-dimmed: oklch(0.79 0.12 275);
+  --wz-primary-foreground: oklch(0.17 0.01 265);
+  --wz-accent: oklch(0.27 0.015 265);
+  --wz-border: oklch(0.32 0.015 265);
+  --wz-ring: oklch(0.72 0.15 275);
+  --wz-error: oklch(0.7 0.17 25);
+  --wz-error-foreground: oklch(0.17 0.01 265);
+  --wz-success: oklch(0.75 0.15 150);
+  --wz-warning: oklch(0.8 0.14 80);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--wz-background);
+  --color-background-dimmed: var(--wz-background-dimmed);
+  --color-foreground: var(--wz-foreground);
+  --color-foreground-dimmed: var(--wz-foreground-dimmed);
+  --color-primary: var(--wz-primary);
+  --color-primary-dimmed: var(--wz-primary-dimmed);
+  --color-primary-foreground: var(--wz-primary-foreground);
+  --color-accent: var(--wz-accent);
+  --color-border: var(--wz-border);
+  --color-ring: var(--wz-ring);
+  --color-error: var(--wz-error);
+  --color-error-foreground: var(--wz-error-foreground);
+  --color-success: var(--wz-success);
+  --color-warning: var(--wz-warning);
+
+  --radius-control: var(--wz-radius);
+  --radius-item: calc(var(--wz-radius) - 4px);
+  --radius-surface: calc(var(--wz-radius) * 1.5);
+}
+
+@layer base {
+  body {
+    background-color: var(--wz-background);
+    color: var(--wz-foreground);
+  }
+}

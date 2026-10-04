@@ -1,0 +1,7 @@
+node_modules
+dist
+docs-dist
+storybook-static
+*.log
+.DS_Store
+.env*
