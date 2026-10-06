@@ -1,0 +1,142 @@
+import { type ComponentProps, useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
+import { cn } from "../utils";
+import { focusRing } from "../utils/styles";
+
+const sameDay = (a: Date | null | undefined, b: Date) =>
+  !!a &&
+  a.getFullYear() === b.getFullYear() &&
+  a.getMonth() === b.getMonth() &&
+  a.getDate() === b.getDate();
+
+// the six weeks that cover a month, starting on Monday
+const weeks = (month: Date) => {
+  const first = new Date(month.getFullYear(), month.getMonth(), 1);
+  const offset = (first.getDay() + 6) % 7;
+  return Array.from(
+    { length: 42 },
+    (_, index) =>
+      new Date(month.getFullYear(), month.getMonth(), index + 1 - offset),
+  );
+};
+
+const step =
+  "flex size-8 cursor-pointer items-center justify-center rounded-full text-foreground-dimmed transition-[scale,background-color,color] duration-400 ease-spring hover:bg-accent hover:text-foreground active:scale-85";
+
+/** A month grid for picking one date. Put it in a `Popover` for a date picker. */
+export const Calendar = ({
+  value,
+  defaultValue = null,
+  onValueChange,
+  locale,
+  className,
+  ...props
+}: Calendar.Props) => {
+  const [inner, setInner] = useState(defaultValue);
+  const selected = value === undefined ? inner : value;
+  const [month, setMonth] = useState(() => selected ?? new Date());
+  // which way the grid slides in after a month change
+  const [direction, setDirection] = useState(0);
+  const today = new Date();
+
+  const move = (by: number) => {
+    setDirection(by);
+    setMonth(new Date(month.getFullYear(), month.getMonth() + by, 1));
+  };
+  const weekday = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
+
+  return (
+    <div className={cn("w-fit select-none p-1", className)} {...props}>
+      <div className="flex items-center justify-between pb-2">
+        <button
+          type="button"
+          aria-label="Previous month"
+          className={cn(step, focusRing)}
+          onClick={() => move(-1)}
+        >
+          <ChevronLeftIcon />
+        </button>
+        <p aria-live="polite" className="font-semibold text-sm">
+          {new Intl.DateTimeFormat(locale, {
+            month: "long",
+            year: "numeric",
+          }).format(month)}
+        </p>
+        <button
+          type="button"
+          aria-label="Next month"
+          className={cn(step, focusRing)}
+          onClick={() => move(1)}
+        >
+          <ChevronRightIcon />
+        </button>
+      </div>
+      <div className="overflow-hidden">
+        <div
+          // remounting on a month change replays the slide
+          key={month.getTime()}
+          className={cn(
+            "grid grid-cols-7 gap-y-1",
+            direction > 0 && "animate-slide-from-right",
+            direction < 0 && "animate-slide-from-left",
+            "motion-reduce:animate-none",
+          )}
+        >
+          {weeks(month)
+            .slice(0, 7)
+            .map((day) => (
+              <span
+                key={day.getDay()}
+                aria-hidden="true"
+                className="flex size-9 items-center justify-center font-medium text-foreground-dimmed text-xs"
+              >
+                {weekday.format(day)}
+              </span>
+            ))}
+          {weeks(month).map((day) => {
+            const outside = day.getMonth() !== month.getMonth();
+            const picked = sameDay(selected, day);
+            return (
+              <button
+                key={day.getTime()}
+                type="button"
+                aria-label={day.toLocaleDateString(locale, {
+                  dateStyle: "full",
+                })}
+                aria-pressed={picked}
+                className={cn(
+                  "flex size-9 cursor-pointer items-center justify-center rounded-full text-sm tabular-nums transition-[scale,background-color,color] duration-400 ease-spring hover:bg-accent active:scale-85 aria-pressed:bg-primary aria-pressed:font-semibold aria-pressed:text-primary-foreground",
+                  outside && "text-foreground-dimmed/50",
+                  sameDay(today, day) &&
+                    !picked &&
+                    "font-semibold text-primary",
+                  focusRing,
+                )}
+                onClick={() => {
+                  setInner(day);
+                  onValueChange?.(day);
+                  if (outside) move(day < month ? -1 : 1);
+                }}
+              >
+                {day.getDate()}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+export namespace Calendar {
+  export type Props = Omit<
+    ComponentProps<"div">,
+    "defaultValue" | "onChange"
+  > & {
+    /** The selected date; leave undefined to let the calendar hold it. */
+    value?: Date | null;
+    defaultValue?: Date | null;
+    onValueChange?: (date: Date) => void;
+    /** A BCP 47 language tag for month and weekday names. */
+    locale?: string;
+  };
+}

@@ -1,4 +1,5 @@
 import { NumberField as NumberFieldPrimitive } from "@base-ui/react/number-field";
+import { useRef } from "react";
 import { MinusIcon, PlusIcon } from "../icons";
 import { type ClassList, cn, type Styled } from "../utils";
 
@@ -9,37 +10,73 @@ const step =
 export const NumberField = ({
   className,
   classList,
+  onValueChange,
   ...props
-}: NumberField.Props) => (
-  <NumberFieldPrimitive.Root
-    className={cn("w-fit", className, classList?.root)}
-    {...props}
-  >
-    <NumberFieldPrimitive.Group
-      className={cn(
-        "flex h-9 items-center gap-1 rounded-full bg-accent p-1 data-disabled:opacity-50",
-        classList?.group,
-      )}
+}: NumberField.Props) => {
+  const input = useRef<HTMLInputElement>(null);
+  const previous = useRef(props.value ?? props.defaultValue ?? null);
+
+  // the new number rolls in from below when the value rises and from above
+  // when it falls; the input itself moves, so its text is never repainted
+  const roll = (value: number | null, typed: boolean) => {
+    const from = previous.current;
+    previous.current = value;
+    const element = input.current;
+    // typing is left alone: the digits should not jump under the caret
+    if (typed || !element?.animate || value === null || from === null) return;
+    if (value === from) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const offset = value > from ? 14 : -14;
+    const spring = getComputedStyle(element).getPropertyValue("--wz-spring");
+    const frames = [
+      { translate: `0 ${offset}px`, opacity: 0 },
+      { translate: "0 0", opacity: 1 },
+    ];
+    try {
+      element.animate(frames, { duration: 450, easing: spring.trim() });
+    } catch {
+      // an engine that cannot parse the spring still gets the roll
+      element.animate(frames, { duration: 200, easing: "ease-out" });
+    }
+  };
+
+  return (
+    <NumberFieldPrimitive.Root
+      className={cn("w-fit", className, classList?.root)}
+      onValueChange={(value, details) => {
+        roll(value, details.reason.startsWith("input-"));
+        onValueChange?.(value, details);
+      }}
+      {...props}
     >
-      <NumberFieldPrimitive.Decrement
-        className={cn(step, classList?.decrement)}
-      >
-        <MinusIcon />
-      </NumberFieldPrimitive.Decrement>
-      <NumberFieldPrimitive.Input
+      <NumberFieldPrimitive.Group
         className={cn(
-          "h-full w-14 rounded-full bg-transparent text-center font-medium text-foreground text-sm tabular-nums caret-primary outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
-          classList?.input,
+          "flex h-9 items-center gap-1 overflow-hidden rounded-full bg-accent p-1 data-disabled:opacity-50",
+          classList?.group,
         )}
-      />
-      <NumberFieldPrimitive.Increment
-        className={cn(step, classList?.increment)}
       >
-        <PlusIcon />
-      </NumberFieldPrimitive.Increment>
-    </NumberFieldPrimitive.Group>
-  </NumberFieldPrimitive.Root>
-);
+        <NumberFieldPrimitive.Decrement
+          className={cn(step, classList?.decrement)}
+        >
+          <MinusIcon />
+        </NumberFieldPrimitive.Decrement>
+        <NumberFieldPrimitive.Input
+          ref={input}
+          className={cn(
+            "h-full w-14 rounded-full bg-transparent text-center font-medium text-foreground text-sm tabular-nums caret-primary outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
+            classList?.input,
+          )}
+        />
+        <NumberFieldPrimitive.Increment
+          className={cn(step, classList?.increment)}
+        >
+          <PlusIcon />
+        </NumberFieldPrimitive.Increment>
+      </NumberFieldPrimitive.Group>
+    </NumberFieldPrimitive.Root>
+  );
+};
 export namespace NumberField {
   export type Props = Styled<NumberFieldPrimitive.Root.Props> & {
     classList?: ClassList<

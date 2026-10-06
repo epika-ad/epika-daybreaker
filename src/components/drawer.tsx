@@ -7,7 +7,23 @@ export const Drawer = DrawerPrimitive.Root;
 export const DrawerTrigger = DrawerPrimitive.Trigger;
 export const DrawerClose = DrawerPrimitive.Close;
 
+const viewports = {
+  bottom: "items-end justify-center",
+  left: "items-stretch justify-start",
+  right: "items-stretch justify-end",
+} as const;
+
+// each side slides in along its own axis and follows the swipe on it
+const sides = {
+  bottom:
+    "max-h-[80vh] w-full max-w-lg translate-y-(--drawer-swipe-movement-y) pt-3 data-ending-style:translate-y-[calc(100%+0.5rem)] data-starting-style:translate-y-[calc(100%+0.5rem)]",
+  left: "w-80 max-w-[calc(100vw-1rem)] translate-x-(--drawer-swipe-movement-x) pt-6 data-ending-style:translate-x-[calc(-100%-0.5rem)] data-starting-style:translate-x-[calc(-100%-0.5rem)]",
+  right:
+    "w-80 max-w-[calc(100vw-1rem)] translate-x-(--drawer-swipe-movement-x) pt-6 data-ending-style:translate-x-[calc(100%+0.5rem)] data-starting-style:translate-x-[calc(100%+0.5rem)]",
+} as const;
+
 export const DrawerPopup = ({
+  side = "bottom",
   className,
   classList,
   children,
@@ -23,26 +39,30 @@ export const DrawerPopup = ({
     />
     <DrawerPrimitive.Viewport
       className={cn(
-        "fixed inset-0 z-50 flex items-end justify-center p-2",
+        "fixed inset-0 z-50 flex p-2",
+        viewports[side],
         classList?.viewport,
       )}
     >
       <DrawerPrimitive.Popup
         className={cn(
           glass,
-          "max-h-[80vh] w-full max-w-lg translate-y-(--drawer-swipe-movement-y) touch-auto overflow-y-auto overscroll-contain rounded-[2rem] px-6 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] outline-none transition-[translate] duration-500 ease-glide data-ending-style:translate-y-[calc(100%+0.5rem)] data-starting-style:translate-y-[calc(100%+0.5rem)] data-swiping:select-none data-ending-style:duration-300 data-swiping:duration-0 data-ending-style:ease-smooth",
+          "touch-auto overflow-y-auto overscroll-contain rounded-[2rem] px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] outline-none transition-[translate] duration-500 ease-glide data-swiping:select-none data-ending-style:duration-300 data-swiping:duration-0 data-ending-style:ease-smooth",
+          sides[side],
           className,
           classList?.popup,
         )}
         {...props}
       >
-        <div
-          aria-hidden="true"
-          className={cn(
-            "mx-auto mb-4 h-1 w-10 rounded-full bg-border",
-            classList?.handle,
-          )}
-        />
+        {side === "bottom" && (
+          <div
+            aria-hidden="true"
+            className={cn(
+              "mx-auto mb-4 h-1 w-10 rounded-full bg-border",
+              classList?.handle,
+            )}
+          />
+        )}
         <DrawerPrimitive.Content
           className={cn("grid gap-4", classList?.content)}
         >
@@ -54,6 +74,11 @@ export const DrawerPopup = ({
 );
 export namespace DrawerPopup {
   export type Props = Styled<DrawerPrimitive.Popup.Props> & {
+    /**
+     * The edge the sheet is attached to. For "left" or "right", also set the
+     * same `swipeDirection` on `Drawer` so the dismiss gesture matches.
+     */
+    side?: "bottom" | "left" | "right";
     classList?: ClassList<
       "backdrop" | "viewport" | "popup" | "handle" | "content"
     >;

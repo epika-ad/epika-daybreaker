@@ -1,10 +1,18 @@
 import { useEffect, useRef } from "react";
+import { cn } from ".";
 
 /**
- * A single highlight that glides between the items of a list popup. Render it
- * as the first child of a positioned popup whose items set `data-highlighted`.
+ * A single highlight that glides between the items of a list. Render it as a
+ * child of a positioned container; it follows whichever descendant carries
+ * `attribute` (the keyboard/hover highlight by default).
  */
-export const Highlight = () => {
+export const Highlight = ({
+  attribute = "data-highlighted",
+  className,
+}: {
+  attribute?: string;
+  className?: string;
+}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -13,7 +21,7 @@ export const Highlight = () => {
     if (!bar || !list) return;
 
     const sync = (instant = false) => {
-      const target = list.querySelector<HTMLElement>("[data-highlighted]");
+      const target = list.querySelector<HTMLElement>(`[${attribute}]`);
       if (!target) {
         bar.style.opacity = "0";
         return;
@@ -33,10 +41,10 @@ export const Highlight = () => {
     const observer = new MutationObserver(() => sync());
     observer.observe(list, {
       attributes: true,
-      attributeFilter: ["data-highlighted"],
+      attributeFilter: [attribute],
       subtree: true,
     });
-    // the popup is sized after it mounts, e.g. to match its trigger's width
+    // the list is sized after it mounts, e.g. to match its trigger's width
     const resize =
       typeof ResizeObserver === "undefined"
         ? undefined
@@ -46,13 +54,16 @@ export const Highlight = () => {
       observer.disconnect();
       resize?.disconnect();
     };
-  }, []);
+  }, [attribute]);
 
   return (
     <div
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none absolute top-0 left-0 -z-10 rounded-item bg-accent opacity-0 transition-[translate,width,height,opacity,background-color] data-destructive:bg-error/15 duration-300 ease-glide motion-reduce:transition-none"
+      className={cn(
+        "pointer-events-none absolute top-0 left-0 -z-10 rounded-item bg-accent opacity-0 transition-[translate,width,height,opacity,background-color] duration-300 ease-glide data-destructive:bg-error/15 motion-reduce:transition-none",
+        className,
+      )}
     />
   );
 };

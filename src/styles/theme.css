@@ -158,6 +158,14 @@
   --color-success: var(--wz-success);
   --color-warning: var(--wz-warning);
 
+  --animate-otp-success: wz-otp-success 750ms both;
+  --animate-otp-reject: wz-otp-reject 450ms both;
+  --animate-otp-shake: wz-otp-shake 520ms both;
+  --animate-pop-in: wz-pop-in 500ms var(--wz-spring) both;
+  --animate-slide-from-right: wz-slide-from-right 400ms var(--wz-glide) both;
+  --animate-slide-from-left: wz-slide-from-left 400ms var(--wz-glide) both;
+  --animate-draw: wz-draw 320ms ease-out both;
+
   --ease-spring: var(--wz-spring);
   --ease-glide: var(--wz-glide);
   --ease-smooth: var(--wz-smooth);
@@ -171,5 +179,104 @@
   body {
     background-color: var(--wz-background);
     color: var(--wz-foreground);
+  }
+}
+
+/* a box leaps, lands on the spring, and sends a ring outwards */
+@keyframes wz-otp-success {
+  0% {
+    translate: 0 0;
+    scale: 1;
+    outline: 2px solid var(--wz-success);
+    outline-offset: 0;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  28% {
+    translate: 0 -12px;
+    scale: 1.14;
+    outline: 2px solid var(--wz-success);
+    outline-offset: 3px;
+    animation-timing-function: var(--wz-spring);
+  }
+  100% {
+    translate: 0 0;
+    scale: 1;
+    outline: 2px solid transparent;
+    outline-offset: 14px;
+  }
+}
+
+/* a box flinches: squashes, tilts one way, then the other */
+@keyframes wz-otp-reject {
+  0% {
+    scale: 1;
+    rotate: 0deg;
+  }
+  25% {
+    scale: 0.86;
+    rotate: -7deg;
+  }
+  55% {
+    scale: 1.06;
+    rotate: 5deg;
+  }
+  100% {
+    scale: 1;
+    rotate: 0deg;
+  }
+}
+
+/* the whole row shakes its head, each swing smaller than the last */
+@keyframes wz-otp-shake {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  12% {
+    translate: -12px 0;
+  }
+  28% {
+    translate: 10px 0;
+  }
+  44% {
+    translate: -7px 0;
+  }
+  60% {
+    translate: 5px 0;
+  }
+  76% {
+    translate: -3px 0;
+  }
+  90% {
+    translate: 1px 0;
+  }
+}
+
+@keyframes wz-pop-in {
+  from {
+    scale: 0;
+    opacity: 0;
+  }
+}
+
+/* draws a stroke whose path length is normalised to 1 */
+@keyframes wz-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+/* content that replaces what was there, arriving from the side it came from */
+@keyframes wz-slide-from-right {
+  from {
+    translate: 30% 0;
+    opacity: 0;
+  }
+}
+
+@keyframes wz-slide-from-left {
+  from {
+    translate: -30% 0;
+    opacity: 0;
   }
 }

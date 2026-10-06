@@ -23,6 +23,16 @@ export const groups: readonly Group[] = [
         name: "Toggle Group",
         description: "Toggles joined into one segmented control.",
       },
+      {
+        slug: "button-group",
+        name: "Button Group",
+        description: "Buttons joined into one control.",
+      },
+      {
+        slug: "toolbar",
+        name: "Toolbar",
+        description: "A row of controls that share one tab stop.",
+      },
     ],
   },
   {
@@ -37,6 +47,11 @@ export const groups: readonly Group[] = [
         slug: "input",
         name: "Input",
         description: "A single-line text input.",
+      },
+      {
+        slug: "input-group",
+        name: "Input Group",
+        description: "An input with icons, units, or buttons attached.",
       },
       {
         slug: "textarea",
@@ -88,6 +103,16 @@ export const groups: readonly Group[] = [
         name: "Fieldset",
         description: "Related fields under one legend.",
       },
+      {
+        slug: "calendar",
+        name: "Calendar",
+        description: "A month grid for picking a date.",
+      },
+      {
+        slug: "date-picker",
+        name: "Date Picker",
+        description: "A button that opens a calendar.",
+      },
     ],
   },
   {
@@ -106,7 +131,12 @@ export const groups: readonly Group[] = [
       {
         slug: "drawer",
         name: "Drawer",
-        description: "A sheet that slides up and swipes away.",
+        description: "A sheet from the bottom or a side that swipes away.",
+      },
+      {
+        slug: "command",
+        name: "Command",
+        description: "A searchable palette of actions.",
       },
       {
         slug: "popover",
@@ -144,6 +174,26 @@ export const groups: readonly Group[] = [
     name: "Navigation",
     components: [
       {
+        slug: "navbar",
+        name: "Navbar",
+        description: "A floating bar for brand, links, and actions.",
+      },
+      {
+        slug: "navigation-menu",
+        name: "Navigation Menu",
+        description: "Links that open panels of more links.",
+      },
+      {
+        slug: "menubar",
+        name: "Menubar",
+        description: "A row of menus, like File and Edit.",
+      },
+      {
+        slug: "sidebar",
+        name: "Sidebar",
+        description: "A vertical panel of navigation links.",
+      },
+      {
         slug: "tabs",
         name: "Tabs",
         description: "Switch between panels of content.",
@@ -177,6 +227,26 @@ export const groups: readonly Group[] = [
         slug: "card",
         name: "Card",
         description: "A surface that groups related content.",
+      },
+      {
+        slug: "item",
+        name: "Item",
+        description: "Rows with media, text, and actions.",
+      },
+      {
+        slug: "empty",
+        name: "Empty",
+        description: "A placeholder for a view with nothing in it.",
+      },
+      {
+        slug: "carousel",
+        name: "Carousel",
+        description: "Slides you swipe or step through.",
+      },
+      {
+        slug: "aspect-ratio",
+        name: "Aspect Ratio",
+        description: "Content held at a fixed ratio.",
       },
       {
         slug: "badge",
