@@ -16,7 +16,7 @@ export namespace RadioGroup {
 export const Radio = ({ className, classList, ...props }: Radio.Props) => (
   <RadioPrimitive.Root
     className={cn(
-      "inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-background transition-colors data-checked:border-primary data-checked:bg-primary data-invalid:border-error",
+      "inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border bg-background transition-[scale,background-color,border-color] duration-400 ease-spring active:scale-85 data-checked:border-primary data-checked:bg-primary data-invalid:border-error",
       focusRing,
       disabled,
       className,
@@ -26,7 +26,7 @@ export const Radio = ({ className, classList, ...props }: Radio.Props) => (
   >
     <RadioPrimitive.Indicator
       className={cn(
-        "size-2 rounded-full bg-primary-foreground",
+        "size-2 rounded-full bg-primary-foreground transition-[scale,opacity] duration-400 ease-spring data-ending-style:scale-50 data-starting-style:scale-50 data-ending-style:opacity-0 data-starting-style:opacity-0 data-ending-style:duration-100",
         classList?.indicator,
       )}
     />

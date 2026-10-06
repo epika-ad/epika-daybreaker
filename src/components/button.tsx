@@ -11,7 +11,7 @@ export const buttonVariants = cva(
   [
     "inline-flex shrink-0 cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-[14px] font-semibold text-sm",
     // springy squish: overshoots on hover, presses in on click
-    "transition-[scale,background-color,box-shadow] duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 active:scale-90 motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
+    "transition-[scale,background-color,box-shadow] duration-400 ease-spring hover:scale-105 active:scale-90 motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
     focusRing,
     disabled,
   ],

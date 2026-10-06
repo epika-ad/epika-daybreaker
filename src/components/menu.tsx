@@ -57,6 +57,7 @@ export const MenuItem = ({
   ...props
 }: MenuItem.Props) => (
   <MenuPrimitive.Item
+    data-destructive={destructive || undefined}
     className={cn(item, destructive && "text-error", className)}
     {...props}
   />

@@ -42,7 +42,7 @@ export const AccordionTrigger = ({
       {children}
       <ChevronDownIcon
         className={cn(
-          "text-foreground-dimmed transition-transform group-data-panel-open:rotate-180",
+          "text-foreground-dimmed transition-[rotate] duration-500 ease-spring group-data-panel-open:rotate-180",
           classList?.icon,
         )}
       />
@@ -63,7 +63,7 @@ export const AccordionPanel = ({
 }: AccordionPanel.Props) => (
   <AccordionPrimitive.Panel
     className={cn(
-      "h-(--accordion-panel-height) overflow-hidden text-foreground-dimmed text-sm transition-[height] duration-200 data-ending-style:h-0 data-starting-style:h-0",
+      "h-(--accordion-panel-height) overflow-hidden text-foreground-dimmed text-sm transition-[height] duration-400 ease-smooth data-ending-style:h-0 data-starting-style:h-0",
       classList?.panel,
     )}
     {...props}

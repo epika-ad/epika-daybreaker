@@ -24,7 +24,7 @@ export const SelectTrigger = ({
     {children}
     <SelectPrimitive.Icon
       className={cn(
-        "text-foreground-dimmed transition-transform data-popup-open:rotate-180",
+        "text-foreground-dimmed transition-[rotate] duration-500 ease-spring data-popup-open:rotate-180",
         classList?.icon,
       )}
     >

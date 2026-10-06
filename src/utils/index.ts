@@ -4,7 +4,12 @@ import { extendTailwindMerge } from "tailwind-merge";
 export { cva, type VariantProps } from "class-variance-authority";
 
 const merge = extendTailwindMerge({
-  extend: { theme: { radius: ["control", "item", "surface"] } },
+  extend: {
+    theme: {
+      radius: ["control", "item", "surface"],
+      ease: ["spring", "glide", "smooth"],
+    },
+  },
 });
 
 /** Joins class names and resolves conflicting Tailwind utilities. */

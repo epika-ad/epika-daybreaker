@@ -24,6 +24,104 @@
   --wz-success: oklch(0.5 0.14 150);
   --wz-warning: oklch(0.55 0.13 70);
   --wz-radius: 0.875rem;
+  /* a quick rise with a little overshoot; most of the travel is in the first quarter */
+  --wz-spring: linear(
+    0,
+    0.03,
+    0.108,
+    0.216,
+    0.34,
+    0.469,
+    0.594,
+    0.708,
+    0.809,
+    0.894,
+    0.962,
+    1.015,
+    1.052,
+    1.076,
+    1.09,
+    1.095,
+    1.093,
+    1.086,
+    1.076,
+    1.065,
+    1.052,
+    1.04,
+    1.029,
+    1.02,
+    1.011,
+    1.005,
+    0.999,
+    0.996,
+    0.993,
+    0.992,
+    0.991,
+    0.991,
+    0.992,
+    0.993,
+    0.994,
+    0.995,
+    0.996,
+    0.997,
+    0.998,
+    0.999,
+    1
+  );
+  /* the same spring, damped: for things that travel, where a big overshoot
+     would carry them outside their container */
+  --wz-glide: linear(
+    0,
+    0.017,
+    0.061,
+    0.124,
+    0.198,
+    0.279,
+    0.361,
+    0.442,
+    0.519,
+    0.591,
+    0.657,
+    0.717,
+    0.77,
+    0.816,
+    0.856,
+    0.889,
+    0.918,
+    0.941,
+    0.96,
+    0.976,
+    0.988,
+    0.997,
+    1.004,
+    1.008,
+    1.012,
+    1.014,
+    1.015,
+    1.015,
+    1.015,
+    1.014,
+    1.013,
+    1.012,
+    1.011,
+    1.01,
+    1.008,
+    1.007,
+    1.006,
+    1.005,
+    1.004,
+    1.003,
+    1
+  );
+  /* decelerates without overshoot, for sizes that must not bounce */
+  --wz-smooth: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --wz-spring: ease-out;
+    --wz-glide: ease-out;
+  }
 }
 
 .dark {
@@ -59,6 +157,10 @@
   --color-error-foreground: var(--wz-error-foreground);
   --color-success: var(--wz-success);
   --color-warning: var(--wz-warning);
+
+  --ease-spring: var(--wz-spring);
+  --ease-glide: var(--wz-glide);
+  --ease-smooth: var(--wz-smooth);
 
   --radius-control: var(--wz-radius);
   --radius-item: calc(var(--wz-radius) - 4px);

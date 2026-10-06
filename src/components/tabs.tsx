@@ -1,5 +1,5 @@
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
-import { cn, type Styled } from "../utils";
+import { type ClassList, cn, type Styled } from "../utils";
 import { disabled, focusRing } from "../utils/styles";
 
 export const Tabs = ({ className, ...props }: Tabs.Props) => (
@@ -12,23 +12,40 @@ export namespace Tabs {
   export type Props = Styled<TabsPrimitive.Root.Props>;
 }
 
-export const TabsList = ({ className, ...props }: TabsList.Props) => (
+export const TabsList = ({
+  className,
+  classList,
+  children,
+  ...props
+}: TabsList.Props) => (
   <TabsPrimitive.List
     className={cn(
-      "inline-flex w-fit items-center gap-1 rounded-full bg-accent p-1",
+      "relative inline-flex w-fit items-center gap-1 rounded-full bg-accent p-1",
       className,
+      classList?.list,
     )}
     {...props}
-  />
+  >
+    {children}
+    {/* one pill that springs to the active tab, instead of each tab filling in */}
+    <TabsPrimitive.Indicator
+      className={cn(
+        "absolute top-0 left-0 h-(--active-tab-height) w-(--active-tab-width) translate-x-(--active-tab-left) translate-y-(--active-tab-top) rounded-full bg-background transition-[translate,width] duration-400 ease-glide dark:bg-white/20",
+        classList?.indicator,
+      )}
+    />
+  </TabsPrimitive.List>
 );
 export namespace TabsList {
-  export type Props = Styled<TabsPrimitive.List.Props>;
+  export type Props = Styled<TabsPrimitive.List.Props> & {
+    classList?: ClassList<"list" | "indicator">;
+  };
 }
 
 export const Tab = ({ className, ...props }: Tab.Props) => (
   <TabsPrimitive.Tab
     className={cn(
-      "inline-flex h-8 cursor-pointer items-center justify-center rounded-full px-4 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground data-active:bg-background data-active:text-foreground dark:data-active:bg-white/20",
+      "relative z-1 inline-flex h-8 cursor-pointer items-center justify-center rounded-full px-4 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground data-active:text-foreground",
       focusRing,
       disabled,
       className,

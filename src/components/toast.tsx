@@ -39,7 +39,7 @@ const ToastList = ({ classList }: Pick<ToastProvider.Props, "classList">) => {
       toast={toast}
       className={cn(
         glass,
-        "relative flex w-full translate-x-(--toast-swipe-movement-x) translate-y-(--toast-swipe-movement-y) items-start gap-3 rounded-surface p-4 transition-[opacity,translate] duration-200 data-ending-style:translate-x-full data-starting-style:translate-y-2 data-ending-style:opacity-0 data-starting-style:opacity-0",
+        "relative flex w-full translate-x-(--toast-swipe-movement-x) translate-y-(--toast-swipe-movement-y) items-start gap-3 rounded-surface p-4 transition-[opacity,translate] duration-500 ease-spring data-ending-style:translate-x-full data-starting-style:translate-y-8 data-ending-style:duration-200 data-ending-style:ease-out data-ending-style:opacity-0 data-starting-style:opacity-0",
         classList?.toast,
       )}
     >

@@ -25,6 +25,8 @@ export const Highlight = () => {
       bar.style.width = `${target.offsetWidth}px`;
       bar.style.height = `${target.offsetHeight}px`;
       bar.style.opacity = "1";
+      // destructive items tint the highlight to match their text
+      bar.toggleAttribute("data-destructive", "destructive" in target.dataset);
     };
 
     sync();
@@ -50,7 +52,7 @@ export const Highlight = () => {
     <div
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none absolute top-0 left-0 -z-10 rounded-item bg-accent opacity-0 transition-[translate,width,height,opacity] duration-200 ease-out motion-reduce:transition-none"
+      className="pointer-events-none absolute top-0 left-0 -z-10 rounded-item bg-accent opacity-0 transition-[translate,width,height,opacity,background-color] data-destructive:bg-error/15 duration-300 ease-glide motion-reduce:transition-none"
     />
   );
 };

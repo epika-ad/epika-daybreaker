@@ -19,7 +19,7 @@ export const Progress = ({
     >
       <ProgressPrimitive.Indicator
         className={cn(
-          "h-full rounded-full bg-primary transition-[width] duration-300 data-indeterminate:w-1/3 data-indeterminate:animate-pulse",
+          "h-full rounded-full bg-primary transition-[width] duration-500 ease-smooth data-indeterminate:w-1/3 data-indeterminate:animate-pulse",
           classList?.indicator,
         )}
       />
