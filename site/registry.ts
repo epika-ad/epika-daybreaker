@@ -11,12 +11,17 @@ export const groups: readonly Group[] = [
       {
         slug: "button",
         name: "Button",
-        description: "Six variants, three sizes, and a loading state.",
+        description: "Six variants, four sizes, icons, and a loading state.",
       },
       {
         slug: "toggle",
         name: "Toggle",
         description: "A button that stays pressed.",
+      },
+      {
+        slug: "toggle-group",
+        name: "Toggle Group",
+        description: "Toggles joined into one segmented control.",
       },
     ],
   },
@@ -44,6 +49,11 @@ export const groups: readonly Group[] = [
         description: "Pick one option from a list.",
       },
       {
+        slug: "combobox",
+        name: "Combobox",
+        description: "A select you can type in to filter.",
+      },
+      {
         slug: "checkbox",
         name: "Checkbox",
         description: "Checked, unchecked, or indeterminate.",
@@ -63,6 +73,21 @@ export const groups: readonly Group[] = [
         name: "Slider",
         description: "Choose a value or a range by dragging.",
       },
+      {
+        slug: "number-field",
+        name: "Number Field",
+        description: "A number with stepper buttons.",
+      },
+      {
+        slug: "otp-field",
+        name: "OTP Field",
+        description: "One box per character of a one-time code.",
+      },
+      {
+        slug: "fieldset",
+        name: "Fieldset",
+        description: "Related fields under one legend.",
+      },
     ],
   },
   {
@@ -79,6 +104,11 @@ export const groups: readonly Group[] = [
         description: "A modal that requires a decision.",
       },
       {
+        slug: "drawer",
+        name: "Drawer",
+        description: "A sheet that slides up and swipes away.",
+      },
+      {
         slug: "popover",
         name: "Popover",
         description: "A floating panel anchored to a trigger.",
@@ -89,9 +119,19 @@ export const groups: readonly Group[] = [
         description: "A short hint on hover or focus.",
       },
       {
+        slug: "preview-card",
+        name: "Preview Card",
+        description: "A card that previews a link on hover.",
+      },
+      {
         slug: "menu",
         name: "Menu",
-        description: "A dropdown list of actions.",
+        description: "A dropdown of actions, with icons, selection, or flags.",
+      },
+      {
+        slug: "context-menu",
+        name: "Context Menu",
+        description: "A menu that opens on right-click.",
       },
       {
         slug: "toast",
@@ -114,9 +154,19 @@ export const groups: readonly Group[] = [
         description: "Stacked sections that expand and collapse.",
       },
       {
+        slug: "collapsible",
+        name: "Collapsible",
+        description: "One section that expands and collapses.",
+      },
+      {
         slug: "breadcrumb",
         name: "Breadcrumb",
         description: "Shows where a page sits in the hierarchy.",
+      },
+      {
+        slug: "pagination",
+        name: "Pagination",
+        description: "Move between pages of results.",
       },
     ],
   },
@@ -154,6 +204,11 @@ export const groups: readonly Group[] = [
         description: "A line that divides content.",
       },
       {
+        slug: "scroll-area",
+        name: "Scroll Area",
+        description: "A scrolling region with a thin scrollbar.",
+      },
+      {
         slug: "kbd",
         name: "Kbd",
         description: "A keyboard key, for shortcuts.",
@@ -162,6 +217,11 @@ export const groups: readonly Group[] = [
         slug: "progress",
         name: "Progress",
         description: "How far along a task is.",
+      },
+      {
+        slug: "meter",
+        name: "Meter",
+        description: "A measurement within a known range.",
       },
       {
         slug: "skeleton",

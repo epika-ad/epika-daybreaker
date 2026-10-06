@@ -12,5 +12,10 @@ export const Example = () => (
       Airplane mode
       <Switch />
     </label>
+    {/* biome-ignore lint/a11y/noLabelWithoutControl: Switch renders the control */}
+    <label className="flex items-center justify-between text-foreground-dimmed">
+      Location (managed)
+      <Switch defaultChecked disabled />
+    </label>
   </div>
 );

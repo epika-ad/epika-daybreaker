@@ -1,5 +1,15 @@
 import { Input } from "woozui";
 
 export const Example = () => (
-  <Input aria-label="Name" placeholder="Ada Lovelace" className="w-64" />
+  <div className="grid w-64 gap-3">
+    <Input aria-label="Name" placeholder="Ada Lovelace" />
+    <Input aria-label="Password" type="password" defaultValue="hunter22" />
+    <Input
+      aria-label="Email"
+      type="email"
+      defaultValue="not-an-email"
+      aria-invalid
+    />
+    <Input aria-label="Team" defaultValue="Read only" disabled />
+  </div>
 );

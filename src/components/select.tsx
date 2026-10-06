@@ -71,7 +71,7 @@ export const SelectPopup = ({
       <SelectPrimitive.Popup
         className={cn(
           popup,
-          "relative max-h-(--available-height) min-w-(--anchor-width) overflow-y-auto p-1.5",
+          "relative max-h-(--available-height) min-w-(--anchor-width) overflow-y-auto p-1.5 [scrollbar-color:var(--wz-border)_transparent] [scrollbar-width:thin]",
           className,
           classList?.popup,
         )}

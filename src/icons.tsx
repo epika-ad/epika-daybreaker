@@ -111,3 +111,16 @@ export const TrashIcon = (props: IconProps) => (
     <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
   </Icon>
 );
+
+export const PlusIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M5 12h14" />
+    <path d="M12 5v14" />
+  </Icon>
+);
+
+export const ChevronLeftIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="m15 18-6-6 6-6" />
+  </Icon>
+);
