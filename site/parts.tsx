@@ -1,6 +1,7 @@
 import { type ComponentProps, type ReactNode, useState } from "react";
 import { CheckIcon, cn } from "woozui";
 import { type Entry, example } from "./registry";
+import { Thumbnail } from "./thumbnails";
 
 type IconProps = ComponentProps<"svg">;
 
@@ -156,8 +157,9 @@ export const PreviewCard = ({ entry }: PreviewCard.Props) => {
 
   return (
     <article className="flex flex-col rounded-[1.75rem] border border-border bg-background-dimmed p-2 transition-colors hover:border-foreground-dimmed/40">
-      <div className="flex h-64 items-center justify-center overflow-hidden rounded-[1.25rem] border border-border bg-background p-6">
-        <found.Example />
+      {/* a sketch, not the live component: the gallery is for scanning */}
+      <div className="flex h-44 items-center justify-center overflow-hidden rounded-[1.25rem] border border-border bg-background p-4">
+        <Thumbnail slug={entry.slug} />
       </div>
       <a
         href={`#/components/${entry.slug}`}

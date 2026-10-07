@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { ToastProvider, TooltipProvider } from "woozui";
 import { App } from "./app";
 import { components, example } from "./registry";
+import { hasThumbnail } from "./thumbnails";
 
 // every documented example must exist and render without throwing
 describe("examples", () => {
@@ -19,6 +20,17 @@ describe("examples", () => {
     );
 
     expect(container).not.toBeEmptyDOMElement();
+  });
+});
+
+// the gallery shows a sketch per component; a new component needs one too
+describe("thumbnails", () => {
+  it("has a sketch for every component", () => {
+    const missing = components
+      .map((entry) => entry.slug)
+      .filter((slug) => !hasThumbnail(slug));
+
+    expect(missing).toEqual([]);
   });
 });
 
