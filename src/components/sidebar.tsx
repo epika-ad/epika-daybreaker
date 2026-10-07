@@ -47,17 +47,31 @@ export const SidebarItem = ({
   current = false,
   className,
   ...props
-}: SidebarItem.Props) => (
-  <a
-    aria-current={current ? "page" : undefined}
-    className={cn(
-      "flex cursor-pointer items-center gap-2.5 rounded-item px-3 py-2 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground aria-[current]:text-foreground [&>svg]:size-4.5",
-      focusRing,
-      className,
-    )}
-    {...props}
-  />
-);
+}: SidebarItem.Props) => {
+  // an anchor without an href cannot be reached by keyboard, so an item that
+  // only has a click handler is exposed as a button
+  const action = props.href === undefined;
+  return (
+    <a
+      {...(action && {
+        role: "button",
+        tabIndex: 0,
+        onKeyDown: (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          event.currentTarget.click();
+        },
+      })}
+      aria-current={current ? "page" : undefined}
+      className={cn(
+        "flex cursor-pointer items-center gap-2.5 rounded-item px-3 py-2 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground aria-[current]:text-foreground [&>svg]:size-4.5",
+        focusRing,
+        className,
+      )}
+      {...props}
+    />
+  );
+};
 export namespace SidebarItem {
   export type Props = ComponentProps<"a"> & {
     /** Marks the item for the page being viewed. */

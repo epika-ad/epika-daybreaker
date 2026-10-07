@@ -78,7 +78,7 @@ const Header = ({ route }: { route: string }) => (
             href={link.href}
             aria-current={link.match.test(route) ? "page" : undefined}
             className={cn(
-              "rounded-full px-3 py-1.5 font-medium text-foreground-dimmed transition-colors hover:text-foreground aria-[current=page]:text-foreground sm:px-4",
+              "rounded-full px-2.5 py-1.5 font-medium text-foreground-dimmed transition-colors hover:text-foreground aria-[current=page]:text-foreground sm:px-4",
               focus,
             )}
           >
@@ -94,7 +94,8 @@ const Header = ({ route }: { route: string }) => (
           aria-label="woozui on GitHub"
           className={cn(
             pill,
-            "flex size-11 items-center justify-center text-foreground-dimmed transition-colors hover:text-foreground",
+            // dropped on phones, where the bar has no room for it
+            "flex size-11 items-center justify-center text-foreground-dimmed transition-colors hover:text-foreground max-sm:hidden",
             focus,
           )}
         >

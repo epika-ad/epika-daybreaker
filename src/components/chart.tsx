@@ -57,8 +57,10 @@ export const Chart = ({
           aria-hidden="true"
           viewBox="0 -4 100 108"
           preserveAspectRatio="none"
+          // revealed left to right; the wipe is on the whole plot because a
+          // dash-drawn stroke breaks up once the box is stretched
           className={cn(
-            "min-h-0 w-full flex-1 overflow-visible",
+            "min-h-0 w-full flex-1 animate-wipe overflow-visible motion-reduce:animate-none",
             classList?.plot,
           )}
         >
@@ -68,16 +70,12 @@ export const Chart = ({
           />
           <polyline
             points={line}
-            pathLength={1}
             fill="none"
             strokeWidth={2.5}
             strokeLinecap="round"
             strokeLinejoin="round"
             vectorEffect="non-scaling-stroke"
-            className={cn(
-              "animate-draw stroke-primary [animation-duration:900ms] [stroke-dasharray:1] motion-reduce:animate-none",
-              classList?.line,
-            )}
+            className={cn("stroke-primary", classList?.line)}
           />
         </svg>
       )}

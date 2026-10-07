@@ -165,6 +165,7 @@
   --animate-slide-from-right: wz-slide-from-right 400ms var(--wz-glide) both;
   --animate-slide-from-left: wz-slide-from-left 400ms var(--wz-glide) both;
   --animate-grow: wz-grow 600ms var(--wz-spring) both;
+  --animate-wipe: wz-wipe 900ms var(--wz-smooth) both;
   --animate-draw: wz-draw 320ms ease-out both;
 
   --ease-spring: var(--wz-spring);
@@ -370,5 +371,16 @@
   .wz-native-select option::checkmark {
     order: 1;
     color: var(--wz-primary);
+  }
+}
+
+/* uncovers content from left to right; the negative insets keep strokes that
+   overhang the box from being cut off */
+@keyframes wz-wipe {
+  from {
+    clip-path: inset(-8px 100% -8px -8px);
+  }
+  to {
+    clip-path: inset(-8px);
   }
 }

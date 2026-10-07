@@ -1,4 +1,10 @@
-import { type ComponentProps, useState } from "react";
+import {
+  type ComponentProps,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
 import { cn } from "../utils";
 import { focusRing } from "../utils/styles";
@@ -38,10 +44,46 @@ export const Calendar = ({
   // which way the grid slides in after a month change
   const [direction, setDirection] = useState(0);
   const today = new Date();
+  const days = weeks(month);
+
+  // the grid is one tab stop: arrow keys move a roving focus between days
+  const [active, setActive] = useState(() => selected ?? new Date());
+  const stop = days.some((day) => sameDay(active, day))
+    ? active
+    : new Date(month.getFullYear(), month.getMonth(), 1);
+  const grid = useRef<HTMLDivElement>(null);
+  const refocus = useRef(false);
+  useEffect(() => {
+    if (!refocus.current) return;
+    refocus.current = false;
+    grid.current?.querySelector<HTMLElement>('[tabindex="0"]')?.focus();
+  });
 
   const move = (by: number) => {
     setDirection(by);
     setMonth(new Date(month.getFullYear(), month.getMonth() + by, 1));
+  };
+
+  const navigate = (event: KeyboardEvent<HTMLDivElement>) => {
+    const next = new Date(stop);
+    const weekday = (stop.getDay() + 6) % 7;
+    if (event.key === "ArrowLeft") next.setDate(stop.getDate() - 1);
+    else if (event.key === "ArrowRight") next.setDate(stop.getDate() + 1);
+    else if (event.key === "ArrowUp") next.setDate(stop.getDate() - 7);
+    else if (event.key === "ArrowDown") next.setDate(stop.getDate() + 7);
+    else if (event.key === "Home") next.setDate(stop.getDate() - weekday);
+    else if (event.key === "End") next.setDate(stop.getDate() + 6 - weekday);
+    else if (event.key === "PageUp") next.setMonth(stop.getMonth() - 1);
+    else if (event.key === "PageDown") next.setMonth(stop.getMonth() + 1);
+    else return;
+    event.preventDefault();
+    setActive(next);
+    refocus.current = true;
+    const months =
+      (next.getFullYear() - month.getFullYear()) * 12 +
+      next.getMonth() -
+      month.getMonth();
+    if (months !== 0) move(months);
   };
   const weekday = new Intl.DateTimeFormat(locale, { weekday: "narrow" });
 
@@ -71,10 +113,16 @@ export const Calendar = ({
           <ChevronRightIcon />
         </button>
       </div>
-      <div className="overflow-hidden">
+      {/* padded so the focus ring on an edge day is not clipped */}
+      <div className="-m-1.5 overflow-hidden p-1.5">
+        {/* biome-ignore lint/a11y/useSemanticElements: a fieldset would add a form grouping this is not */}
         <div
+          role="group"
+          aria-label="Days"
+          ref={grid}
           // remounting on a month change replays the slide
           key={month.getTime()}
+          onKeyDown={navigate}
           className={cn(
             "grid grid-cols-7 gap-y-1",
             direction > 0 && "animate-slide-from-right",
@@ -82,18 +130,16 @@ export const Calendar = ({
             "motion-reduce:animate-none",
           )}
         >
-          {weeks(month)
-            .slice(0, 7)
-            .map((day) => (
-              <span
-                key={day.getDay()}
-                aria-hidden="true"
-                className="flex size-9 items-center justify-center font-medium text-foreground-dimmed text-xs"
-              >
-                {weekday.format(day)}
-              </span>
-            ))}
-          {weeks(month).map((day) => {
+          {days.slice(0, 7).map((day) => (
+            <span
+              key={day.getDay()}
+              aria-hidden="true"
+              className="flex size-9 items-center justify-center font-medium text-foreground-dimmed text-xs"
+            >
+              {weekday.format(day)}
+            </span>
+          ))}
+          {days.map((day) => {
             const outside = day.getMonth() !== month.getMonth();
             const picked = sameDay(selected, day);
             return (
@@ -104,6 +150,7 @@ export const Calendar = ({
                   dateStyle: "full",
                 })}
                 aria-pressed={picked}
+                tabIndex={sameDay(stop, day) ? 0 : -1}
                 className={cn(
                   "flex size-9 cursor-pointer items-center justify-center rounded-full text-sm tabular-nums transition-[scale,background-color,color] duration-400 ease-spring hover:bg-accent active:scale-85 aria-pressed:bg-primary aria-pressed:font-semibold aria-pressed:text-primary-foreground",
                   outside && "text-foreground-dimmed/50",
@@ -114,6 +161,7 @@ export const Calendar = ({
                 )}
                 onClick={() => {
                   setInner(day);
+                  setActive(day);
                   onValueChange?.(day);
                   if (outside) move(day < month ? -1 : 1);
                 }}
