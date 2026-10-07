@@ -8,6 +8,9 @@ export default defineConfig({
   // the docs site imports the library the way a consumer would
   resolve: {
     alias: {
+      "woozui/charts": fileURLToPath(
+        new URL("./src/charts.tsx", import.meta.url),
+      ),
       woozui: fileURLToPath(new URL("./src/index.ts", import.meta.url)),
     },
   },

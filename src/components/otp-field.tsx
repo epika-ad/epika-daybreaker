@@ -1,5 +1,5 @@
 import { OTPField as OtpFieldPrimitive } from "@base-ui/react/otp-field";
-import { useEffect, useImperativeHandle, useRef } from "react";
+import { useEffect, useId, useImperativeHandle, useRef } from "react";
 import { type ClassList, cn, type Styled } from "../utils";
 
 // ms between one box starting its animation and the next
@@ -58,8 +58,12 @@ export const OtpField = ({
   className,
   classList,
   ref,
+  id,
+  "aria-label": label,
   ...props
 }: OtpField.Props) => {
+  const generated = useId();
+  const field = id ?? generated;
   const root = useRef<HTMLDivElement>(null);
   useImperativeHandle(ref, () => root.current as HTMLDivElement);
 
@@ -80,6 +84,7 @@ export const OtpField = ({
   return (
     <OtpFieldPrimitive.Root
       ref={root}
+      id={field}
       length={length}
       data-status={status}
       className={cn(
@@ -115,6 +120,12 @@ export const OtpField = ({
           }
         />
       ))}
+      {/* the first box is named by a real label; the rest name themselves */}
+      {label && (
+        <label htmlFor={field} className="sr-only">
+          {label}
+        </label>
+      )}
       {status !== "idle" && (
         <Badge key={status} status={status} delay={length * stagger + 120} />
       )}

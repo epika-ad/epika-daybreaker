@@ -99,8 +99,8 @@ export const Resizable = ({
             className={cn(
               "rounded-full bg-foreground-dimmed/60 transition-[width,height,background-color] duration-400 ease-spring group-focus-visible:bg-primary group-data-dragging:bg-primary",
               horizontal
-                ? "h-8 w-1 group-hover:h-10 group-data-dragging:h-14"
-                : "h-1 w-8 group-hover:w-10 group-data-dragging:w-14",
+                ? "h-8 w-1 group-hover:h-10 group-focus-visible:h-14 group-focus-visible:w-1.5 group-data-dragging:h-14"
+                : "h-1 w-8 group-hover:w-10 group-focus-visible:h-1.5 group-focus-visible:w-14 group-data-dragging:w-14",
             )}
           />
         </span>

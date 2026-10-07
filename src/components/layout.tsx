@@ -1,4 +1,8 @@
 import type { ComponentProps } from "react";
+
+/** Tells components inside it whether the interface reads left-to-right or right-to-left. */
+export { DirectionProvider } from "@base-ui/react/direction-provider";
+
 import { cn } from "../utils";
 
 /** Keeps its content at a fixed width-to-height ratio, e.g. `16 / 9`. */

@@ -11,7 +11,10 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "paths": { "woozui": ["./src/index.ts"] },
+    "paths": {
+      "woozui": ["./src/index.ts"],
+      "woozui/charts": ["./src/charts.tsx"]
+    },
     "types": [
       "node",
       "vite/client",

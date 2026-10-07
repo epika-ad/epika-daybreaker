@@ -16,9 +16,12 @@ export const TabsList = ({
   className,
   classList,
   children,
+  // arrow keys switch tabs straight away, as panels here are instant to show
+  activateOnFocus = true,
   ...props
 }: TabsList.Props) => (
   <TabsPrimitive.List
+    activateOnFocus={activateOnFocus}
     className={cn(
       "relative inline-flex w-fit items-center gap-1 rounded-full bg-accent p-1",
       className,

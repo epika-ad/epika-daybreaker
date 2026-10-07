@@ -11,6 +11,7 @@ export const NumberField = ({
   className,
   classList,
   onValueChange,
+  "aria-label": label,
   ...props
 }: NumberField.Props) => {
   const input = useRef<HTMLInputElement>(null);
@@ -63,6 +64,8 @@ export const NumberField = ({
         </NumberFieldPrimitive.Decrement>
         <NumberFieldPrimitive.Input
           ref={input}
+          // the name belongs on the input, the element that takes focus
+          aria-label={label}
           className={cn(
             "h-full w-14 rounded-full bg-transparent text-center font-medium text-foreground text-sm tabular-nums caret-primary outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
             classList?.input,

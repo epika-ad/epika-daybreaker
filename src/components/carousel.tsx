@@ -30,8 +30,11 @@ export const Carousel = ({
     >
       <div
         ref={track}
+        // focusable so arrow keys can scroll it
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrolling region must be reachable by keyboard
+        tabIndex={0}
         className={cn(
-          "flex snap-x snap-mandatory overflow-x-auto rounded-surface [scrollbar-width:none]",
+          "flex snap-x snap-mandatory overflow-x-auto rounded-surface outline-none [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-ring",
           classList?.track,
         )}
         onScroll={(event) => {

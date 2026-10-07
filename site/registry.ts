@@ -236,6 +236,82 @@ export const groups: readonly Group[] = [
     ],
   },
   {
+    name: "Conversation",
+    components: [
+      {
+        slug: "message",
+        name: "Message",
+        description: "A row in a conversation, with avatar and header.",
+      },
+      {
+        slug: "bubble",
+        name: "Bubble",
+        description: "A chat bubble in seven styles, with reactions.",
+      },
+      {
+        slug: "marker",
+        name: "Marker",
+        description: "A status line or labelled divider in a thread.",
+      },
+      {
+        slug: "attachment",
+        name: "Attachment",
+        description: "A file or image with upload state and actions.",
+      },
+      {
+        slug: "message-scroller",
+        name: "Message Scroller",
+        description: "A transcript that follows new messages.",
+      },
+      {
+        slug: "questionnaire",
+        name: "Questionnaire",
+        description: "Questions asked one at a time.",
+      },
+    ],
+  },
+  {
+    name: "Charts",
+    components: [
+      {
+        slug: "area-chart",
+        name: "Area Charts",
+        description: "Nine area charts: stacked, stepped, gradient and more.",
+      },
+      {
+        slug: "bar-chart",
+        name: "Bar Charts",
+        description: "Nine bar charts: grouped, stacked, horizontal and more.",
+      },
+      {
+        slug: "line-chart",
+        name: "Line Charts",
+        description:
+          "Nine line charts: multiple series, dots, labels and more.",
+      },
+      {
+        slug: "pie-chart",
+        name: "Pie Charts",
+        description: "Nine pie and donut charts.",
+      },
+      {
+        slug: "radar-chart",
+        name: "Radar Charts",
+        description: "Nine radar charts.",
+      },
+      {
+        slug: "radial-chart",
+        name: "Radial Charts",
+        description: "Nine radial bar charts.",
+      },
+      {
+        slug: "chart-tooltip",
+        name: "Chart Tooltips",
+        description: "Nine ways to style a chart's tooltip.",
+      },
+    ],
+  },
+  {
     name: "Display",
     components: [
       {
@@ -272,6 +348,11 @@ export const groups: readonly Group[] = [
         slug: "typography",
         name: "Typography",
         description: "Readable styles for long-form text.",
+      },
+      {
+        slug: "direction",
+        name: "Direction",
+        description: "Right-to-left support for everything inside it.",
       },
       {
         slug: "badge",

@@ -12,6 +12,11 @@ export default defineConfig({
   base: "./",
   plugins: [react(), tailwindcss()],
   // examples import "woozui" exactly as a consumer would
-  resolve: { alias: { woozui: path("../src/index.ts") } },
+  resolve: {
+    alias: {
+      "woozui/charts": path("../src/charts.tsx"),
+      woozui: path("../src/index.ts"),
+    },
+  },
   build: { outDir: path("../site-dist"), emptyOutDir: true },
 });

@@ -153,7 +153,7 @@ export const Calendar = ({
                 tabIndex={sameDay(stop, day) ? 0 : -1}
                 className={cn(
                   "flex size-9 cursor-pointer items-center justify-center rounded-full text-sm tabular-nums transition-[scale,background-color,color] duration-400 ease-spring hover:bg-accent active:scale-85 aria-pressed:bg-primary aria-pressed:font-semibold aria-pressed:text-primary-foreground",
-                  outside && "text-foreground-dimmed/50",
+                  outside && "text-foreground-dimmed",
                   sameDay(today, day) &&
                     !picked &&
                     "font-semibold text-primary",
