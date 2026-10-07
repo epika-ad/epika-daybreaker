@@ -10,7 +10,7 @@ export const disabled =
 export const glass =
   "border border-border bg-background-dimmed/75 text-foreground backdrop-blur-2xl backdrop-saturate-200 shadow-[inset_0_1px_0_rgb(255_255_255/0.6)] dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.12)]";
 
-export const popup = `${glass} origin-(--transform-origin) rounded-2xl outline-none transition-[scale,opacity] duration-500 ease-spring data-starting-style:scale-90 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0 data-ending-style:duration-150 data-ending-style:ease-out`;
+export const popup = `${glass} origin-(--transform-origin) rounded-2xl outline-none transition-[scale,opacity] duration-500 ease-spring data-starting-style:scale-90 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0 data-ending-style:duration-150 data-ending-style:ease-out data-instant:transition-none`;
 
 // Places a popup's pointer on the edge facing the trigger, overlapping the
 // border so the shape in utils/arrow.tsx can cover it.

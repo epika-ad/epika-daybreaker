@@ -164,6 +164,7 @@
   --animate-pop-in: wz-pop-in 500ms var(--wz-spring) both;
   --animate-slide-from-right: wz-slide-from-right 400ms var(--wz-glide) both;
   --animate-slide-from-left: wz-slide-from-left 400ms var(--wz-glide) both;
+  --animate-grow: wz-grow 600ms var(--wz-spring) both;
   --animate-draw: wz-draw 320ms ease-out both;
 
   --ease-spring: var(--wz-spring);
@@ -278,5 +279,90 @@
   from {
     translate: -30% 0;
     opacity: 0;
+  }
+}
+
+/* a bar rising from its baseline */
+@keyframes wz-grow {
+  from {
+    scale: 1 0;
+  }
+}
+
+/*
+ * NativeSelect's list. Browsers that support customisable selects draw it as
+ * a glass popup like the other menus; the rest keep the system list.
+ */
+@supports (appearance: base-select) {
+  .wz-native-select,
+  .wz-native-select::picker(select) {
+    appearance: base-select;
+  }
+
+  .wz-native-select::picker-icon {
+    display: none;
+  }
+
+  .wz-native-select::picker(select) {
+    margin-block: 0.375rem;
+    padding: 0.375rem;
+    border: 1px solid var(--wz-border);
+    border-radius: 1rem;
+    background: color-mix(
+      in srgb,
+      var(--wz-background-dimmed) 75%,
+      transparent
+    );
+    color: var(--wz-foreground);
+    backdrop-filter: blur(40px) saturate(2);
+    transform-origin: top;
+    opacity: 0;
+    scale: 0.9;
+    transition:
+      opacity 150ms ease-out,
+      scale 150ms ease-out,
+      overlay 150ms allow-discrete,
+      display 150ms allow-discrete;
+  }
+
+  .wz-native-select:open::picker(select) {
+    opacity: 1;
+    scale: 1;
+    transition:
+      opacity 500ms var(--wz-spring),
+      scale 500ms var(--wz-spring),
+      overlay 500ms allow-discrete,
+      display 500ms allow-discrete;
+  }
+
+  @starting-style {
+    .wz-native-select:open::picker(select) {
+      opacity: 0;
+      scale: 0.9;
+    }
+  }
+
+  .wz-native-select option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: calc(var(--wz-radius) - 4px);
+    font-size: 0.875rem;
+    cursor: default;
+    transition: background-color 150ms;
+  }
+
+  .wz-native-select option:hover,
+  .wz-native-select option:focus-visible {
+    background: var(--wz-accent);
+    outline: none;
+  }
+
+  /* the tick sits at the end of the row, as in Select */
+  .wz-native-select option::checkmark {
+    order: 1;
+    color: var(--wz-primary);
   }
 }

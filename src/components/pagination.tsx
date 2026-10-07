@@ -1,6 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
 import { cn } from "../utils";
+import { Highlight } from "../utils/highlight";
 import { buttonVariants } from "./button";
 
 // first, last and the pages around the current one, with gaps collapsed
@@ -39,9 +40,11 @@ export const Pagination = ({
   return (
     <nav
       aria-label="Pagination"
-      className={cn("flex items-center gap-1", className)}
+      className={cn("relative isolate flex items-center gap-1", className)}
       {...props}
     >
+      {/* one pill that glides to the current page */}
+      <Highlight attribute="aria-current" className="rounded-full bg-primary" />
       {control(page - 1, "Previous page", <ChevronLeftIcon />)}
       {pages(page, count).map((entry, index) =>
         entry === "gap" ? (
@@ -61,11 +64,9 @@ export const Pagination = ({
             aria-current={entry === page ? "page" : undefined}
             onClick={() => onPageChange(entry)}
             className={cn(
-              buttonVariants({
-                variant: entry === page ? "primary" : "ghost",
-                size: "icon",
-              }),
-              "rounded-full tabular-nums",
+              buttonVariants({ variant: "ghost", size: "icon" }),
+              "rounded-full tabular-nums transition-[scale,color]",
+              entry === page && "text-primary-foreground hover:bg-transparent",
             )}
           >
             {entry}

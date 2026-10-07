@@ -1,10 +1,11 @@
 import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu";
 import { ChevronDownIcon } from "../icons";
 import { type ClassList, cn, type Styled } from "../utils";
+import { Highlight } from "../utils/highlight";
 import { focusRing, glass } from "../utils/styles";
 
 const trigger =
-  "flex h-9 cursor-pointer select-none items-center gap-1.5 rounded-full px-3.5 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground data-popup-open:bg-accent data-popup-open:text-foreground";
+  "flex h-9 cursor-pointer select-none items-center gap-1.5 rounded-full px-3.5 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground data-popup-open:text-foreground";
 
 /**
  * Site navigation whose items open panels of links. All panels share one
@@ -21,8 +22,13 @@ export const NavigationMenu = ({
     {...props}
   >
     <NavigationMenuPrimitive.List
-      className={cn("relative flex items-center gap-1", classList?.list)}
+      className={cn(
+        "relative isolate flex items-center gap-1",
+        classList?.list,
+      )}
     >
+      {/* one pill that glides to whichever item is open */}
+      <Highlight attribute="data-popup-open" className="rounded-full" />
       {children}
     </NavigationMenuPrimitive.List>
     <NavigationMenuPrimitive.Portal>
@@ -30,14 +36,14 @@ export const NavigationMenu = ({
         sideOffset={10}
         collisionPadding={16}
         className={cn(
-          "z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width) transition-[top,left,right,bottom] duration-400 ease-glide data-instant:transition-none",
+          "z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width) transition-[top,left,right,bottom] duration-450 ease-smooth data-instant:transition-none",
           classList?.positioner,
         )}
       >
         <NavigationMenuPrimitive.Popup
           className={cn(
             glass,
-            "relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) rounded-surface outline-none transition-[opacity,scale,width,height] duration-400 ease-glide data-ending-style:scale-95 data-starting-style:scale-90 data-ending-style:opacity-0 data-starting-style:opacity-0 data-ending-style:duration-150",
+            "relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) rounded-surface outline-none transition-[opacity,scale,width,height] duration-450 ease-smooth data-ending-style:scale-95 data-starting-style:scale-90 data-ending-style:opacity-0 data-starting-style:opacity-0 data-ending-style:duration-150",
             classList?.popup,
           )}
         >
@@ -81,7 +87,7 @@ export const NavigationMenuContent = ({
 }: NavigationMenuContent.Props) => (
   <NavigationMenuPrimitive.Content
     className={cn(
-      "h-full w-max max-w-[calc(100vw-2rem)] p-2 transition-[opacity,translate] duration-400 ease-glide data-ending-style:opacity-0 data-starting-style:opacity-0 data-starting-style:data-[activation-direction=left]:-translate-x-1/2 data-starting-style:data-[activation-direction=right]:translate-x-1/2 data-ending-style:data-[activation-direction=left]:translate-x-1/2 data-ending-style:data-[activation-direction=right]:-translate-x-1/2",
+      "h-full w-max max-w-[calc(100vw-2rem)] p-2 transition-[opacity,translate] duration-450 ease-smooth data-ending-style:opacity-0 data-starting-style:opacity-0 data-ending-style:duration-150 data-starting-style:data-[activation-direction=left]:-translate-x-8 data-starting-style:data-[activation-direction=right]:translate-x-8 data-ending-style:data-[activation-direction=left]:translate-x-4 data-ending-style:data-[activation-direction=right]:-translate-x-4",
       className,
     )}
     {...props}

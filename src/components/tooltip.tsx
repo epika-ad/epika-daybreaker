@@ -25,7 +25,7 @@ export const TooltipPopup = ({
       <TooltipPrimitive.Popup
         className={cn(
           glass,
-          "origin-(--transform-origin) rounded-full px-2.5 py-1 text-xs transition-[scale,opacity] duration-400 ease-spring data-ending-style:scale-95 data-starting-style:scale-75 data-ending-style:duration-150 data-ending-style:ease-out data-ending-style:opacity-0 data-starting-style:opacity-0",
+          "origin-(--transform-origin) rounded-full px-2.5 py-1 text-xs transition-[scale,opacity] duration-400 ease-spring data-ending-style:scale-95 data-starting-style:scale-75 data-ending-style:duration-150 data-ending-style:ease-out data-instant:transition-none data-ending-style:opacity-0 data-starting-style:opacity-0",
           className,
           classList?.popup,
         )}

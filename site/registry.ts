@@ -44,6 +44,16 @@ export const groups: readonly Group[] = [
         description: "A control with its label, hint, and error message.",
       },
       {
+        slug: "form",
+        name: "Form",
+        description: "Fields that validate together on submit.",
+      },
+      {
+        slug: "label",
+        name: "Label",
+        description: "Text that names a control.",
+      },
+      {
         slug: "input",
         name: "Input",
         description: "A single-line text input.",
@@ -62,6 +72,11 @@ export const groups: readonly Group[] = [
         slug: "select",
         name: "Select",
         description: "Pick one option from a list.",
+      },
+      {
+        slug: "native-select",
+        name: "Native Select",
+        description: "The browser select, styled to match.",
       },
       {
         slug: "combobox",
@@ -249,6 +264,16 @@ export const groups: readonly Group[] = [
         description: "Content held at a fixed ratio.",
       },
       {
+        slug: "resizable",
+        name: "Resizable",
+        description: "Panels with a draggable divider.",
+      },
+      {
+        slug: "typography",
+        name: "Typography",
+        description: "Readable styles for long-form text.",
+      },
+      {
         slug: "badge",
         name: "Badge",
         description: "A small label for status or counts.",
@@ -267,6 +292,16 @@ export const groups: readonly Group[] = [
         slug: "table",
         name: "Table",
         description: "Rows and columns of data.",
+      },
+      {
+        slug: "data-table",
+        name: "Data Table",
+        description: "A table that sorts, filters, and paginates.",
+      },
+      {
+        slug: "chart",
+        name: "Chart",
+        description: "A small bar or line chart.",
       },
       {
         slug: "separator",
