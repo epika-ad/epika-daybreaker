@@ -93,7 +93,10 @@ export const OtpField = ({
         <OtpFieldPrimitive.Input
           // biome-ignore lint/suspicious/noArrayIndexKey: the boxes are positional and never reorder
           key={index}
-          aria-label={`Character ${index + 1} of ${length}`}
+          // the first box takes the field's own label
+          aria-label={
+            index === 0 ? undefined : `Character ${index + 1} of ${length}`
+          }
           className={cn(
             "size-11 rounded-control border border-transparent bg-accent text-center font-semibold text-foreground text-lg caret-primary outline-none transition-[scale,color,background-color,border-color,box-shadow] duration-400 ease-spring focus:scale-105 focus:border-ring focus:ring-2 focus:ring-ring/30 data-disabled:opacity-50 data-invalid:border-error",
             "group-data-[status=success]:animate-otp-success group-data-[status=success]:border-success group-data-[status=success]:bg-success/15 group-data-[status=success]:text-success group-data-[status=success]:ring-0 group-data-[status=success]:selection:bg-transparent",

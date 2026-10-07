@@ -299,6 +299,12 @@
     appearance: base-select;
   }
 
+  /* a customisable select lays its value out as a flex row */
+  .wz-native-select {
+    display: flex;
+    align-items: center;
+  }
+
   .wz-native-select::picker-icon {
     display: none;
   }
