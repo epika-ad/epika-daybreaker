@@ -1,6 +1,6 @@
 # woozui
 
-Accessible React components styled with Tailwind CSS. Keyboard navigation, focus management and screen reader support are built in (via [Base UI](https://base-ui.com)); the look is driven by a small set of design tokens you can override.
+AAccessible React components styled with Tailwind CSS. Keyboard navigation, focus management and screen reader support are built in (via [Base UI](https://base-ui.com)); the look is driven by a small set of design tokens you can override.
 
 ## Install
 
