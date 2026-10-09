@@ -8,27 +8,28 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --wz-background: oklch(1 0 0);
-  --wz-background-dimmed: oklch(0.965 0.005 286);
-  --wz-foreground: oklch(0.145 0 0);
-  --wz-foreground-dimmed: oklch(0.45 0.01 286);
-  --wz-primary: oklch(0.55 0.22 258);
-  --wz-primary-dimmed: oklch(0.49 0.21 258);
+  /* Epika brand: red on warm paper, with plum ink */
+  --wz-background: #f7f6f4;
+  --wz-background-dimmed: oklch(0.935 0.008 325);
+  --wz-foreground: #350a3f;
+  --wz-foreground-dimmed: oklch(0.45 0.06 325);
+  --wz-primary: #ee1c4d;
+  --wz-primary-dimmed: #d3103f;
   --wz-primary-foreground: oklch(1 0 0);
   /* fills and separators are translucent so they sit on any backdrop */
-  --wz-accent: oklch(0.57 0.02 286 / 0.14);
-  --wz-border: oklch(0.36 0.02 286 / 0.2);
-  --wz-ring: oklch(0.6 0.2 257);
-  --wz-error: oklch(0.55 0.22 27);
+  --wz-accent: oklch(0.4 0.1 325 / 0.11);
+  --wz-border: oklch(0.3 0.1 325 / 0.2);
+  --wz-ring: #ee1c4d;
+  --wz-error: oklch(0.55 0.2 40);
   --wz-error-foreground: oklch(0.985 0 0);
   --wz-success: oklch(0.5 0.14 150);
   --wz-warning: oklch(0.5 0.13 70);
   /* series colours for charts, in the order they are used */
-  --wz-chart-1: oklch(0.6 0.2 257);
-  --wz-chart-2: oklch(0.7 0.17 155);
+  --wz-chart-1: #ee1c4d;
+  --wz-chart-2: oklch(0.55 0.19 320);
   --wz-chart-3: oklch(0.75 0.16 65);
-  --wz-chart-4: oklch(0.6 0.22 300);
-  --wz-chart-5: oklch(0.66 0.22 5);
+  --wz-chart-4: oklch(0.7 0.14 190);
+  --wz-chart-5: oklch(0.6 0.2 257);
   --wz-radius: 0.875rem;
   /* a quick rise with a little overshoot; most of the travel is in the first quarter */
   --wz-spring: linear(
@@ -131,21 +132,21 @@
 }
 
 .dark {
-  --wz-background: oklch(0 0 0);
-  --wz-background-dimmed: oklch(0.22 0.005 286);
-  --wz-foreground: oklch(0.985 0 0);
-  --wz-foreground-dimmed: oklch(0.7 0.01 286);
-  /* dark enough for white text on it, light enough to read as text on black */
-  --wz-primary: oklch(0.575 0.21 258);
-  --wz-primary-dimmed: oklch(0.63 0.2 257);
+  --wz-background: #14021a;
+  --wz-background-dimmed: #270a30;
+  --wz-foreground: #f7f6f4;
+  --wz-foreground-dimmed: oklch(0.76 0.035 325);
+  --wz-primary: #ee1c4d;
+  --wz-primary-dimmed: #f4456d;
   --wz-primary-foreground: oklch(1 0 0);
-  --wz-accent: oklch(0.6 0.02 286 / 0.26);
-  --wz-border: oklch(0.7 0.02 286 / 0.3);
-  --wz-ring: oklch(0.66 0.19 256);
-  --wz-error: oklch(0.7 0.19 25);
+  --wz-accent: oklch(0.7 0.08 325 / 0.2);
+  --wz-border: oklch(0.75 0.07 325 / 0.26);
+  --wz-ring: #f4456d;
+  --wz-error: oklch(0.72 0.17 45);
   --wz-error-foreground: oklch(0.15 0 0);
   --wz-success: oklch(0.78 0.16 150);
   --wz-warning: oklch(0.82 0.15 80);
+  --wz-chart-2: oklch(0.72 0.16 320);
   color-scheme: dark;
 }
 

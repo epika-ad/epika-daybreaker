@@ -427,15 +427,6 @@ export const components: readonly Entry[] = groups.flatMap(
   (group) => group.components,
 );
 
-export const featured = [
-  "dialog",
-  "select",
-  "tabs",
-  "switch",
-  "toast",
-  "menu",
-] as const;
-
 const modules = import.meta.glob<{ Example: ComponentType }>(
   "./examples/*.tsx",
   { eager: true },

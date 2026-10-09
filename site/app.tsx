@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   useTheme,
 } from "woozui";
-import { Component, Components, Docs, Home } from "./pages";
+import { Browse, Component, Components, Docs, Home } from "./pages";
 import { ContrastIcon, focus, GitHubIcon, Logo, pill } from "./parts";
 
 const repository = "https://github.com/wooz-05/woozui";
@@ -58,7 +58,7 @@ const Header = ({ route }: { route: string }) => (
     <div className="flex w-full max-w-3xl items-center justify-between gap-2">
       <a
         href="#/"
-        aria-label="woozui home"
+        aria-label="Epika UI home"
         className={cn(
           pill,
           "flex h-11 items-center gap-2 px-3 font-semibold tracking-tight sm:pr-4",
@@ -66,7 +66,7 @@ const Header = ({ route }: { route: string }) => (
         )}
       >
         <Logo />
-        <span className="hidden sm:inline">woozui</span>
+        <span className="hidden sm:inline">Epika UI</span>
       </a>
       <nav
         aria-label="Main"
@@ -91,7 +91,7 @@ const Header = ({ route }: { route: string }) => (
           href={repository}
           target="_blank"
           rel="noreferrer"
-          aria-label="woozui on GitHub"
+          aria-label="Epika UI on GitHub"
           className={cn(
             pill,
             // dropped on phones, where the bar has no room for it
@@ -107,18 +107,27 @@ const Header = ({ route }: { route: string }) => (
   </header>
 );
 
-const Page = ({ route }: { route: string }) => {
+const Reference = ({ route }: { route: string }) => {
   switch (true) {
-    case route === "/components":
-      return <Components />;
     case route.startsWith("/components/"):
       return <Component slug={route.replace("/components/", "")} />;
     case route === "/docs":
       return <Docs />;
     default:
-      return <Home />;
+      return <Components />;
   }
 };
+
+const Page = ({ route }: { route: string }) =>
+  // the docs and every component page share one sidebar, which stays mounted
+  // between them so it keeps its scroll position
+  route === "/docs" || route.startsWith("/components") ? (
+    <Browse route={route}>
+      <Reference route={route} />
+    </Browse>
+  ) : (
+    <Home />
+  );
 
 const Shell = () => {
   const route = useRoute();

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ToastProvider, TooltipProvider } from "woozui";
 import { App } from "./app";
@@ -36,7 +36,7 @@ describe("thumbnails", () => {
 
 describe("site", () => {
   it.each([
-    ["#/", "Solid components, styled your way."],
+    ["#/", "The foundation for every Epika interface."],
     ["#/components", `${components.length} components, ready to use`],
     ["#/components/dialog", "Dialog"],
     ["#/docs", "Get started"],
@@ -49,5 +49,36 @@ describe("site", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: heading }),
     ).toBeVisible();
+  });
+  it("offers the code to copy instead of printing it", () => {
+    window.location.hash = "#/components/dialog";
+    window.scrollTo = () => {};
+
+    const { container } = render(<App />);
+
+    expect(screen.getByRole("button", { name: "Copy code" })).toBeVisible();
+    expect(
+      screen.getByRole("button", { name: "Copy for agents" }),
+    ).toBeVisible();
+    expect(container.querySelector("pre")).toBeNull();
+  });
+
+  it("lists every component in the sidebar and marks the current one", () => {
+    window.location.hash = "#/components/dialog";
+    window.scrollTo = () => {};
+
+    render(<App />);
+
+    const sidebar = screen.getByRole("complementary", {
+      name: "Documentation",
+    });
+    for (const entry of components) {
+      expect(
+        within(sidebar).getByRole("link", { name: entry.name }),
+      ).toHaveAttribute("href", `#/components/${entry.slug}`);
+    }
+    expect(
+      within(sidebar).getByRole("link", { current: "page" }),
+    ).toHaveTextContent("Dialog");
   });
 });

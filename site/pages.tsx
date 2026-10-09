@@ -1,86 +1,96 @@
-import { cn } from "woozui";
+import { type ReactNode, useEffect, useRef } from "react";
 import {
+  cn,
+  Sidebar,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarItem,
+} from "woozui";
+import { Landing } from "./landing";
+import {
+  AgentMenu,
   ArrowLeftIcon,
   ArrowUpRightIcon,
   CodeBlock,
-  CopyButton,
+  CopyAction,
   focus,
   PreviewCard,
-  pill,
   SectionTitle,
   Stage,
 } from "./parts";
-import { components, example, featured, groups } from "./registry";
+import { components, type Entry, example, groups } from "./registry";
 
 const install = "npm install woozui";
 
-const brandButton = cn(
-  "inline-flex h-12 items-center rounded-2xl bg-brand-solid px-6 font-semibold text-black text-sm transition-[filter] hover:brightness-95",
-  focus,
-);
+export const Home = () => <Landing />;
 
-export const Home = () => (
-  <>
-    <section className="relative flex min-h-[calc(100svh-6rem)] flex-col items-center justify-center overflow-hidden px-4 py-24 text-center">
-      <div
-        aria-hidden="true"
-        className="-translate-x-1/2 pointer-events-none absolute -translate-y-1/2 top-1/2 left-1/2 size-[44rem] max-w-none rounded-full bg-brand-solid/15 blur-[140px]"
-      />
-      <span
-        className={cn(
-          pill,
-          "relative px-4 py-1.5 font-medium text-foreground-dimmed text-xs uppercase tracking-widest",
-        )}
+const sections = [
+  { href: "#/docs", route: "/docs", label: "Introduction" },
+  { href: "#/components", route: "/components", label: "Components" },
+] as const;
+
+/** The docs and component pages, beside a sidebar that lists all of them. */
+export const Browse = ({ route, children }: Browse.Props) => {
+  const panel = useRef<HTMLElement>(null);
+
+  // bring the current page's item into view when it is scrolled out of sight,
+  // e.g. on a direct link or after following "next"
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs again whenever the route changes
+  useEffect(() => {
+    const list = panel.current;
+    const item = list?.querySelector<HTMLElement>("[aria-current]");
+    if (!list || !item) return;
+    const hidden =
+      item.offsetTop < list.scrollTop ||
+      item.offsetTop + item.offsetHeight > list.scrollTop + list.clientHeight;
+    if (hidden) list.scrollTop = item.offsetTop - list.clientHeight / 2;
+  }, [route]);
+
+  return (
+    <div className="mx-auto flex w-full max-w-[90rem] items-start gap-6 px-4">
+      <Sidebar
+        ref={panel}
+        aria-label="Documentation"
+        className="sticky top-24 mt-10 hidden max-h-[calc(100svh-7rem)] w-60 shrink-0 gap-6 overflow-y-auto overscroll-contain bg-transparent lg:flex"
       >
-        Free and open source
-      </span>
-      <h1 className="relative mt-8 max-w-4xl text-balance font-bold text-5xl leading-[0.95] tracking-tighter sm:text-7xl">
-        Solid components, styled your way.
-      </h1>
-      <p className="relative mt-6 max-w-xl text-pretty text-foreground-dimmed text-lg">
-        woozui is a React component library built on Tailwind CSS.{" "}
-        {components.length} accessible components, one small set of tokens to
-        make them yours.
-      </p>
-      <div className="relative mt-10 flex flex-wrap items-center justify-center gap-3">
-        <div className="flex h-12 items-center gap-3 rounded-2xl border border-border bg-background-dimmed pr-2 pl-5 font-mono text-sm">
-          {install}
-          <CopyButton text={install} />
-        </div>
-        <a href="#/components" className={brandButton}>
-          Browse components
-        </a>
-      </div>
-    </section>
-
-    <section className="mx-auto w-full max-w-6xl px-4 pb-24">
-      <div className="flex items-end justify-between gap-4">
-        <SectionTitle count={featured.length}>Featured</SectionTitle>
-        <a
-          href="#/components"
-          className={cn(
-            "flex items-center gap-1 rounded-md font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground",
-            focus,
-          )}
-        >
-          View all {components.length}
-          <ArrowUpRightIcon />
-        </a>
-      </div>
-      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {components
-          .filter((entry) => featured.some((slug) => slug === entry.slug))
-          .map((entry) => (
-            <PreviewCard key={entry.slug} entry={entry} />
+        <SidebarGroup>
+          <SidebarGroupLabel>Sections</SidebarGroupLabel>
+          {sections.map((section) => (
+            <SidebarItem
+              key={section.href}
+              href={section.href}
+              current={section.route === route}
+            >
+              {section.label}
+            </SidebarItem>
           ))}
-      </div>
-    </section>
-  </>
-);
+        </SidebarGroup>
+        {groups.map((group) => (
+          <SidebarGroup key={group.name}>
+            <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
+            {group.components.map((entry) => (
+              <SidebarItem
+                key={entry.slug}
+                href={`#/components/${entry.slug}`}
+                current={route === `/components/${entry.slug}`}
+              >
+                {entry.name}
+              </SidebarItem>
+            ))}
+          </SidebarGroup>
+        ))}
+      </Sidebar>
+      <div className="min-w-0 flex-1">{children}</div>
+    </div>
+  );
+};
+export namespace Browse {
+  export type Props = { route: string; children: ReactNode };
+}
 
 export const Components = () => (
-  <div className="mx-auto w-full max-w-6xl px-4 pb-24">
-    <header className="mx-auto max-w-2xl py-20 text-center">
+  <div className="mx-auto w-full max-w-6xl pb-24">
+    <header className="max-w-2xl py-14">
       <h1 className="text-balance font-bold text-4xl tracking-tighter sm:text-5xl">
         {components.length} components, ready to use
       </h1>
@@ -94,7 +104,7 @@ export const Components = () => (
           <SectionTitle count={group.components.length}>
             {group.name}
           </SectionTitle>
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {group.components.map((entry) => (
               <PreviewCard key={entry.slug} entry={entry} />
             ))}
@@ -104,6 +114,16 @@ export const Components = () => (
     </div>
   </div>
 );
+
+// a component's page as an agent wants it: plain Markdown, code included
+const markdown = (entry: Entry, source: string) =>
+  [
+    `# ${entry.name}`,
+    entry.description,
+    `Part of Epika UI, a React component library styled with Tailwind CSS. Install it with \`${install}\`.`,
+    "## Example",
+    `\`\`\`tsx\n${source}\n\`\`\``,
+  ].join("\n\n");
 
 export const Component = ({ slug }: { slug: string }) => {
   const index = components.findIndex((entry) => entry.slug === slug);
@@ -119,24 +139,26 @@ export const Component = ({ slug }: { slug: string }) => {
   );
 
   return (
-    <article className="mx-auto w-full max-w-3xl px-4 pt-14 pb-24">
-      <a href="#/components" className={cn(link, "w-fit")}>
+    <article className="mx-auto w-full max-w-3xl pt-14 pb-24">
+      {/* the sidebar does this job once there is room for it */}
+      <a href="#/components" className={cn(link, "w-fit lg:hidden")}>
         <ArrowLeftIcon />
         Components
       </a>
-      <h1 className="mt-8 font-bold text-4xl tracking-tighter sm:text-5xl">
+      <h1 className="mt-8 font-bold text-4xl tracking-tighter sm:text-5xl lg:mt-0">
         {entry.name}
       </h1>
       <p className="mt-3 text-foreground-dimmed text-lg">{entry.description}</p>
+      <div className="mt-6 flex flex-wrap items-center gap-2">
+        <CopyAction text={found.source}>Copy code</CopyAction>
+        <AgentMenu name={entry.name} markdown={markdown(entry, found.source)} />
+      </div>
 
       <div className="mt-10">
         <Stage className="min-h-96">
           <found.Example />
         </Stage>
       </div>
-
-      <h2 className="mt-12 font-semibold text-xl tracking-tight">Code</h2>
-      <CodeBlock code={found.source} className="mt-4" />
 
       <nav
         aria-label="More components"
@@ -195,7 +217,7 @@ const steps = [
 ] as const;
 
 export const Docs = () => (
-  <article className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
+  <article className="mx-auto w-full max-w-3xl pt-14 pb-24">
     <h1 className="font-bold text-4xl tracking-tighter sm:text-5xl">
       Get started
     </h1>

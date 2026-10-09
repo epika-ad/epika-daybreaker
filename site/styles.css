@@ -2,19 +2,10 @@
 @import "../src/styles/theme.css";
 @source "../src";
 
-/* Site-only tokens: the brand accent is not part of the library. */
-:root {
-  --site-brand: oklch(0.52 0.16 135);
-  --site-brand-solid: oklch(0.89 0.21 125);
-}
-
-.dark {
-  --site-brand: oklch(0.89 0.21 125);
-}
-
 @theme inline {
-  --color-brand: var(--site-brand);
-  --color-brand-solid: var(--site-brand-solid);
+  /* the site accent is the library's own primary: Epika red */
+  --color-brand: var(--wz-primary);
+  --color-brand-solid: var(--wz-primary);
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
 }
