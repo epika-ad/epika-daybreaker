@@ -15,6 +15,9 @@ import {
 
 type Sort<Row> = { key: keyof Row & string; descending: boolean } | null;
 
+// a missing field is an empty cell, not the word "null" or "undefined"
+const text = (value: unknown) => (value == null ? "" : String(value));
+
 /**
  * A table that sorts, filters and paginates rows it is given. For anything
  * server-driven, compose `Table` yourself.
@@ -36,7 +39,7 @@ export const DataTable = <Row extends Record<string, unknown>>({
   const matching = needle
     ? rows.filter((row) =>
         columns.some((column) =>
-          String(row[column.key]).toLowerCase().includes(needle),
+          text(row[column.key]).toLowerCase().includes(needle),
         ),
       )
     : rows;
@@ -46,13 +49,15 @@ export const DataTable = <Row extends Record<string, unknown>>({
         const order =
           typeof x === "number" && typeof y === "number"
             ? x - y
-            : String(x).localeCompare(String(y), undefined, { numeric: true });
+            : text(x).localeCompare(text(y), undefined, { numeric: true });
         return sort.descending ? -order : order;
       })
     : matching;
-  const count = Math.max(1, Math.ceil(sorted.length / pageSize));
+  // a page holds at least one row, whatever was passed
+  const size = Math.max(1, Math.floor(pageSize) || 1);
+  const count = Math.max(1, Math.ceil(sorted.length / size));
   const current = Math.min(page, count);
-  const visible = sorted.slice((current - 1) * pageSize, current * pageSize);
+  const visible = sorted.slice((current - 1) * size, current * size);
 
   return (
     <div className={cn("grid w-full gap-3", className)}>
@@ -134,7 +139,7 @@ export const DataTable = <Row extends Record<string, unknown>>({
                     column.align === "right" && "text-right tabular-nums",
                   )}
                 >
-                  {column.cell ? column.cell(row) : String(row[column.key])}
+                  {column.cell ? column.cell(row) : text(row[column.key])}
                 </TableCell>
               ))}
             </TableRow>

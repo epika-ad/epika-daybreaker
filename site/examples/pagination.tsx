@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Pagination } from "daybreaker";
+import { useState } from "react";
 
 export const Example = () => {
   const [page, setPage] = useState(4);

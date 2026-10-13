@@ -39,7 +39,8 @@ export const Alert = ({
 
   return (
     <div
-      role="alert"
+      // only problems interrupt a screen reader; the rest wait their turn
+      role={variant === "error" || variant === "warning" ? "alert" : "status"}
       className={cn(alertVariants({ variant }), className)}
       {...props}
     >

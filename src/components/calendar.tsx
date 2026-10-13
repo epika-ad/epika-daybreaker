@@ -26,6 +26,22 @@ const weeks = (month: Date) => {
   );
 };
 
+const sameMonth = (a: Date, b: Date) =>
+  a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+
+// the same day some months away, or that month's last day when it is shorter:
+// setMonth alone would spill January 31 over into March
+const shift = (date: Date, months: number) => {
+  const target = new Date(date.getFullYear(), date.getMonth() + months, 1);
+  const last = new Date(
+    target.getFullYear(),
+    target.getMonth() + 1,
+    0,
+  ).getDate();
+  target.setDate(Math.min(date.getDate(), last));
+  return target;
+};
+
 const step =
   "flex size-8 cursor-pointer items-center justify-center rounded-full text-foreground-dimmed transition-[scale,background-color,color] duration-400 ease-spring hover:bg-accent hover:text-foreground active:scale-85";
 
@@ -48,6 +64,20 @@ export const Calendar = ({
 
   // the grid is one tab stop: arrow keys move a roving focus between days
   const [active, setActive] = useState(() => selected ?? new Date());
+
+  // a controlled value that moves to another month brings the grid with it
+  const [seen, setSeen] = useState(value);
+  if (value !== seen) {
+    setSeen(value);
+    if (value && !sameDay(seen, value)) {
+      setActive(value);
+      if (!sameMonth(value, month)) {
+        setDirection(value < month ? -1 : 1);
+        setMonth(new Date(value.getFullYear(), value.getMonth(), 1));
+      }
+    }
+  }
+
   const stop = days.some((day) => sameDay(active, day))
     ? active
     : new Date(month.getFullYear(), month.getMonth(), 1);
@@ -65,7 +95,7 @@ export const Calendar = ({
   };
 
   const navigate = (event: KeyboardEvent<HTMLDivElement>) => {
-    const next = new Date(stop);
+    let next = new Date(stop);
     const weekday = (stop.getDay() + 6) % 7;
     if (event.key === "ArrowLeft") next.setDate(stop.getDate() - 1);
     else if (event.key === "ArrowRight") next.setDate(stop.getDate() + 1);
@@ -73,8 +103,8 @@ export const Calendar = ({
     else if (event.key === "ArrowDown") next.setDate(stop.getDate() + 7);
     else if (event.key === "Home") next.setDate(stop.getDate() - weekday);
     else if (event.key === "End") next.setDate(stop.getDate() + 6 - weekday);
-    else if (event.key === "PageUp") next.setMonth(stop.getMonth() - 1);
-    else if (event.key === "PageDown") next.setMonth(stop.getMonth() + 1);
+    else if (event.key === "PageUp") next = shift(stop, -1);
+    else if (event.key === "PageDown") next = shift(stop, 1);
     else return;
     event.preventDefault();
     setActive(next);

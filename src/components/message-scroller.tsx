@@ -20,6 +20,8 @@ export const MessageScroller = ({
   const viewport = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
   const following = useRef(true);
+  // where the last scroll event left the viewport, to tell which way it moved
+  const top = useRef(0);
   const [away, setAway] = useState(false);
 
   // content growing (a new message, or one still streaming) keeps the end in
@@ -52,7 +54,13 @@ export const MessageScroller = ({
         )}
         onScroll={(event) => {
           const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-          following.current = scrollHeight - scrollTop - clientHeight < slack;
+          // only scrolling up means the reader left: the smooth scroll that
+          // follows a tall new message also passes through "not at the end",
+          // and must not be mistaken for that
+          if (scrollHeight - scrollTop - clientHeight < slack)
+            following.current = true;
+          else if (scrollTop < top.current) following.current = false;
+          top.current = scrollTop;
           setAway(!following.current);
         }}
       >

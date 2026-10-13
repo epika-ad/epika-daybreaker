@@ -54,17 +54,31 @@ export const NavbarLink = ({
   current = false,
   className,
   ...props
-}: NavbarLink.Props) => (
-  <a
-    aria-current={current ? "page" : undefined}
-    className={cn(
-      "rounded-full px-3.5 py-1.5 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground aria-[current]:text-foreground",
-      focusRing,
-      className,
-    )}
-    {...props}
-  />
-);
+}: NavbarLink.Props) => {
+  // an anchor without an href cannot be reached by keyboard, so a link that
+  // only has a click handler is exposed as a button
+  const action = props.href === undefined;
+  return (
+    <a
+      {...(action && {
+        role: "button",
+        tabIndex: 0,
+        onKeyDown: (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          event.currentTarget.click();
+        },
+      })}
+      aria-current={current ? "page" : undefined}
+      className={cn(
+        "cursor-pointer rounded-full px-3.5 py-1.5 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground aria-[current]:text-foreground",
+        focusRing,
+        className,
+      )}
+      {...props}
+    />
+  );
+};
 export namespace NavbarLink {
   export type Props = ComponentProps<"a"> & {
     /** Marks the link for the page being viewed. */

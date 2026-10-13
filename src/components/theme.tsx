@@ -1,7 +1,7 @@
 import {
   type PropsWithChildren,
   useCallback,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from "react";
@@ -30,13 +30,14 @@ export const ThemeProvider = ({
 }: ThemeProvider.Props) => {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 
-  useEffect(() => {
+  // both run before the first paint, so a saved theme never flashes the default
+  useLayoutEffect(() => {
     // storage can throw in private mode or when blocked; fall back to the default
     const stored = resultify(() => window.localStorage.getItem(storageKey));
     if (stored.success && isTheme(stored.data)) setTheme(stored.data);
   }, [storageKey]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
     const apply = () =>
       document.documentElement.classList.toggle(

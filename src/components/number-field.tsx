@@ -20,7 +20,8 @@ export const NumberField = ({
   // the new number rolls in from below when the value rises and from above
   // when it falls; the input itself moves, so its text is never repainted
   const roll = (value: number | null, typed: boolean) => {
-    const from = previous.current;
+    // a controlled value may have been changed from outside since the last roll
+    const from = props.value !== undefined ? props.value : previous.current;
     previous.current = value;
     const element = input.current;
     // typing is left alone: the digits should not jump under the caret

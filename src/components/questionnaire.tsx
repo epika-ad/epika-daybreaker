@@ -1,4 +1,10 @@
-import { type FormEvent, type ReactNode, useState } from "react";
+import {
+  type FormEvent,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { CheckIcon } from "../icons";
 import { cn } from "../utils";
 import { focusRing } from "../utils/styles";
@@ -23,10 +29,22 @@ export const Questionnaire = ({
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
   const [error, setError] = useState(false);
 
+  // a new question takes focus, so keyboard and screen reader users land on
+  // it instead of staying on the button they pressed
+  const question = useRef<HTMLFieldSetElement>(null);
+  const moved = useRef(false);
+  useEffect(() => {
+    if (!moved.current) return;
+    moved.current = false;
+    question.current?.querySelector("input")?.focus();
+  });
+
   const item = items[step];
   if (!item) return null;
   const answer = answers[item.name];
   const picked = Array.isArray(answer) ? answer : answer ? [answer] : [];
+  // typed answers made only of spaces do not count
+  const blank = Array.isArray(answer) ? answer.length === 0 : !answer?.trim();
   const last = step === items.length - 1;
 
   const set = (value: Answer) => {
@@ -37,10 +55,11 @@ export const Questionnaire = ({
     setDirection(to > step ? 1 : -1);
     setError(false);
     setStep(to);
+    moved.current = true;
   };
   const advance = (event: FormEvent) => {
     event.preventDefault();
-    if (item.required && picked.length === 0) return setError(true);
+    if (item.required && blank) return setError(true);
     if (last) onSubmit(answers);
     else go(step + 1);
   };
@@ -72,6 +91,7 @@ export const Questionnaire = ({
         <fieldset
           // remounting on a new question replays the slide
           key={item.name}
+          ref={question}
           className={cn(
             "flex min-w-0 flex-col gap-3 motion-reduce:animate-none",
             direction > 0
@@ -136,7 +156,7 @@ export const Questionnaire = ({
           )}
           {error && (
             <p role="alert" className="text-error text-sm">
-              Choose an answer to continue.
+              {item.choices ? "Choose" : "Enter"} an answer to continue.
             </p>
           )}
         </fieldset>

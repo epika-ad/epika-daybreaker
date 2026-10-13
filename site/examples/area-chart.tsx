@@ -1,5 +1,3 @@
-import type { ComponentProps, ReactNode } from "react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -8,6 +6,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "daybreaker/charts";
+import type { ComponentProps, ReactNode } from "react";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 const data = [
   { month: "Jan", desktop: 186, mobile: 80 },

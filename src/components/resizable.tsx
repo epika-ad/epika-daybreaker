@@ -28,19 +28,29 @@ export const Resizable = ({
   const [first, second] = Children.toArray(children);
   const horizontal = direction === "horizontal";
   const clamp = (value: number) => Math.min(max, Math.max(min, value));
+  // read right to left, the first panel is the one on the right
+  const mirrored = () =>
+    horizontal &&
+    !!root.current &&
+    getComputedStyle(root.current).direction === "rtl";
 
   const drag = (event: PointerEvent<HTMLDivElement>) => {
     if (!dragging || !root.current) return;
     const box = root.current.getBoundingClientRect();
-    const share = horizontal
-      ? (event.clientX - box.left) / box.width
-      : (event.clientY - box.top) / box.height;
+    const share = !horizontal
+      ? (event.clientY - box.top) / box.height
+      : mirrored()
+        ? (box.right - event.clientX) / box.width
+        : (event.clientX - box.left) / box.width;
     setSize(clamp(share * 100));
   };
 
   const nudge = (event: KeyboardEvent<HTMLDivElement>) => {
-    const back = horizontal ? "ArrowLeft" : "ArrowUp";
-    const forward = horizontal ? "ArrowRight" : "ArrowDown";
+    const [left, right] = mirrored()
+      ? ["ArrowRight", "ArrowLeft"]
+      : ["ArrowLeft", "ArrowRight"];
+    const back = horizontal ? left : "ArrowUp";
+    const forward = horizontal ? right : "ArrowDown";
     if (event.key !== back && event.key !== forward) return;
     event.preventDefault();
     setSize((current) => clamp(current + (event.key === forward ? 5 : -5)));

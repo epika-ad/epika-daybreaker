@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -9,12 +9,17 @@ import {
   Alert,
   AlertTitle,
   Button,
+  Calendar,
+  Chart,
   Checkbox,
+  DataTable,
   Dialog,
   DialogDescription,
   DialogPopup,
   DialogTitle,
   DialogTrigger,
+  NavbarLink,
+  Questionnaire,
   Slider,
   Switch,
   Tab,
@@ -236,5 +241,177 @@ describe("ThemeProvider", () => {
     expect(() => render(<Toggle />)).toThrow(
       "useTheme must be used within a ThemeProvider",
     );
+  });
+});
+
+describe("Calendar", () => {
+  const heading = () => screen.getByText(/ 2026$/).textContent;
+
+  it("pages from the 31st into a shorter month without skipping it", () => {
+    render(<Calendar defaultValue={new Date(2026, 0, 31)} locale="en-US" />);
+
+    const day = screen.getByRole("button", { name: /January 31, 2026/ });
+    fireEvent.keyDown(day, { key: "PageDown" });
+
+    expect(heading()).toBe("February 2026");
+    expect(
+      screen.getByRole("button", { name: /February 28, 2026/ }),
+    ).toHaveAttribute("tabindex", "0");
+  });
+
+  it("pages back from the 31st to the month before", () => {
+    render(<Calendar defaultValue={new Date(2026, 2, 31)} locale="en-US" />);
+
+    const day = screen.getByRole("button", { name: /March 31, 2026/ });
+    fireEvent.keyDown(day, { key: "PageUp" });
+
+    expect(heading()).toBe("February 2026");
+  });
+
+  it("shows the month of a controlled value that changes", () => {
+    const { rerender } = render(
+      <Calendar value={new Date(2026, 0, 10)} locale="en-US" />,
+    );
+
+    rerender(<Calendar value={new Date(2026, 5, 10)} locale="en-US" />);
+
+    expect(heading()).toBe("June 2026");
+  });
+});
+
+describe("DataTable", () => {
+  type Row = { id: string; name: string; owner?: string | null };
+  const rows: Row[] = [
+    { id: "1", name: "Alpha", owner: null },
+    { id: "2", name: "Beta" },
+    { id: "3", name: "Gamma", owner: "Ana" },
+  ];
+  const table = (pageSize?: number) => (
+    <DataTable
+      rows={rows}
+      rowKey={(row) => row.id}
+      pageSize={pageSize}
+      columns={[
+        { key: "name", header: "Name" },
+        { key: "owner", header: "Owner" },
+      ]}
+    />
+  );
+  const cells = () =>
+    screen.getAllByRole("cell").map((cell) => cell.textContent);
+
+  it("leaves a missing value empty and out of the filter", () => {
+    render(table());
+
+    expect(cells()).toEqual(["Alpha", "", "Beta", "", "Gamma", "Ana"]);
+
+    fireEvent.change(screen.getByLabelText("Filter rows"), {
+      target: { value: "undef" },
+    });
+
+    expect(cells()).toEqual(["No results"]);
+  });
+
+  it("shows a row per page when the page size is zero", () => {
+    render(table(0));
+
+    expect(cells()).toEqual(["Alpha", ""]);
+  });
+});
+
+describe("Chart", () => {
+  it("draws repeated labels and values below zero without complaint", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const { container } = render(
+      <Chart
+        data={[
+          { label: "Mon", value: 4 },
+          { label: "Mon", value: -2 },
+        ]}
+      />,
+    );
+
+    expect(error).not.toHaveBeenCalled();
+    expect(
+      [...container.querySelectorAll<HTMLElement>(".animate-grow")].map(
+        (bar) => bar.style.height,
+      ),
+    ).toEqual(["100%", "0%"]);
+    error.mockRestore();
+  });
+});
+
+describe("Questionnaire", () => {
+  it("does not take spaces as a required answer", async () => {
+    const submit = vi.fn();
+    render(
+      <Questionnaire
+        items={[{ name: "why", title: "Why?", required: true }]}
+        onSubmit={submit}
+      />,
+    );
+
+    await userEvent.type(screen.getByLabelText("Why?"), "   ");
+    await userEvent.click(screen.getByRole("button", { name: "Submit" }));
+
+    expect(submit).not.toHaveBeenCalled();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Enter an answer to continue.",
+    );
+  });
+
+  it("moves focus to the next question", async () => {
+    render(
+      <Questionnaire
+        items={[
+          { name: "a", title: "First" },
+          { name: "b", title: "Second" },
+        ]}
+        onSubmit={() => {}}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
+
+    expect(screen.getByLabelText("Second")).toHaveFocus();
+  });
+});
+
+describe("Alert roles", () => {
+  it("lets a notice that is not a problem wait its turn", () => {
+    render(
+      <Alert variant="success">
+        <AlertTitle>Saved</AlertTitle>
+      </Alert>,
+    );
+
+    expect(screen.getByRole("status")).toHaveTextContent("Saved");
+  });
+});
+
+describe("NavbarLink", () => {
+  it("works from the keyboard when it has no href", async () => {
+    const click = vi.fn();
+    render(<NavbarLink onClick={click}>Pricing</NavbarLink>);
+
+    await userEvent.tab();
+    await userEvent.keyboard("{Enter}");
+
+    expect(screen.getByRole("button", { name: "Pricing" })).toHaveFocus();
+    expect(click).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Slider range", () => {
+  it("names each thumb of a range", () => {
+    render(<Slider aria-label="Price" defaultValue={[20, 80]} />);
+
+    expect(
+      screen.getByRole("slider", { name: "Price, minimum" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("slider", { name: "Price, maximum" }),
+    ).toBeVisible();
   });
 });

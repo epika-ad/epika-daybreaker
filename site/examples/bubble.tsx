@@ -1,4 +1,9 @@
-import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from "daybreaker";
+import {
+  Bubble,
+  BubbleContent,
+  BubbleGroup,
+  BubbleReactions,
+} from "daybreaker";
 
 const variants = [
   "default",

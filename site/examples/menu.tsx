@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Button,
   CopyIcon,
@@ -16,6 +15,7 @@ import {
   ShareIcon,
   TrashIcon,
 } from "daybreaker";
+import { useState } from "react";
 
 const countries = [
   { code: "al", name: "Albania" },

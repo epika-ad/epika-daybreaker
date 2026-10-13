@@ -1,11 +1,3 @@
-import type { ComponentProps, ReactNode } from "react";
-import {
-  LabelList,
-  PolarAngleAxis,
-  PolarGrid,
-  RadialBar,
-  RadialBarChart,
-} from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -14,6 +6,14 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "daybreaker/charts";
+import type { ComponentProps, ReactNode } from "react";
+import {
+  LabelList,
+  PolarAngleAxis,
+  PolarGrid,
+  RadialBar,
+  RadialBarChart,
+} from "recharts";
 
 const data = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },

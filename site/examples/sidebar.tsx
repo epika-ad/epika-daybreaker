@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   BellIcon,
   HomeIcon,
@@ -10,6 +9,7 @@ import {
   SidebarItem,
   UserIcon,
 } from "daybreaker";
+import { useState } from "react";
 
 const workspace = [
   { name: "Home", icon: HomeIcon },

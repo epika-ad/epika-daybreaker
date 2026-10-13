@@ -1,3 +1,11 @@
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "daybreaker/charts";
 import type { ComponentProps, ReactNode } from "react";
 import {
   CartesianGrid,
@@ -7,14 +15,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import {
-  type ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "daybreaker/charts";
 
 const data = [
   { month: "Jan", desktop: 186, mobile: 80 },

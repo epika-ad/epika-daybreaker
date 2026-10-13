@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Bubble,
   BubbleContent,
@@ -7,6 +6,7 @@ import {
   MarkerContent,
   MessageScroller,
 } from "daybreaker";
+import { useState } from "react";
 
 const replies = [
   "On it.",

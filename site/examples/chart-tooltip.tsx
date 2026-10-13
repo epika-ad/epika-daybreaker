@@ -1,5 +1,3 @@
-import type { ReactElement, ReactNode } from "react";
-import { Bar, BarChart, XAxis } from "recharts";
 import { BellIcon, UserIcon } from "daybreaker";
 import {
   type ChartConfig,
@@ -7,6 +5,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "daybreaker/charts";
+import type { ReactElement, ReactNode } from "react";
+import { Bar, BarChart, XAxis } from "recharts";
 
 const data = [
   { day: "Mon", running: 450, swimming: 300 },

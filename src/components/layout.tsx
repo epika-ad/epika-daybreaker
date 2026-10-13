@@ -34,7 +34,7 @@ export const ButtonGroup = ({ className, ...props }: ButtonGroup.Props) => (
   <div
     role="group"
     className={cn(
-      "inline-flex w-fit *:not-first:-ml-px *:not-first:rounded-l-none *:not-last:rounded-r-none *:hover:scale-100 *:focus-visible:z-1 *:active:scale-100",
+      "inline-flex w-fit *:not-first:-ms-px *:not-first:rounded-s-none *:not-last:rounded-e-none *:hover:scale-100 *:focus-visible:z-1 *:active:scale-100",
       className,
     )}
     {...props}

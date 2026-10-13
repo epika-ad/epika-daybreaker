@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Button,
   DirectionProvider,
@@ -9,6 +8,7 @@ import {
   TabsList,
   TabsPanel,
 } from "daybreaker";
+import { useState } from "react";
 
 export const Example = () => {
   const [direction, setDirection] = useState<"ltr" | "rtl">("rtl");

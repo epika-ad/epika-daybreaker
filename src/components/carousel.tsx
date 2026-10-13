@@ -3,8 +3,10 @@ import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
 import { type ClassList, cn } from "../utils";
 import { focusRing } from "../utils/styles";
 
+// at either end an arrow fades out but stays focusable: disabling it would
+// drop the focus of someone who had just pressed it
 const arrow =
-  "absolute top-1/2 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-border bg-background-dimmed/75 text-foreground backdrop-blur-xl transition-[scale,opacity] duration-400 ease-spring active:scale-85 disabled:pointer-events-none disabled:opacity-0";
+  "absolute top-1/2 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-border bg-background-dimmed/75 text-foreground backdrop-blur-xl transition-[scale,opacity] duration-400 ease-spring active:scale-85 aria-disabled:pointer-events-none aria-disabled:opacity-0 aria-disabled:focus-visible:opacity-40 rtl:[&>svg]:rotate-180";
 
 /** Slides you swipe or step through one at a time; each child is a slide. */
 export const Carousel = ({
@@ -17,11 +19,16 @@ export const Carousel = ({
   const [index, setIndex] = useState(0);
   const count = Children.count(children);
 
-  const go = (to: number) =>
-    track.current?.scrollTo({
-      left: to * track.current.clientWidth,
+  const go = (to: number) => {
+    const element = track.current;
+    if (!element || to < 0 || to > count - 1) return;
+    // right-to-left tracks scroll towards negative offsets
+    const sign = getComputedStyle(element).direction === "rtl" ? -1 : 1;
+    element.scrollTo({
+      left: sign * to * element.clientWidth,
       behavior: "smooth",
     });
+  };
 
   return (
     <section
@@ -39,7 +46,8 @@ export const Carousel = ({
         )}
         onScroll={(event) => {
           const { scrollLeft, clientWidth } = event.currentTarget;
-          setIndex(Math.round(scrollLeft / clientWidth));
+          // the offset is negative when the track runs right to left
+          setIndex(Math.round(Math.abs(scrollLeft) / clientWidth));
         }}
       >
         {Children.map(children, (slide) => (
@@ -56,8 +64,8 @@ export const Carousel = ({
       <button
         type="button"
         aria-label="Previous slide"
-        disabled={index === 0}
-        className={cn(arrow, focusRing, "left-2")}
+        aria-disabled={index === 0}
+        className={cn(arrow, focusRing, "start-2")}
         onClick={() => go(index - 1)}
       >
         <ChevronLeftIcon />
@@ -65,8 +73,8 @@ export const Carousel = ({
       <button
         type="button"
         aria-label="Next slide"
-        disabled={index >= count - 1}
-        className={cn(arrow, focusRing, "right-2")}
+        aria-disabled={index >= count - 1}
+        className={cn(arrow, focusRing, "end-2")}
         onClick={() => go(index + 1)}
       >
         <ChevronRightIcon />

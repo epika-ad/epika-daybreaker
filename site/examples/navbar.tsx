@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   BellIcon,
   Button,
@@ -9,6 +8,7 @@ import {
   NavbarLinks,
   SearchIcon,
 } from "daybreaker";
+import { useState } from "react";
 
 const links = ["Home", "Products", "Pricing", "Docs"] as const;
 

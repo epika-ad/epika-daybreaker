@@ -36,7 +36,16 @@ export const Slider = ({
             <SliderPrimitive.Thumb
               key={index}
               index={index}
-              aria-label={label}
+              // the thumbs of a range share the name, so each says which it is
+              aria-label={
+                label && thumbs.length > 1
+                  ? `${label}, ${
+                      thumbs.length === 2
+                        ? ["minimum", "maximum"][index]
+                        : `${index + 1} of ${thumbs.length}`
+                    }`
+                  : label
+              }
               className={cn(
                 "h-5 w-8 rounded-full border border-foreground-dimmed/40 bg-white transition-[scale] duration-400 ease-spring data-dragging:scale-125 has-focus-visible:ring-2 has-focus-visible:ring-ring has-focus-visible:ring-offset-2 has-focus-visible:ring-offset-background",
                 classList?.thumb,

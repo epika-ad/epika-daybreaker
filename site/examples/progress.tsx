@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { Progress } from "daybreaker";
+import { useEffect, useState } from "react";
 
 export const Example = () => {
   const [value, setValue] = useState(20);

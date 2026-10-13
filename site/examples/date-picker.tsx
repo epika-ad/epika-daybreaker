@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Button,
   Calendar,
@@ -7,6 +6,7 @@ import {
   PopoverPopup,
   PopoverTrigger,
 } from "daybreaker";
+import { useState } from "react";
 
 export const Example = () => {
   const [open, setOpen] = useState(false);

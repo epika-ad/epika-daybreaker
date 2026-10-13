@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Button,
   Command,
@@ -11,6 +10,7 @@ import {
   DialogTrigger,
   Kbd,
 } from "daybreaker";
+import { useState } from "react";
 
 type Action = { value: string; label: string; shortcut: string };
 

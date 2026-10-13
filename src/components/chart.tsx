@@ -14,10 +14,12 @@ export const Chart = ({
   ...props
 }: Chart.Props) => {
   const top = Math.max(...data.map((point) => point.value), 0) || 1;
+  // the plot starts at zero, so a value below it sits on the baseline
+  const share = (value: number) => (Math.max(0, value) / top) * 100;
   // line charts map values into a 100 × 100 box that is stretched to fit
   const points = data.map((point, index) => ({
     x: data.length > 1 ? (index / (data.length - 1)) * 100 : 50,
-    y: 100 - (point.value / top) * 100,
+    y: 100 - share(point.value),
   }));
   const line = points.map((point) => `${point.x},${point.y}`).join(" ");
 
@@ -32,7 +34,8 @@ export const Chart = ({
         >
           {data.map((point, index) => (
             <div
-              key={point.label}
+              // biome-ignore lint/suspicious/noArrayIndexKey: points are positional, and two may share a label
+              key={index}
               className="group relative flex h-full flex-1 items-end"
             >
               <div
@@ -42,7 +45,7 @@ export const Chart = ({
                 )}
                 // each bar starts a little after the one before it
                 style={{
-                  height: `${(point.value / top) * 100}%`,
+                  height: `${share(point.value)}%`,
                   animationDelay: `${index * 50}ms`,
                 }}
               />
@@ -86,9 +89,10 @@ export const Chart = ({
           classList?.labels,
         )}
       >
-        {data.map((point) => (
+        {data.map((point, index) => (
           <span
-            key={point.label}
+            // biome-ignore lint/suspicious/noArrayIndexKey: points are positional, and two may share a label
+            key={index}
             className={cn("truncate text-center", type === "bar" && "flex-1")}
           >
             {point.label}

@@ -1,11 +1,3 @@
-import type { ReactNode } from "react";
-import {
-  PolarAngleAxis,
-  PolarGrid,
-  PolarRadiusAxis,
-  Radar,
-  RadarChart,
-} from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -14,6 +6,14 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "daybreaker/charts";
+import type { ReactNode } from "react";
+import {
+  PolarAngleAxis,
+  PolarGrid,
+  PolarRadiusAxis,
+  Radar,
+  RadarChart,
+} from "recharts";
 
 const data = [
   { month: "Jan", desktop: 186, mobile: 160 },

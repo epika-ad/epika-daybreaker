@@ -10,7 +10,7 @@ export const InputGroup = ({ className, ...props }: InputGroup.Props) => (
     className={cn(
       "flex h-9 w-full items-center gap-2 rounded-control border border-transparent bg-accent px-3 transition-[background-color,border-color,box-shadow] duration-200 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30 has-disabled:opacity-50 has-aria-invalid:border-error",
       // the input inside gives up its own chrome to the group
-      "[&_input]:h-full [&_input]:min-w-0 [&_input]:flex-1 [&_input]:rounded-none [&_input]:border-0 [&_input]:bg-transparent [&_input]:px-0 [&_input]:ring-0 [&_input]:disabled:opacity-100",
+      "[&_input]:h-full [&_input]:min-w-0 [&_input]:flex-1 [&_input]:rounded-none [&_input]:border-0 [&_input]:bg-transparent [&_input]:px-0 [&_input]:ring-0 [&_input]:focus-visible:ring-0 [&_input]:disabled:opacity-100",
       className,
     )}
     {...props}

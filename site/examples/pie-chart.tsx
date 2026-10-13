@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-import { LabelList, Pie, PieChart } from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -8,6 +6,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "daybreaker/charts";
+import type { ReactNode } from "react";
+import { LabelList, Pie, PieChart } from "recharts";
 
 const data = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
