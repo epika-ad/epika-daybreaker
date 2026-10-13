@@ -9,7 +9,7 @@ import {
   MenuPopup,
   MenuTrigger,
   useToast,
-} from "woozui";
+} from "daybreaker";
 import { type Entry, example } from "./registry";
 import { Thumbnail } from "./thumbnails";
 

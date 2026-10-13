@@ -1,4 +1,4 @@
-// The charts entry point ("woozui/charts"). It is separate from the main entry
+// The charts entry point ("daybreaker/charts"). It is separate from the main entry
 // because it needs Recharts, which apps that draw no charts should not install.
 import {
   type ComponentProps,

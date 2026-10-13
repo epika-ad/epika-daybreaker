@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "woozui";
+import { Avatar, AvatarFallback, AvatarImage } from "daybreaker";
 
 const team = ["AL", "MV", "JK", "+3"] as const;
 

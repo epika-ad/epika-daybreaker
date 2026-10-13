@@ -1,4 +1,4 @@
-import { Tab, Tabs, TabsList, TabsPanel } from "woozui";
+import { Tab, Tabs, TabsList, TabsPanel } from "daybreaker";
 
 export const Example = () => (
   <Tabs defaultValue="account" className="w-64">

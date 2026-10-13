@@ -5,7 +5,7 @@ import {
   PopoverPopup,
   PopoverTitle,
   PopoverTrigger,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <Popover>

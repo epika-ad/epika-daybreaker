@@ -6,7 +6,7 @@ import {
   Popover,
   PopoverPopup,
   PopoverTrigger,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => {
   const [open, setOpen] = useState(false);

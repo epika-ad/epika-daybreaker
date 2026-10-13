@@ -1,4 +1,4 @@
-import { NativeSelect } from "woozui";
+import { NativeSelect } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-56 gap-3">

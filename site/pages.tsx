@@ -5,7 +5,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarItem,
-} from "woozui";
+} from "daybreaker";
 import { Landing } from "./landing";
 import {
   AgentMenu,
@@ -20,7 +20,7 @@ import {
 } from "./parts";
 import { components, type Entry, example, groups } from "./registry";
 
-const install = "npm install woozui";
+const install = "npm install daybreaker";
 
 export const Home = () => <Landing />;
 
@@ -192,17 +192,17 @@ const steps = [
   {
     title: "Add the styles",
     body: "If your app uses Tailwind CSS v4, import the theme after Tailwind. It registers the tokens and lets Tailwind find the classes the components use.",
-    code: '@import "tailwindcss";\n@import "woozui/theme.css";',
+    code: '@import "tailwindcss";\n@import "daybreaker/theme.css";',
   },
   {
     title: "No Tailwind?",
     body: "Import the precompiled stylesheet once, at the root of your app, instead.",
-    code: 'import "woozui/styles.css";',
+    code: 'import "daybreaker/styles.css";',
   },
   {
     title: "Add the providers",
     body: "Toasts and tooltips need their providers once, near the root.",
-    code: 'import { ToastProvider, TooltipProvider } from "woozui";\n\nexport const Providers = ({ children }) => (\n  <TooltipProvider>\n    <ToastProvider>{children}</ToastProvider>\n  </TooltipProvider>\n);',
+    code: 'import { ToastProvider, TooltipProvider } from "daybreaker";\n\nexport const Providers = ({ children }) => (\n  <TooltipProvider>\n    <ToastProvider>{children}</ToastProvider>\n  </TooltipProvider>\n);',
   },
   {
     title: "Make it yours",
@@ -212,7 +212,7 @@ const steps = [
   {
     title: "Dark mode",
     body: "Add the dark class to the html element, or let ThemeProvider manage it and read the choice with useTheme.",
-    code: 'import { ThemeProvider } from "woozui";\n\n<ThemeProvider defaultTheme="system">{children}</ThemeProvider>',
+    code: 'import { ThemeProvider } from "daybreaker";\n\n<ThemeProvider defaultTheme="system">{children}</ThemeProvider>',
   },
 ] as const;
 

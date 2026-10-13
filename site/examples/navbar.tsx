@@ -8,7 +8,7 @@ import {
   NavbarLink,
   NavbarLinks,
   SearchIcon,
-} from "woozui";
+} from "daybreaker";
 
 const links = ["Home", "Products", "Pricing", "Docs"] as const;
 

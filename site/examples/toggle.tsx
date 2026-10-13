@@ -1,4 +1,4 @@
-import { Toggle } from "woozui";
+import { Toggle } from "daybreaker";
 
 export const Example = () => (
   <div className="flex gap-1">

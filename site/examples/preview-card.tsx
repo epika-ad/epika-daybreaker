@@ -5,7 +5,7 @@ import {
   PreviewCard,
   PreviewCardPopup,
   PreviewCardTrigger,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <p className="text-sm">
@@ -26,7 +26,7 @@ export const Example = () => (
           </div>
         </div>
         <p className="text-foreground-dimmed">
-          Maintains woozui, a set of accessible React components.
+          Maintains daybreaker, a set of accessible React components.
         </p>
       </PreviewCardPopup>
     </PreviewCard>

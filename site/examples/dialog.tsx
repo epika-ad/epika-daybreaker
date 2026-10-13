@@ -10,7 +10,7 @@ import {
   Field,
   FieldLabel,
   Input,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <Dialog>

@@ -1,4 +1,4 @@
-import { Button, PlusIcon, ShareIcon, TrashIcon } from "woozui";
+import { Button, PlusIcon, ShareIcon, TrashIcon } from "daybreaker";
 
 export const Example = () => (
   <div className="grid justify-items-center gap-4">

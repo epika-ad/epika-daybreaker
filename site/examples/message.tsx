@@ -6,7 +6,7 @@ import {
   Message,
   MessageContent,
   MessageHeader,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <div className="flex w-full max-w-md flex-col gap-4">

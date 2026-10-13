@@ -1,4 +1,4 @@
-import { AspectRatio } from "woozui";
+import { AspectRatio } from "daybreaker";
 
 export const Example = () => (
   <div className="flex w-full max-w-md items-end gap-3">

@@ -8,7 +8,7 @@ import {
   Tabs,
   TabsList,
   TabsPanel,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => {
   const [direction, setDirection] = useState<"ltr" | "rtl">("rtl");

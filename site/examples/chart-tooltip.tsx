@@ -1,12 +1,12 @@
 import type { ReactElement, ReactNode } from "react";
 import { Bar, BarChart, XAxis } from "recharts";
-import { BellIcon, UserIcon } from "woozui";
+import { BellIcon, UserIcon } from "daybreaker";
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "woozui/charts";
+} from "daybreaker/charts";
 
 const data = [
   { day: "Mon", running: 450, swimming: 300 },

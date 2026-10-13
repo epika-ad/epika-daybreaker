@@ -1,4 +1,4 @@
-import { Checkbox, Input, Label } from "woozui";
+import { Checkbox, Input, Label } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-64 gap-4">

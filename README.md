@@ -1,11 +1,11 @@
-# woozui
+# daybreaker
 
 AAccessible React components styled with Tailwind CSS. Keyboard navigation, focus management and screen reader support are built in (via [Base UI](https://base-ui.com)); the look is driven by a small set of design tokens you can override.
 
 ## Install
 
 ```sh
-npm install woozui
+npm install daybreaker
 ```
 
 Requires React 19.
@@ -16,19 +16,19 @@ Requires React 19.
 
 ```css
 @import "tailwindcss";
-@import "woozui/theme.css";
+@import "daybreaker/theme.css";
 ```
 
 **Without Tailwind** — import the precompiled stylesheet once, at the root of your app:
 
 ```ts
-import "woozui/styles.css";
+import "daybreaker/styles.css";
 ```
 
 ## Use
 
 ```tsx
-import { Button, Dialog, DialogPopup, DialogTitle, DialogTrigger } from "woozui";
+import { Button, Dialog, DialogPopup, DialogTitle, DialogTrigger } from "daybreaker";
 
 export const Example = () => (
   <Dialog>
@@ -43,7 +43,7 @@ export const Example = () => (
 Toasts and tooltips need their providers once, near the root:
 
 ```tsx
-import { ToastProvider, TooltipProvider } from "woozui";
+import { ToastProvider, TooltipProvider } from "daybreaker";
 
 export const Providers = ({ children }) => (
   <TooltipProvider>

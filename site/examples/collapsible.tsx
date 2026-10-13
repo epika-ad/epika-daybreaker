@@ -1,4 +1,4 @@
-import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "woozui";
+import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "daybreaker";
 
 export const Example = () => (
   <Collapsible className="w-64">

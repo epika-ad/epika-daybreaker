@@ -1,4 +1,4 @@
-import { Calendar } from "woozui";
+import { Calendar } from "daybreaker";
 
 export const Example = () => (
   <Calendar

@@ -4,7 +4,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuTrigger,
-} from "woozui";
+} from "daybreaker";
 
 const products = [
   { title: "Analytics", description: "See how people use your app." },

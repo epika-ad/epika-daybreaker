@@ -1,4 +1,4 @@
-import { Switch } from "woozui";
+import { Switch } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-56 gap-4 text-sm">

@@ -1,8 +1,8 @@
-import { Separator } from "woozui";
+import { Separator } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-56 gap-3 text-sm">
-    <span className="font-medium">woozui</span>
+    <span className="font-medium">daybreaker</span>
     <Separator />
     <div className="flex h-5 items-center gap-3 text-foreground-dimmed">
       <span>Docs</span>

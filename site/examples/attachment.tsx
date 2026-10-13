@@ -9,7 +9,7 @@ import {
   AttachmentTitle,
   FileIcon,
   XIcon,
-} from "woozui";
+} from "daybreaker";
 
 const files = [
   { name: "sales-dashboard.pdf", detail: "PDF · 2.4 MB", state: "done" },

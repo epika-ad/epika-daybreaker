@@ -1,4 +1,4 @@
-import { Meter } from "woozui";
+import { Meter } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-64 gap-6">

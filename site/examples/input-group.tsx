@@ -1,4 +1,4 @@
-import { Input, InputGroup, InputGroupAddon, Kbd, SearchIcon } from "woozui";
+import { Input, InputGroup, InputGroupAddon, Kbd, SearchIcon } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-64 gap-3">

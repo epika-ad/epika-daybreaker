@@ -8,7 +8,7 @@ import {
   PencilIcon,
   ShareIcon,
   TrashIcon,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <ContextMenu>

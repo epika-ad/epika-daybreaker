@@ -13,7 +13,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "woozui/charts";
+} from "daybreaker/charts";
 
 const data = [
   { month: "Jan", desktop: 186, mobile: 160 },

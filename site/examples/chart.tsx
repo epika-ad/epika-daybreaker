@@ -1,4 +1,4 @@
-import { Chart } from "woozui";
+import { Chart } from "daybreaker";
 
 const revenue = [
   { label: "Jan", value: 12 },

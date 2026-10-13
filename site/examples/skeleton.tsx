@@ -1,4 +1,4 @@
-import { Skeleton } from "woozui";
+import { Skeleton } from "daybreaker";
 
 export const Example = () => (
   <div className="flex w-56 items-center gap-3">

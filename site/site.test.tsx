@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { ToastProvider, TooltipProvider } from "woozui";
+import { ToastProvider, TooltipProvider } from "daybreaker";
 import { App } from "./app";
 import { components, example } from "./registry";
 import { hasThumbnail } from "./thumbnails";

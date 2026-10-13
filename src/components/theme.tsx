@@ -26,7 +26,7 @@ const [ThemeContext, useTheme] = createContext<ThemeProvider.Context>({
 export const ThemeProvider = ({
   children,
   defaultTheme = "system",
-  storageKey = "woozui-theme",
+  storageKey = "daybreaker-theme",
 }: ThemeProvider.Props) => {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
 

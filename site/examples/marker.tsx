@@ -4,7 +4,7 @@ import {
   MarkerContent,
   MarkerIcon,
   SearchIcon,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-full max-w-sm gap-4">

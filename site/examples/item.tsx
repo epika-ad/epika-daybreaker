@@ -10,7 +10,7 @@ import {
   ItemTitle,
   Switch,
   UserIcon,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <ItemGroup className="max-w-sm">

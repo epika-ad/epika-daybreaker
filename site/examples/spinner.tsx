@@ -1,4 +1,4 @@
-import { Spinner } from "woozui";
+import { Spinner } from "daybreaker";
 
 export const Example = () => (
   <div className="flex items-center gap-4">

@@ -7,7 +7,7 @@ import {
   FieldLabel,
   Form,
   Input,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => {
   const [sent, setSent] = useState<string | null>(null);

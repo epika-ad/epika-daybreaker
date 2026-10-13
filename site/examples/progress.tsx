@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Progress } from "woozui";
+import { Progress } from "daybreaker";
 
 export const Example = () => {
   const [value, setValue] = useState(20);

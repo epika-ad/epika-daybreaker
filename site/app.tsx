@@ -5,11 +5,11 @@ import {
   ToastProvider,
   TooltipProvider,
   useTheme,
-} from "woozui";
+} from "daybreaker";
 import { Browse, Component, Components, Docs, Home } from "./pages";
 import { ContrastIcon, focus, GitHubIcon, Logo, pill } from "./parts";
 
-const repository = "https://github.com/wooz-05/woozui";
+const repository = "https://github.com/epika-ad/epika-daybreaker";
 
 const links = [
   { href: "#/", label: "Home", match: /^\/$/ },

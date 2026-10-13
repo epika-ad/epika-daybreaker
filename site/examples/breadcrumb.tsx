@@ -4,7 +4,7 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <Breadcrumb>

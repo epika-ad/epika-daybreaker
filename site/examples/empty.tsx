@@ -6,7 +6,7 @@ import {
   EmptyMedia,
   EmptyTitle,
   InboxIcon,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <Empty className="max-w-sm">

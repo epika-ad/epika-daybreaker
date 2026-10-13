@@ -1,14 +1,14 @@
 {
-  "name": "woozui",
+  "name": "daybreaker",
   "version": "0.0.0",
   "description": "Accessible React components styled with Tailwind CSS.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wooz-05/woozui.git"
+    "url": "git+https://github.com/epika-ad/epika-daybreaker.git"
   },
-  "homepage": "https://github.com/wooz-05/woozui#readme",
-  "bugs": "https://github.com/wooz-05/woozui/issues",
+  "homepage": "https://github.com/epika-ad/epika-daybreaker#readme",
+  "bugs": "https://github.com/epika-ad/epika-daybreaker/issues",
   "keywords": [
     "react",
     "components",

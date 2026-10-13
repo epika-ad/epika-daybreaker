@@ -1,4 +1,4 @@
-import { Toggle, ToggleGroup } from "woozui";
+import { Toggle, ToggleGroup } from "daybreaker";
 
 export const Example = () => (
   <div className="grid justify-items-center gap-4">

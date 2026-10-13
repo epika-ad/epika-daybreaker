@@ -9,7 +9,7 @@ import {
   SidebarGroupLabel,
   SidebarItem,
   UserIcon,
-} from "woozui";
+} from "daybreaker";
 
 const workspace = [
   { name: "Home", icon: HomeIcon },

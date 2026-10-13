@@ -7,7 +7,7 @@ import {
   ToolbarGroup,
   ToolbarSeparator,
   TrashIcon,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <Toolbar aria-label="Formatting">

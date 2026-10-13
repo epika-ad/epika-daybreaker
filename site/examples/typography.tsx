@@ -1,4 +1,4 @@
-import { Prose } from "woozui";
+import { Prose } from "daybreaker";
 
 export const Example = () => (
   <Prose className="text-left">

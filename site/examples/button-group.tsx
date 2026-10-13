@@ -5,7 +5,7 @@ import {
   CopyIcon,
   PencilIcon,
   TrashIcon,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <div className="grid justify-items-center gap-4">

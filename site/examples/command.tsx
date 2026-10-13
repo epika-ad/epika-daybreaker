@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
   Kbd,
-} from "woozui";
+} from "daybreaker";
 
 type Action = { value: string; label: string; shortcut: string };
 

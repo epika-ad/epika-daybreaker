@@ -3,7 +3,7 @@ import {
   AccordionItem,
   AccordionPanel,
   AccordionTrigger,
-} from "woozui";
+} from "daybreaker";
 
 const questions = [
   {

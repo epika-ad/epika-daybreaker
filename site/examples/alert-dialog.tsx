@@ -7,7 +7,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <AlertDialog>

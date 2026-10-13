@@ -1,4 +1,4 @@
-import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from "woozui";
+import { Bubble, BubbleContent, BubbleGroup, BubbleReactions } from "daybreaker";
 
 const variants = [
   "default",

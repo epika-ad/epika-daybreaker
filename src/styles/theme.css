@@ -1,5 +1,5 @@
 /*
- * woozui design tokens.
+ * daybreaker design tokens.
  *
  * Override any --wz-* variable to rebrand; components only ever read the
  * semantic Tailwind colors mapped below, so light and dark follow for free.

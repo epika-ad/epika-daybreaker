@@ -1,4 +1,4 @@
-import { Resizable } from "woozui";
+import { Resizable } from "daybreaker";
 
 const Panel = ({ children }: { children: string }) => (
   <div className="flex size-full items-center justify-center p-4 font-medium text-foreground-dimmed text-sm">

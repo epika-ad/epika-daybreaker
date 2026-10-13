@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup, Fieldset, FieldsetLegend } from "woozui";
+import { Checkbox, CheckboxGroup, Fieldset, FieldsetLegend } from "daybreaker";
 
 const channels = ["Email", "Push notifications", "SMS"] as const;
 

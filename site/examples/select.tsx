@@ -4,7 +4,7 @@ import {
   SelectPopup,
   SelectTrigger,
   SelectValue,
-} from "woozui";
+} from "daybreaker";
 
 const plans = [
   { value: "free", label: "Free" },

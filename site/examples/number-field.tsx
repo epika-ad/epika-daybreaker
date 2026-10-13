@@ -1,4 +1,4 @@
-import { NumberField } from "woozui";
+import { NumberField } from "daybreaker";
 
 export const Example = () => (
   <div className="grid justify-items-center gap-4">

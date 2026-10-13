@@ -6,7 +6,7 @@ import {
   MenuItem,
   MenuPopup,
   MenuSeparator,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <Menubar>

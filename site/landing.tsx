@@ -53,7 +53,7 @@ import {
   Textarea,
   UserIcon,
   useToast,
-} from "woozui";
+} from "daybreaker";
 import { ArrowUpRightIcon, focus, Logo, pill } from "./parts";
 import { components, example } from "./registry";
 

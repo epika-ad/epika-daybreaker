@@ -1,4 +1,4 @@
-import { Kbd } from "woozui";
+import { Kbd } from "daybreaker";
 
 export const Example = () => (
   <span className="flex items-center gap-1.5 text-foreground-dimmed text-sm">

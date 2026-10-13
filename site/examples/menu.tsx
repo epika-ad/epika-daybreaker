@@ -15,7 +15,7 @@ import {
   PencilIcon,
   ShareIcon,
   TrashIcon,
-} from "woozui";
+} from "daybreaker";
 
 const countries = [
   { code: "al", name: "Albania" },

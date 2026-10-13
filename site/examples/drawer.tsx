@@ -6,7 +6,7 @@ import {
   DrawerPopup,
   DrawerTitle,
   DrawerTrigger,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <div className="flex flex-wrap justify-center gap-2">

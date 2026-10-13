@@ -1,4 +1,4 @@
-import { Field, FieldDescription, FieldLabel, Input } from "woozui";
+import { Field, FieldDescription, FieldLabel, Input } from "daybreaker";
 
 export const Example = () => (
   <Field className="w-64">

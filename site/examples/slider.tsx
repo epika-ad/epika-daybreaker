@@ -1,4 +1,4 @@
-import { Slider } from "woozui";
+import { Slider } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-56 gap-6">

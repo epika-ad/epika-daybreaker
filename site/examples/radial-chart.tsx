@@ -13,7 +13,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "woozui/charts";
+} from "daybreaker/charts";
 
 const data = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },

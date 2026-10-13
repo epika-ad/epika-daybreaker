@@ -1,4 +1,4 @@
-import { ScrollArea } from "woozui";
+import { ScrollArea } from "daybreaker";
 
 const releases = Array.from({ length: 24 }, (_, index) => `v1.${24 - index}.0`);
 

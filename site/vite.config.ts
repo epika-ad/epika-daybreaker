@@ -11,11 +11,11 @@ export default defineConfig({
   // relative asset paths, so the build works from any sub-path (GitHub Pages)
   base: "./",
   plugins: [react(), tailwindcss()],
-  // examples import "woozui" exactly as a consumer would
+  // examples import "daybreaker" exactly as a consumer would
   resolve: {
     alias: {
-      "woozui/charts": path("../src/charts.tsx"),
-      woozui: path("../src/index.ts"),
+      "daybreaker/charts": path("../src/charts.tsx"),
+      daybreaker: path("../src/index.ts"),
     },
   },
   build: { outDir: path("../site-dist"), emptyOutDir: true },

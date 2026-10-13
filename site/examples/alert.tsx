@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertTitle } from "woozui";
+import { Alert, AlertDescription, AlertTitle } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-72 gap-3">

@@ -1,4 +1,4 @@
-import { Badge, DataTable } from "woozui";
+import { Badge, DataTable } from "daybreaker";
 
 type Invoice = {
   id: string;

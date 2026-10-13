@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pagination } from "woozui";
+import { Pagination } from "daybreaker";
 
 export const Example = () => {
   const [page, setPage] = useState(4);

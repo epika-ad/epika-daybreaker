@@ -5,7 +5,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "woozui";
+} from "daybreaker";
 
 const invoices = [
   { id: "INV-001", status: "Paid", amount: "$250" },

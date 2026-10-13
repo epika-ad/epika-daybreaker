@@ -1,4 +1,4 @@
-import { Input } from "woozui";
+import { Input } from "daybreaker";
 
 export const Example = () => (
   <div className="grid w-64 gap-3">

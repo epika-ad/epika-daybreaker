@@ -1,4 +1,4 @@
-import { Checkbox } from "woozui";
+import { Checkbox } from "daybreaker";
 
 export const Example = () => (
   <div className="grid gap-3 text-sm">

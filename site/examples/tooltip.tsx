@@ -1,4 +1,4 @@
-import { Button, Tooltip, TooltipPopup, TooltipTrigger } from "woozui";
+import { Button, Tooltip, TooltipPopup, TooltipTrigger } from "daybreaker";
 
 const sides = ["top", "right", "bottom", "left"] as const;
 

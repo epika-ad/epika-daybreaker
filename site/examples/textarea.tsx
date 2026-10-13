@@ -1,4 +1,4 @@
-import { Textarea } from "woozui";
+import { Textarea } from "daybreaker";
 
 export const Example = () => (
   <Textarea

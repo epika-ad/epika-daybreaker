@@ -5,7 +5,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "woozui";
+} from "daybreaker";
 
 export const Example = () => (
   <Card className="w-64">

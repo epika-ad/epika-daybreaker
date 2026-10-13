@@ -1,4 +1,4 @@
-import { Carousel } from "woozui";
+import { Carousel } from "daybreaker";
 
 const slides = [
   { title: "Glass", tone: "bg-primary/20" },

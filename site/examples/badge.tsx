@@ -1,4 +1,4 @@
-import { Badge } from "woozui";
+import { Badge } from "daybreaker";
 
 export const Example = () => (
   <div className="flex max-w-64 flex-wrap justify-center gap-2">
