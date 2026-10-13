@@ -341,7 +341,8 @@ export const Stage = ({ className, children }: Stage.Props) => (
   <div className="rounded-[1.75rem] border border-border bg-background-dimmed p-2">
     <div
       className={cn(
-        "flex items-center justify-center overflow-hidden rounded-[1.25rem] border border-border bg-background p-6",
+        // an example wider than a phone scrolls sideways instead of being cut off
+        "flex items-center justify-center-safe overflow-x-auto rounded-[1.25rem] border border-border bg-background p-3 [scrollbar-width:thin] sm:p-6",
         className,
       )}
     >

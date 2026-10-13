@@ -103,7 +103,7 @@ const Code = ({ children }: { children: ReactNode }) => (
 );
 
 const Section = ({ step, title, children }: Section.Props) => (
-  <section className="grid gap-4">
+  <section className="grid grid-cols-1 gap-4">
     <h2 className="font-semibold text-2xl tracking-tight">
       {step !== undefined && <span className="text-brand">[{step}] </span>}
       {title}
@@ -120,7 +120,7 @@ const Text = ({ children }: { children: ReactNode }) => (
 );
 
 export const Docs = () => (
-  <article className="mx-auto grid w-full max-w-3xl gap-16 pt-14 pb-24">
+  <article className="mx-auto grid w-full max-w-3xl grid-cols-1 gap-16 pt-14 pb-24">
     <header>
       <p className="font-medium text-brand text-sm">Introduction</p>
       <h1 className="mt-2 font-bold text-4xl tracking-tighter sm:text-5xl">

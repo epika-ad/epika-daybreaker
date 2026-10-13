@@ -82,6 +82,8 @@ const Header = ({ route }: { route: string }) => (
             aria-current={link.match.test(route) ? "page" : undefined}
             className={cn(
               "rounded-full px-2.5 py-1.5 font-medium text-foreground-dimmed transition-colors hover:text-foreground aria-[current=page]:text-foreground sm:px-4",
+              // on the narrowest phones the logo is the way home
+              link.href === "#/" && "max-[400px]:hidden",
               focus,
             )}
           >
@@ -157,7 +159,7 @@ const Shell = () => {
   return (
     <div className="flex min-h-svh flex-col">
       <Header route={route} />
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-clip">
         <Page route={route} />
       </main>
       <footer className="border-border border-t px-4 py-8 text-center text-foreground-dimmed text-sm">
