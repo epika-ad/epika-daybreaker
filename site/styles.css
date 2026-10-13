@@ -8,6 +8,16 @@
   --color-brand-solid: var(--wz-primary);
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --animate-focus-in: site-focus-in 900ms var(--wz-smooth) both;
+}
+
+/* text that comes into focus out of a blur, as on epika.ad */
+@keyframes site-focus-in {
+  from {
+    filter: blur(14px);
+    opacity: 0;
+  }
 }
 
 @layer base {

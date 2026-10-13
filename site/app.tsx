@@ -194,7 +194,7 @@ const Shell = () => {
 };
 
 export const App = () => (
-  <ThemeProvider defaultTheme="dark">
+  <ThemeProvider defaultTheme="light">
     <TooltipProvider>
       <ToastProvider>
         <Shell />

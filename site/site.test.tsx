@@ -58,8 +58,19 @@ describe("site", () => {
     render(<App />);
 
     expect(
-      screen.getByRole("link", { name: "Visit epika.ad" }),
+      screen.getByRole("link", { name: "Work with Epika" }),
     ).toHaveAttribute("href", "https://epika.ad");
+  });
+
+  it("lets a card on the home page hand over its component's code", () => {
+    window.location.hash = "#/";
+    window.scrollTo = () => {};
+
+    render(<App />);
+
+    expect(
+      screen.getByRole("button", { name: "Copy Calendar code" }),
+    ).toBeInTheDocument();
   });
 
   it("offers the code to copy instead of printing it", () => {

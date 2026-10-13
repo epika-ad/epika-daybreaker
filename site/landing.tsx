@@ -69,28 +69,48 @@ import { components, example } from "./registry";
 
 const install = "npm install daybreaker";
 
+// the agency's own headline style: large, light, ending on a red full stop
+const display = "font-light tracking-tighter";
+
+const Stop = () => <span className="text-brand">.</span>;
+
+/**
+ * Set like epika.ad's: a red line over a big staggered headline that comes
+ * into focus, with live components in the corners the stagger leaves empty.
+ */
 const Hero = () => (
-  <section className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 pt-16 sm:pt-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
-    <div className="flex flex-col items-start">
-      <a
-        href="#/components/questionnaire"
-        className={cn(
-          pill,
-          "flex items-center gap-1.5 px-3.5 py-1.5 font-medium text-xs transition-colors hover:border-brand",
-          focus,
-        )}
+  <section className="relative mx-auto w-full max-w-7xl px-4 pt-14 sm:pt-20 lg:pt-40 lg:pb-60">
+    <Float className="top-4 right-4 w-72" delay={500}>
+      <Cap />
+    </Float>
+    <Float className="bottom-0 left-4 w-80" delay={650}>
+      <Analytics />
+    </Float>
+    <Float className="right-4 bottom-0 w-72" delay={800}>
+      <Budget />
+    </Float>
+    <p className="text-balance text-brand text-xl tracking-tight sm:text-2xl lg:pl-[8%]">
+      {components.length} accessible React components, styled with Tailwind CSS.
+    </p>
+    <h1
+      className={cn(
+        display,
+        "mt-3 text-[clamp(2.75rem,6.6vw,6rem)] leading-[0.95]",
+      )}
+    >
+      <span className="block animate-focus-in motion-reduce:animate-none lg:pl-[8%]">
+        The foundation for
+      </span>{" "}
+      <span
+        className="block animate-focus-in motion-reduce:animate-none lg:text-right"
+        style={{ animationDelay: "150ms" }}
       >
-        New: Questionnaire component
-        <ArrowUpRightIcon className="size-3.5 rotate-45" />
-      </a>
-      <h1 className="mt-6 max-w-xl text-balance font-semibold text-4xl tracking-tighter sm:text-6xl">
-        The foundation for every Epika interface.
-      </h1>
-      <p className="mt-5 max-w-lg text-pretty text-foreground-dimmed text-lg">
-        {components.length} accessible React components, styled with Tailwind
-        CSS and on brand out of the box.
-      </p>
-      <div className="mt-8 flex flex-wrap items-center gap-3">
+        every Epika interface
+        <Stop />
+      </span>
+    </h1>
+    <div className="mt-10 flex flex-col items-start gap-5 lg:mt-14 lg:items-center">
+      <div className="flex flex-wrap items-center gap-3">
         <Button size="lg" nativeButton={false} render={<a href="#/docs" />}>
           Get started
         </Button>
@@ -106,7 +126,7 @@ const Hero = () => (
       <div
         className={cn(
           pill,
-          "mt-8 flex items-center gap-2 py-1 pr-1 pl-4 font-mono text-sm",
+          "flex items-center gap-2 py-1 pr-1 pl-4 font-mono text-sm",
         )}
       >
         <span aria-hidden="true" className="text-brand">
@@ -116,29 +136,28 @@ const Hero = () => (
         <CopyButton text={install} className="rounded-full" />
       </div>
     </div>
-    <Showcase />
   </section>
 );
 
-/** Live components beside the headline, lit from below like the sunrise. */
-const Showcase = () => (
-  <div className="relative hidden md:block">
-    <div
-      aria-hidden="true"
-      className="-inset-x-8 -bottom-8 absolute h-2/3 bg-[radial-gradient(ellipse_at_bottom,var(--color-brand),transparent_70%)] opacity-20 blur-3xl"
-    />
-    <div className="relative grid grid-cols-2 gap-5">
-      <div>
-        <Budget />
-        <Analytics />
-      </div>
-      <div className="pt-10">
-        <Cap />
-        <Notifications />
-      </div>
-    </div>
+/** A live component set loose in a corner of the hero, on wide screens. */
+const Float = ({ className, delay, children }: Float.Props) => (
+  <div
+    style={{ animationDelay: `${delay}ms` }}
+    className={cn(
+      "absolute hidden animate-pop-in drop-shadow-[0_24px_32px_rgb(53_10_63/0.14)] motion-reduce:animate-none lg:block [&>*]:mb-0",
+      className,
+    )}
+  >
+    {children}
   </div>
 );
+namespace Float {
+  export type Props = {
+    className?: string;
+    delay: number;
+    children: ReactNode;
+  };
+}
 
 /** The logo's sunrise, with its horizon line carried out to both edges. */
 const Horizon = () => (
@@ -154,17 +173,43 @@ const Horizon = () => (
 
 // Every card on the wall is the real component, wired up enough to play with.
 
-const Panel = ({ className, children }: Panel.Props) => (
-  <Card className={cn("mb-5 break-inside-avoid gap-5 p-5", className)}>
-    {children}
-  </Card>
-);
+const Panel = ({ slug, className, children }: Panel.Props) => {
+  const found = example(slug);
+  const entry = components.find((item) => item.slug === slug);
+
+  return (
+    // the button shares the card's grid cell instead of being positioned
+    // over it: absolute positioning inside the wall's columns stops the
+    // browser from balancing them
+    <div className="group/panel mb-5 grid break-inside-avoid">
+      <Card
+        className={cn("col-start-1 row-start-1 min-w-0 gap-5 p-5", className)}
+      >
+        {children}
+      </Card>
+      {found && entry && (
+        <CopyButton
+          text={found.source}
+          label={`Copy ${entry.name} code`}
+          // on the corner, so it never covers the card's own controls; it
+          // shows on hover or focus, and always where there is no hover
+          className="-mt-2.5 -mr-2.5 z-1 col-start-1 row-start-1 self-start justify-self-end rounded-full border border-border bg-background opacity-0 transition-[opacity,color] hover:bg-background focus-visible:opacity-100 group-hover/panel:opacity-100 [@media(hover:none)]:opacity-100"
+        />
+      )}
+    </div>
+  );
+};
 namespace Panel {
-  export type Props = { className?: string; children: ReactNode };
+  export type Props = {
+    /** The component whose example the card's copy button hands over. */
+    slug: string;
+    className?: string;
+    children: ReactNode;
+  };
 }
 
 const Controls = () => (
-  <Panel>
+  <Panel slug="button">
     <div className="flex flex-wrap items-center gap-2">
       <Button size="sm">
         Button
@@ -261,7 +306,7 @@ const Navigation = () => {
   const [current, setCurrent] = useState("Overview");
 
   return (
-    <Panel className="p-2">
+    <Panel slug="sidebar" className="p-2">
       <Sidebar aria-label="Example navigation" className="w-full p-0">
         {navigation.map((group) => (
           <SidebarGroup key={group.label}>
@@ -284,7 +329,7 @@ const Navigation = () => {
 };
 
 const Schedule = () => (
-  <Panel className="items-center p-3">
+  <Panel slug="calendar" className="items-center p-3">
     <Calendar defaultValue={new Date()} />
   </Panel>
 );
@@ -303,7 +348,7 @@ const Reach = () => {
   const toast = useToast();
 
   return (
-    <Panel>
+    <Panel slug="chart">
       <CardHeader>
         <CardTitle className="text-base">Campaign reach</CardTitle>
         <CardDescription>The last five months</CardDescription>
@@ -331,7 +376,7 @@ const Reach = () => {
 };
 
 const Budget = () => (
-  <Panel>
+  <Panel slug="meter">
     <div>
       <p className="text-foreground-dimmed text-sm">Remaining budget</p>
       <p className="mt-1 font-semibold text-4xl tabular-nums tracking-tight">
@@ -371,7 +416,7 @@ const Brief = () => {
   };
 
   return (
-    <Panel>
+    <Panel slug="form">
       <CardHeader>
         <CardTitle className="text-base">Start a new brief</CardTitle>
         <CardDescription>
@@ -414,7 +459,7 @@ const Cap = () => {
   const [amount, setAmount] = useState(2500);
 
   return (
-    <Panel>
+    <Panel slug="slider">
       <CardHeader>
         <CardTitle className="text-base">Daily spend cap</CardTitle>
         <CardDescription>
@@ -471,7 +516,7 @@ const Chat = () => {
   };
 
   return (
-    <Panel>
+    <Panel slug="bubble">
       <CardHeader>
         <CardTitle className="text-base">New chat</CardTitle>
         <CardDescription>How can we help today?</CardDescription>
@@ -507,14 +552,14 @@ const Survey = () => {
   if (!found) return null;
 
   return (
-    <Panel>
+    <Panel slug="questionnaire">
       <found.Example />
     </Panel>
   );
 };
 
 const Start = () => (
-  <Panel className="p-2">
+  <Panel slug="empty" className="p-2">
     <Empty className="border-none">
       <EmptyMedia>
         <PlusIcon />
@@ -540,7 +585,7 @@ const visitors = [
 ] as const;
 
 const Analytics = () => (
-  <Panel>
+  <Panel slug="chart">
     <div>
       <CardTitle className="text-base">Analytics</CardTitle>
       <p className="mt-1 flex items-center gap-2 text-foreground-dimmed text-sm">
@@ -576,7 +621,7 @@ const alerts = [
 ] as const;
 
 const Notifications = () => (
-  <Panel>
+  <Panel slug="checkbox">
     <CardHeader>
       <CardTitle className="text-base">Notifications</CardTitle>
       <CardDescription>
@@ -639,11 +684,12 @@ const Wall = () => (
   <section className="mx-auto w-full max-w-7xl px-4 pb-24">
     <div className="flex flex-wrap items-end justify-between gap-4 pb-8">
       <div>
-        <h2 className="font-semibold text-2xl tracking-tight sm:text-3xl">
-          Real components, not screenshots.
+        <h2 className={cn(display, "text-4xl sm:text-5xl")}>
+          Real components, not screenshots
+          <Stop />
         </h2>
         <p className="mt-2 text-foreground-dimmed">
-          Every card on this page is live. Click around.
+          Every card on this page is live. Hover one to copy its code.
         </p>
       </div>
       <a
@@ -666,42 +712,49 @@ const Wall = () => (
       <Chat />
       <Survey />
       <Start />
+      <Notifications />
     </div>
   </section>
 );
 
-/** Who makes the library, and the way to the agency's own site. */
-const Agency = () => (
+/** The way to the studio: who makes the kit, and how to hire them. */
+const Work = () => (
   <section className="mx-auto w-full max-w-7xl px-4 pb-24">
-    {/* the whole panel is the link; the sun behind it rises on hover */}
+    {/* the whole panel is the link; the sun rises on hover. It is the page
+        in reverse: plum in the light theme, paper in the dark one */}
     <a
       href={agency}
       target="_blank"
       rel="noreferrer"
-      aria-label="Visit epika.ad"
+      aria-label="Work with Epika"
       className={cn(
-        "group relative flex min-h-[26rem] flex-col justify-between gap-16 overflow-hidden rounded-surface bg-linear-to-br from-brand to-primary-dimmed p-8 text-primary-foreground sm:min-h-[30rem] sm:p-14",
+        "group relative flex min-h-[26rem] flex-col justify-between gap-16 overflow-hidden rounded-surface bg-foreground p-8 text-background sm:min-h-[30rem] sm:p-14",
         focus,
       )}
     >
-      <Logo className="-right-6 sm:-right-10 absolute bottom-0 h-44 origin-bottom-right scale-90 fill-primary-foreground/15 transition-[scale,fill] duration-700 ease-spring group-hover:scale-100 group-hover:fill-primary-foreground/25 sm:h-72 lg:h-[26rem] motion-reduce:transition-none" />
-      <p className="relative flex items-center gap-3 font-medium text-sm uppercase tracking-widest">
-        <span className="h-px w-8 bg-primary-foreground" />
-        The agency behind it
+      <Logo className="-right-6 sm:-right-10 absolute bottom-0 h-44 origin-bottom-right scale-90 transition-[scale] duration-700 ease-spring group-hover:scale-100 motion-reduce:transition-none sm:h-72 lg:h-[26rem]" />
+      <p className="relative text-brand text-xl tracking-tight sm:text-2xl">
+        Need a custom UI?
       </p>
       <div className="relative">
-        <h2 className="font-semibold text-6xl leading-[0.9] tracking-tighter sm:text-8xl lg:text-9xl">
-          Made by
+        <h2
+          className={cn(
+            display,
+            "text-6xl leading-[0.9] sm:text-8xl lg:text-9xl",
+          )}
+        >
+          Work with
           <br />
-          Epika.
+          Epika
+          <Stop />
         </h2>
         <div className="mt-8 flex flex-wrap items-center justify-between gap-6">
-          <p className="max-w-sm text-pretty text-lg text-primary-foreground/85">
-            Daybreaker is built and maintained by the team at Epika. See what
-            else we make.
+          <p className="max-w-sm text-pretty text-background/75 text-lg">
+            Daybreaker is built and maintained by the team at Epika, a creative
+            studio for brands and digital experiences.
           </p>
-          <span className="flex h-12 items-center gap-2 rounded-full bg-primary-foreground pr-2 pl-6 font-semibold text-brand transition-[gap] duration-400 ease-spring group-hover:gap-4 motion-reduce:transition-none">
-            epika.ad
+          <span className="flex h-12 items-center gap-2 rounded-full bg-background pr-2 pl-6 font-medium text-foreground transition-[gap] duration-400 ease-spring group-hover:gap-4 motion-reduce:transition-none">
+            Get in touch
             <span className="flex size-8 items-center justify-center rounded-full bg-brand text-primary-foreground">
               <ArrowUpRightIcon />
             </span>
@@ -718,6 +771,6 @@ export const Landing = () => (
     <Horizon />
     <Reasons />
     <Wall />
-    <Agency />
+    <Work />
   </>
 );

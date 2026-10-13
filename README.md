@@ -1,6 +1,11 @@
 # daybreaker
 
-AAccessible React components styled with Tailwind CSS. Keyboard navigation, focus management and screen reader support are built in (via [Base UI](https://base-ui.com)); the look is driven by a small set of design tokens you can override.
+<!-- TODO before launch: add the preview GIF here, e.g. ![daybreaker components](docs/preview.gif) -->
+
+76 accessible React components styled with Tailwind CSS, made by [Epika](https://epika.ad). Keyboard navigation, focus management and screen reader support are built in (via [Base UI](https://base-ui.com)); the look is driven by a small set of design tokens you can override.
+
+<!-- TODO before launch: replace with the landing page address once the domain is settled -->
+Live previews and docs: **link added at launch**.
 
 ## Install
 
@@ -52,16 +57,38 @@ export const Providers = ({ children }) => (
 );
 ```
 
+## Next.js
+
+The bundle is marked `"use client"`, so components can be imported straight into a Server Component in the App Router. Two rules from React Server Components still apply:
+
+- Helpers such as `cn`, `cva` and `buttonVariants` cannot be called inside a Server Component. Call them from a file that starts with `"use client"`.
+- Props that are functions, such as `onClick` or a DataTable's `rowKey`, have to be passed from a Client Component.
+
 ## Components
 
-| Group      | Components                                                                              |
-| ---------- | --------------------------------------------------------------------------------------- |
-| Actions    | Button, Toggle                                                                          |
-| Forms      | Field, Input, Textarea, Select, Checkbox, Radio, Switch, Slider                         |
-| Overlays   | Dialog, AlertDialog, Popover, Tooltip, Menu, Toast                                      |
-| Navigation | Tabs, Accordion, Breadcrumb                                                             |
-| Display    | Card, Badge, Avatar, Alert, Table, Separator, Kbd, Progress, Skeleton, Spinner          |
-| Utilities  | ThemeProvider, `useTheme`, `useToast`, `cn`, `cva`, icons                                |
+76 components in 7 groups. Each one has a live preview and its code on the docs site.
+
+| Group | Components |
+| ----- | ---------- |
+| Actions | Button, Toggle, Toggle Group, Button Group, Toolbar |
+| Forms | Field, Form, Label, Input, Input Group, Textarea, Select, Native Select, Combobox, Checkbox, Radio, Switch, Slider, Number Field, OTP Field, Fieldset, Calendar, Date Picker |
+| Overlays | Dialog, Alert Dialog, Drawer, Command, Popover, Tooltip, Preview Card, Menu, Context Menu, Toast |
+| Navigation | Navbar, Navigation Menu, Menubar, Sidebar, Tabs, Accordion, Collapsible, Breadcrumb, Pagination |
+| Conversation | Message, Bubble, Marker, Attachment, Message Scroller, Questionnaire |
+| Charts | Area Charts, Bar Charts, Line Charts, Pie Charts, Radar Charts, Radial Charts, Chart Tooltips |
+| Display | Card, Item, Empty, Carousel, Aspect Ratio, Resizable, Typography, Direction, Badge, Avatar, Alert, Table, Data Table, Chart, Separator, Scroll Area, Kbd, Progress, Meter, Skeleton, Spinner |
+
+The chart components in the Charts group are built on [Recharts](https://recharts.org) and live in their own entry point, so apps that draw no charts do not install it:
+
+```sh
+npm install recharts
+```
+
+```tsx
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "daybreaker/charts";
+```
+
+Also exported: `ThemeProvider`, `useTheme`, `useToast`, `DirectionProvider`, `cn`, `cva` and the icons.
 
 ## Customize
 
@@ -112,4 +139,4 @@ Publishing from CI needs an `NPM_TOKEN` repository secret.
 
 ## License
 
-MIT
+[MIT](LICENSE) © Epika. Need a custom UI? [Work with Epika](https://epika.ad).

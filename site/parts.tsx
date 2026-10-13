@@ -150,7 +150,11 @@ export const pill =
 export const focus =
   "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
-export const CopyButton = ({ text, className }: CopyButton.Props) => {
+export const CopyButton = ({
+  text,
+  label = "Copy",
+  className,
+}: CopyButton.Props) => {
   const [copied, setCopied] = useState(false);
 
   const copy = () => {
@@ -163,7 +167,7 @@ export const CopyButton = ({ text, className }: CopyButton.Props) => {
     <button
       type="button"
       onClick={copy}
-      aria-label={copied ? "Copied" : "Copy"}
+      aria-label={copied ? "Copied" : label}
       className={cn(
         "cursor-pointer rounded-md p-1.5 text-foreground-dimmed transition-colors hover:bg-accent hover:text-foreground",
         focus,
@@ -175,7 +179,12 @@ export const CopyButton = ({ text, className }: CopyButton.Props) => {
   );
 };
 export namespace CopyButton {
-  export type Props = { text: string; className?: string };
+  export type Props = {
+    text: string;
+    /** What a screen reader calls the button; say what is copied. */
+    label?: string;
+    className?: string;
+  };
 }
 
 /** A labelled button that copies `text`, and says so for a moment. */
