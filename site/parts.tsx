@@ -47,8 +47,8 @@ export const ArrowLeftIcon = (props: IconProps) => (
 
 export const CopyIcon = (props: IconProps) => (
   <Icon {...props}>
-    <rect x="9" y="9" width="12" height="12" rx="2" />
-    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+    <rect x="8" y="9" width="12" height="12" rx="2" />
+    <path d="M4 15V5a2 2 0 0 1 2-2h10" />
   </Icon>
 );
 
@@ -342,7 +342,7 @@ export const Stage = ({ className, children }: Stage.Props) => (
     <div
       className={cn(
         // an example wider than a phone scrolls sideways instead of being cut off
-        "flex items-center justify-center-safe overflow-x-auto rounded-[1.25rem] border border-border bg-background p-3 [scrollbar-width:thin] sm:p-6",
+        "flex items-center justify-center-safe overflow-x-auto rounded-[1.25rem] border border-border bg-background p-3 [scrollbar-color:var(--wz-border)_transparent] [scrollbar-width:thin] sm:p-6",
         className,
       )}
     >

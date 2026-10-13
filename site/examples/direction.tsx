@@ -31,11 +31,17 @@ export const Example = () => {
               <Tab value="two">الثاني</Tab>
               <Tab value="three">الثالث</Tab>
             </TabsList>
+            {/* English inside the right-to-left block: marked left-to-right
+                so its full stop stays at the end of the sentence */}
             <TabsPanel value="one">
-              Arrow keys follow the reading direction.
+              <span dir="ltr">Arrow keys follow the reading direction.</span>
             </TabsPanel>
-            <TabsPanel value="two">Second panel.</TabsPanel>
-            <TabsPanel value="three">Third panel.</TabsPanel>
+            <TabsPanel value="two">
+              <span dir="ltr">Second panel.</span>
+            </TabsPanel>
+            <TabsPanel value="three">
+              <span dir="ltr">Third panel.</span>
+            </TabsPanel>
           </Tabs>
           <Slider defaultValue={30} aria-label="Volume" />
           {/* biome-ignore lint/a11y/noLabelWithoutControl: Switch renders the control */}
