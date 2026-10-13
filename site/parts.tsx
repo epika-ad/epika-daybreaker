@@ -86,6 +86,25 @@ export const Logo = ({ className, ...props }: IconProps) => (
   </svg>
 );
 
+/**
+ * The library's lockup: Epika's mark, a slash, and the name, the way a
+ * project sits under its owner in a path.
+ */
+export const Wordmark = ({ className }: { className?: string }) => (
+  <span className={cn("flex items-center gap-2", className)}>
+    <Logo />
+    <span className="hidden items-center gap-2 sm:flex">
+      <span
+        aria-hidden="true"
+        className="h-5 w-px rotate-[20deg] rounded-full bg-foreground-dimmed/50"
+      />
+      <span className="font-semibold tracking-tight">
+        day<span className="text-brand">breaker</span>
+      </span>
+    </span>
+  </span>
+);
+
 // product marks, used only to label where a menu item sends you
 const Mark = ({ className, d, ...props }: IconProps & { d: string }) => (
   <svg
@@ -210,7 +229,7 @@ export const AgentMenu = ({ name, markdown }: AgentMenu.Props) => {
   };
 
   const open = (assistant: (typeof assistants)[number]) => {
-    const ask = `Help me use the Epika UI ${name} component.`;
+    const ask = `Help me use the daybreaker ${name} component.`;
     const full = encodeURIComponent(`${ask}\n\n${markdown}`);
     // a page too long for the URL goes on the clipboard instead
     const fits = full.length <= longest;

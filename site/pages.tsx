@@ -1,4 +1,3 @@
-import { type ReactNode, useEffect, useRef } from "react";
 import {
   cn,
   Sidebar,
@@ -6,6 +5,7 @@ import {
   SidebarGroupLabel,
   SidebarItem,
 } from "daybreaker";
+import { type ReactNode, useEffect, useRef } from "react";
 import { Landing } from "./landing";
 import {
   AgentMenu,
@@ -120,7 +120,7 @@ const markdown = (entry: Entry, source: string) =>
   [
     `# ${entry.name}`,
     entry.description,
-    `Part of Epika UI, a React component library styled with Tailwind CSS. Install it with \`${install}\`.`,
+    `Part of daybreaker, a React component library styled with Tailwind CSS. Install it with \`${install}\`.`,
     "## Example",
     `\`\`\`tsx\n${source}\n\`\`\``,
   ].join("\n\n");

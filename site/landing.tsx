@@ -618,7 +618,7 @@ const reasons = [
 
 const Reasons = () => (
   <section
-    aria-label="Why Epika UI"
+    aria-label="Why daybreaker"
     className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-16 md:grid-cols-3"
   >
     {reasons.map(({ icon: Icon, title, text }) => (
@@ -697,8 +697,8 @@ const Agency = () => (
         </h2>
         <div className="mt-8 flex flex-wrap items-center justify-between gap-6">
           <p className="max-w-sm text-pretty text-lg text-primary-foreground/85">
-            Epika UI is built and maintained by the team at Epika. See what else
-            we make.
+            Daybreaker is built and maintained by the team at Epika. See what
+            else we make.
           </p>
           <span className="flex h-12 items-center gap-2 rounded-full bg-primary-foreground pr-2 pl-6 font-semibold text-brand transition-[gap] duration-400 ease-spring group-hover:gap-4 motion-reduce:transition-none">
             epika.ad

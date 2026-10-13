@@ -13,8 +13,8 @@ import {
   ContrastIcon,
   focus,
   GitHubIcon,
-  Logo,
   pill,
+  Wordmark,
 } from "./parts";
 
 const repository = "https://github.com/epika-ad/epika-daybreaker";
@@ -66,15 +66,10 @@ const Header = ({ route }: { route: string }) => (
     <div className="flex w-full max-w-4xl items-center justify-between gap-2">
       <a
         href="#/"
-        aria-label="Epika UI home"
-        className={cn(
-          pill,
-          "flex h-11 items-center gap-2 px-3 font-semibold tracking-tight sm:pr-4",
-          focus,
-        )}
+        aria-label="daybreaker home"
+        className={cn(pill, "flex h-11 items-center px-3 sm:pr-4", focus)}
       >
-        <Logo />
-        <span className="hidden sm:inline">Epika UI</span>
+        <Wordmark />
       </a>
       <nav
         aria-label="Main"
@@ -113,7 +108,7 @@ const Header = ({ route }: { route: string }) => (
           href={repository}
           target="_blank"
           rel="noreferrer"
-          aria-label="Epika UI on GitHub"
+          aria-label="daybreaker on GitHub"
           className={cn(
             pill,
             // dropped on phones, where the bar has no room for it
