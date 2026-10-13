@@ -1,6 +1,6 @@
 {
   "name": "daybreaker",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Accessible React components styled with Tailwind CSS.",
   "license": "MIT",
   "repository": {
