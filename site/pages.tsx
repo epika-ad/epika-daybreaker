@@ -7,20 +7,21 @@ import {
 } from "daybreaker";
 import { type ReactNode, useEffect, useRef } from "react";
 import { Landing } from "./landing";
+
+export { Docs } from "./docs";
+
 import {
   AgentMenu,
   ArrowLeftIcon,
   ArrowUpRightIcon,
-  CodeBlock,
   CopyAction,
   focus,
+  install,
   PreviewCard,
   SectionTitle,
   Stage,
 } from "./parts";
 import { components, type Entry, example, groups } from "./registry";
-
-const install = "npm install daybreaker";
 
 export const Home = () => <Landing />;
 
@@ -182,58 +183,3 @@ export const Component = ({ slug }: { slug: string }) => {
     </article>
   );
 };
-
-const steps = [
-  {
-    title: "Install",
-    body: "Add the package to a React 19 project.",
-    code: install,
-  },
-  {
-    title: "Add the styles",
-    body: "If your app uses Tailwind CSS v4, import the theme after Tailwind. It registers the tokens and lets Tailwind find the classes the components use.",
-    code: '@import "tailwindcss";\n@import "daybreaker/theme.css";',
-  },
-  {
-    title: "No Tailwind?",
-    body: "Import the precompiled stylesheet once, at the root of your app, instead.",
-    code: 'import "daybreaker/styles.css";',
-  },
-  {
-    title: "Add the providers",
-    body: "Toasts and tooltips need their providers once, near the root.",
-    code: 'import { ToastProvider, TooltipProvider } from "daybreaker";\n\nexport const Providers = ({ children }) => (\n  <TooltipProvider>\n    <ToastProvider>{children}</ToastProvider>\n  </TooltipProvider>\n);',
-  },
-  {
-    title: "Make it yours",
-    body: "Override the tokens to rebrand every component at once. Each component also accepts className, and classList for its inner parts.",
-    code: ":root {\n  --wz-primary: oklch(0.6 0.2 150);\n  --wz-radius: 0.75rem;\n}",
-  },
-  {
-    title: "Dark mode",
-    body: "Add the dark class to the html element, or let ThemeProvider manage it and read the choice with useTheme.",
-    code: 'import { ThemeProvider } from "daybreaker";\n\n<ThemeProvider defaultTheme="system">{children}</ThemeProvider>',
-  },
-] as const;
-
-export const Docs = () => (
-  <article className="mx-auto w-full max-w-3xl pt-14 pb-24">
-    <h1 className="font-bold text-4xl tracking-tighter sm:text-5xl">
-      Get started
-    </h1>
-    <p className="mt-3 text-foreground-dimmed text-lg">
-      From install to a themed component in a few minutes.
-    </p>
-    <ol className="mt-12 grid gap-12">
-      {steps.map((step, index) => (
-        <li key={step.title}>
-          <h2 className="font-semibold text-xl tracking-tight">
-            <span className="text-brand">[{index + 1}]</span> {step.title}
-          </h2>
-          <p className="mt-2 text-foreground-dimmed">{step.body}</p>
-          <CodeBlock code={step.code} className="mt-4" />
-        </li>
-      ))}
-    </ol>
-  </article>
-);

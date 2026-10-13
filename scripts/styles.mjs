@@ -5,8 +5,12 @@ import { execSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 
 const theme = readFileSync("src/styles/theme.css", "utf8");
-// lets the consumer's Tailwind find the classes used inside the bundle
-writeFileSync("dist/theme.css", `${theme}\n@source "./index.js";\n`);
+// lets the consumer's Tailwind find the classes used inside the bundle, the
+// charts entry included
+writeFileSync(
+  "dist/theme.css",
+  `${theme}\n@source "./index.js";\n@source "./charts.js";\n`,
+);
 
 execSync(
   "npx @tailwindcss/cli -i src/styles/bundle.css -o dist/styles.css --minify",

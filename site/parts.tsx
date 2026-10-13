@@ -139,6 +139,8 @@ export const ChatGPTIcon = (props: IconProps) => (
   />
 );
 
+export const install = "npm install daybreaker";
+
 // the agency behind the library
 export const agency = "https://epika.ad";
 
@@ -273,6 +275,39 @@ export namespace AgentMenu {
   export type Props = { name: string; markdown: string };
 }
 
+// Enough of a grammar to colour the short TSX, CSS and shell snippets in the
+// docs; the first alternative that matches at a position wins.
+const grammar =
+  /(?<comment>\/\/[^\n]*|\/\*[\s\S]*?\*\/)|(?<string>"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`[^`]*`)|(?<keyword>\b(?:import|from|export|default|const|let|function|return|type|new|as)\b|@[\w-]+)|(?<tag>(?<=<\/?)[A-Za-z][\w.]*)|(?<property>--[\w-]+|\b[\w-]+(?==)|\b[\w-]+(?=:\s))|(?<call>^(?:npm|npx|pnpm|yarn|bun)\b|\b[A-Za-z_]\w*(?=\())|(?<number>\b\d[\w.%]*)/gm;
+
+// token colours that have a light and a dark value, so both themes stay legible
+const paint = {
+  comment: "text-foreground-dimmed italic",
+  string: "text-success",
+  keyword: "text-primary",
+  tag: "text-chart-2",
+  property: "text-warning",
+  call: "text-error",
+  number: "text-warning",
+} as const;
+
+type Token = { text: string; kind?: keyof typeof paint };
+
+const tokenize = (code: string) => {
+  const tokens: Token[] = [];
+  let end = 0;
+  for (const match of code.matchAll(grammar)) {
+    if (match.index > end) tokens.push({ text: code.slice(end, match.index) });
+    const kind = Object.entries(match.groups ?? {}).find(
+      ([, value]) => value !== undefined,
+    )?.[0] as keyof typeof paint;
+    tokens.push({ text: match[0], kind });
+    end = match.index + match[0].length;
+  }
+  if (end < code.length) tokens.push({ text: code.slice(end) });
+  return tokens;
+};
+
 export const CodeBlock = ({ code, className }: CodeBlock.Props) => (
   <div
     className={cn(
@@ -282,7 +317,18 @@ export const CodeBlock = ({ code, className }: CodeBlock.Props) => (
   >
     <CopyButton text={code} className="absolute top-3 right-3" />
     <pre className="overflow-x-auto p-5 pr-14 font-mono text-[13px] text-foreground leading-relaxed">
-      <code>{code}</code>
+      <code>
+        {tokenize(code).map((token, index) =>
+          token.kind ? (
+            // biome-ignore lint/suspicious/noArrayIndexKey: tokens are positional and never reorder
+            <span key={index} className={paint[token.kind]}>
+              {token.text}
+            </span>
+          ) : (
+            token.text
+          ),
+        )}
+      </code>
     </pre>
   </div>
 );
