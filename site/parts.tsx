@@ -1,4 +1,3 @@
-import { type ComponentProps, type ReactNode, useState } from "react";
 import {
   Button,
   CheckIcon,
@@ -10,6 +9,7 @@ import {
   MenuTrigger,
   useToast,
 } from "daybreaker";
+import { type ComponentProps, type ReactNode, useState } from "react";
 import { type Entry, example } from "./registry";
 import { Thumbnail } from "./thumbnails";
 
@@ -119,6 +119,9 @@ export const ChatGPTIcon = (props: IconProps) => (
     {...props}
   />
 );
+
+// the agency behind the library
+export const agency = "https://epika.ad";
 
 export const pill =
   "rounded-full border border-border bg-background-dimmed/80 backdrop-blur-md";

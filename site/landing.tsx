@@ -1,4 +1,3 @@
-import { type FormEvent, type ReactNode, useState } from "react";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -21,6 +20,7 @@ import {
   Chart,
   Checkbox,
   ChevronDownIcon,
+  CircleCheckIcon,
   cn,
   Empty,
   EmptyActions,
@@ -35,6 +35,7 @@ import {
   InputGroup,
   InputGroupAddon,
   Meter,
+  PencilIcon,
   PlusIcon,
   Radio,
   RadioGroup,
@@ -54,50 +55,96 @@ import {
   UserIcon,
   useToast,
 } from "daybreaker";
-import { ArrowUpRightIcon, focus, Logo, pill } from "./parts";
+import { type FormEvent, type ReactNode, useState } from "react";
+import {
+  ArrowUpRightIcon,
+  agency,
+  ContrastIcon,
+  CopyButton,
+  focus,
+  Logo,
+  pill,
+} from "./parts";
 import { components, example } from "./registry";
 
+const install = "npm install daybreaker";
+
 const Hero = () => (
-  <section className="flex flex-col items-center px-4 pt-20 text-center sm:pt-28">
-    <a
-      href="#/components/questionnaire"
-      className={cn(
-        pill,
-        "flex items-center gap-1.5 px-3.5 py-1.5 font-medium text-xs transition-colors hover:border-brand",
-        focus,
-      )}
-    >
-      New: Questionnaire component
-      <ArrowUpRightIcon className="size-3.5 rotate-45" />
-    </a>
-    <h1 className="mt-6 max-w-3xl text-balance font-semibold text-4xl tracking-tighter sm:text-6xl">
-      The foundation for every Epika interface.
-    </h1>
-    <p className="mt-5 max-w-xl text-pretty text-foreground-dimmed text-lg">
-      {components.length} accessible React components, styled with Tailwind CSS
-      and on brand out of the box.
-    </p>
-    <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-      <Button size="lg" nativeButton={false} render={<a href="#/docs" />}>
-        Get started
-      </Button>
-      <Button
-        size="lg"
-        variant="outline"
-        nativeButton={false}
-        render={<a href="#/components" />}
+  <section className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 pt-16 sm:pt-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+    <div className="flex flex-col items-start">
+      <a
+        href="#/components/questionnaire"
+        className={cn(
+          pill,
+          "flex items-center gap-1.5 px-3.5 py-1.5 font-medium text-xs transition-colors hover:border-brand",
+          focus,
+        )}
       >
-        View components
-      </Button>
+        New: Questionnaire component
+        <ArrowUpRightIcon className="size-3.5 rotate-45" />
+      </a>
+      <h1 className="mt-6 max-w-xl text-balance font-semibold text-4xl tracking-tighter sm:text-6xl">
+        The foundation for every Epika interface.
+      </h1>
+      <p className="mt-5 max-w-lg text-pretty text-foreground-dimmed text-lg">
+        {components.length} accessible React components, styled with Tailwind
+        CSS and on brand out of the box.
+      </p>
+      <div className="mt-8 flex flex-wrap items-center gap-3">
+        <Button size="lg" nativeButton={false} render={<a href="#/docs" />}>
+          Get started
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          nativeButton={false}
+          render={<a href="#/components" />}
+        >
+          View components
+        </Button>
+      </div>
+      <div
+        className={cn(
+          pill,
+          "mt-8 flex items-center gap-2 py-1 pr-1 pl-4 font-mono text-sm",
+        )}
+      >
+        <span aria-hidden="true" className="text-brand">
+          $
+        </span>
+        {install}
+        <CopyButton text={install} className="rounded-full" />
+      </div>
     </div>
+    <Showcase />
   </section>
+);
+
+/** Live components beside the headline, lit from below like the sunrise. */
+const Showcase = () => (
+  <div className="relative hidden md:block">
+    <div
+      aria-hidden="true"
+      className="-inset-x-8 -bottom-8 absolute h-2/3 bg-[radial-gradient(ellipse_at_bottom,var(--color-brand),transparent_70%)] opacity-20 blur-3xl"
+    />
+    <div className="relative grid grid-cols-2 gap-5">
+      <div>
+        <Budget />
+        <Analytics />
+      </div>
+      <div className="pt-10">
+        <Cap />
+        <Notifications />
+      </div>
+    </div>
+  </div>
 );
 
 /** The logo's sunrise, with its horizon line carried out to both edges. */
 const Horizon = () => (
   <div
     aria-hidden="true"
-    className="mx-auto flex w-full max-w-7xl items-end px-4 pt-16 pb-12"
+    className="mx-auto flex w-full max-w-7xl items-end px-4 pt-12"
   >
     <span className="mb-px h-1 flex-1 bg-linear-to-r from-transparent to-brand" />
     <Logo className="-mx-px h-14" />
@@ -551,26 +598,126 @@ const Notifications = () => (
   </Panel>
 );
 
-export const Landing = () => (
-  <>
-    <Hero />
-    <Horizon />
-    <section
-      aria-label="Components in use"
-      className="mx-auto w-full max-w-7xl columns-1 gap-5 px-4 pb-24 sm:columns-2 lg:columns-3 xl:columns-4"
-    >
+const reasons = [
+  {
+    icon: CircleCheckIcon,
+    title: "Accessible by default",
+    text: "Keyboard navigation, focus management and screen reader support are built in, on top of Base UI.",
+  },
+  {
+    icon: ContrastIcon,
+    title: "On brand, light and dark",
+    text: "Epika red on warm paper, with plum ink. One set of tokens drives both themes.",
+  },
+  {
+    icon: PencilIcon,
+    title: "Yours to restyle",
+    text: "Override any token to rebrand. Use it with Tailwind CSS v4 or the precompiled stylesheet.",
+  },
+] as const;
+
+const Reasons = () => (
+  <section
+    aria-label="Why Epika UI"
+    className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-16 md:grid-cols-3"
+  >
+    {reasons.map(({ icon: Icon, title, text }) => (
+      <div key={title} className="flex flex-col items-start gap-3">
+        <span className="flex size-9 items-center justify-center rounded-control bg-accent text-brand">
+          <Icon />
+        </span>
+        <h2 className="font-semibold tracking-tight">{title}</h2>
+        <p className="max-w-sm text-pretty text-foreground-dimmed text-sm">
+          {text}
+        </p>
+      </div>
+    ))}
+  </section>
+);
+
+const Wall = () => (
+  <section className="mx-auto w-full max-w-7xl px-4 pb-24">
+    <div className="flex flex-wrap items-end justify-between gap-4 pb-8">
+      <div>
+        <h2 className="font-semibold text-2xl tracking-tight sm:text-3xl">
+          Real components, not screenshots.
+        </h2>
+        <p className="mt-2 text-foreground-dimmed">
+          Every card on this page is live. Click around.
+        </p>
+      </div>
+      <a
+        href="#/components"
+        className={cn(
+          "group flex items-center gap-1.5 rounded-sm font-medium text-sm",
+          focus,
+        )}
+      >
+        Browse all {components.length}
+        <ArrowUpRightIcon className="group-hover:-translate-y-0.5 text-brand transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+    <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4">
       <Controls />
       <Navigation />
       <Schedule />
       <Reach />
-      <Budget />
       <Brief />
-      <Cap />
       <Chat />
       <Survey />
       <Start />
-      <Analytics />
-      <Notifications />
-    </section>
+    </div>
+  </section>
+);
+
+/** Who makes the library, and the way to the agency's own site. */
+const Agency = () => (
+  <section className="mx-auto w-full max-w-7xl px-4 pb-24">
+    {/* the whole panel is the link; the sun behind it rises on hover */}
+    <a
+      href={agency}
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Visit epika.ad"
+      className={cn(
+        "group relative flex min-h-[26rem] flex-col justify-between gap-16 overflow-hidden rounded-surface bg-linear-to-br from-brand to-primary-dimmed p-8 text-primary-foreground sm:min-h-[30rem] sm:p-14",
+        focus,
+      )}
+    >
+      <Logo className="-right-6 sm:-right-10 absolute bottom-0 h-44 origin-bottom-right scale-90 fill-primary-foreground/15 transition-[scale,fill] duration-700 ease-spring group-hover:scale-100 group-hover:fill-primary-foreground/25 sm:h-72 lg:h-[26rem] motion-reduce:transition-none" />
+      <p className="relative flex items-center gap-3 font-medium text-sm uppercase tracking-widest">
+        <span className="h-px w-8 bg-primary-foreground" />
+        The agency behind it
+      </p>
+      <div className="relative">
+        <h2 className="font-semibold text-6xl leading-[0.9] tracking-tighter sm:text-8xl lg:text-9xl">
+          Made by
+          <br />
+          Epika.
+        </h2>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-6">
+          <p className="max-w-sm text-pretty text-lg text-primary-foreground/85">
+            Epika UI is built and maintained by the team at Epika. See what else
+            we make.
+          </p>
+          <span className="flex h-12 items-center gap-2 rounded-full bg-primary-foreground pr-2 pl-6 font-semibold text-brand transition-[gap] duration-400 ease-spring group-hover:gap-4 motion-reduce:transition-none">
+            epika.ad
+            <span className="flex size-8 items-center justify-center rounded-full bg-brand text-primary-foreground">
+              <ArrowUpRightIcon />
+            </span>
+          </span>
+        </div>
+      </div>
+    </a>
+  </section>
+);
+
+export const Landing = () => (
+  <>
+    <Hero />
+    <Horizon />
+    <Reasons />
+    <Wall />
+    <Agency />
   </>
 );

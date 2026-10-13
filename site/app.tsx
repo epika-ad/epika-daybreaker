@@ -1,4 +1,3 @@
-import { useEffect, useSyncExternalStore } from "react";
 import {
   cn,
   ThemeProvider,
@@ -6,8 +5,17 @@ import {
   TooltipProvider,
   useTheme,
 } from "daybreaker";
+import { useEffect, useSyncExternalStore } from "react";
 import { Browse, Component, Components, Docs, Home } from "./pages";
-import { ContrastIcon, focus, GitHubIcon, Logo, pill } from "./parts";
+import {
+  ArrowUpRightIcon,
+  agency,
+  ContrastIcon,
+  focus,
+  GitHubIcon,
+  Logo,
+  pill,
+} from "./parts";
 
 const repository = "https://github.com/epika-ad/epika-daybreaker";
 
@@ -55,7 +63,7 @@ const ThemeToggle = () => {
 
 const Header = ({ route }: { route: string }) => (
   <header className="sticky top-0 z-40 flex justify-center px-4 pt-5">
-    <div className="flex w-full max-w-3xl items-center justify-between gap-2">
+    <div className="flex w-full max-w-4xl items-center justify-between gap-2">
       <a
         href="#/"
         aria-label="Epika UI home"
@@ -87,6 +95,20 @@ const Header = ({ route }: { route: string }) => (
         ))}
       </nav>
       <div className="flex items-center gap-2">
+        <a
+          href={agency}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(
+            pill,
+            // dropped where the bar has no room for it
+            "flex h-11 items-center gap-1 px-4 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground max-md:hidden",
+            focus,
+          )}
+        >
+          epika.ad
+          <ArrowUpRightIcon className="size-3.5" />
+        </a>
         <a
           href={repository}
           target="_blank"
@@ -155,6 +177,18 @@ const Shell = () => {
           )}
         >
           GitHub
+        </a>
+        . Made by{" "}
+        <a
+          href={agency}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(
+            "rounded-sm text-foreground underline underline-offset-4",
+            focus,
+          )}
+        >
+          Epika
         </a>
         .
       </footer>

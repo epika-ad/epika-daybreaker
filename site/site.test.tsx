@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
 import { ToastProvider, TooltipProvider } from "daybreaker";
+import { describe, expect, it } from "vitest";
 import { App } from "./app";
 import { components, example } from "./registry";
 import { hasThumbnail } from "./thumbnails";
@@ -50,6 +50,18 @@ describe("site", () => {
       screen.getByRole("heading", { level: 1, name: heading }),
     ).toBeVisible();
   });
+
+  it("links to the agency's site from the home page", () => {
+    window.location.hash = "#/";
+    window.scrollTo = () => {};
+
+    render(<App />);
+
+    expect(
+      screen.getByRole("link", { name: "Visit epika.ad" }),
+    ).toHaveAttribute("href", "https://epika.ad");
+  });
+
   it("offers the code to copy instead of printing it", () => {
     window.location.hash = "#/components/dialog";
     window.scrollTo = () => {};
