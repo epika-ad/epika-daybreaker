@@ -46,6 +46,7 @@
     "dev": "vite --config site/vite.config.ts",
     "build": "tsup && node scripts/styles.mjs",
     "build:site": "vite build --config site/vite.config.ts",
+    "build:skill": "node scripts/skill/build.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",

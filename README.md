@@ -90,6 +90,16 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "daybreaker/ch
 
 Also exported: `ThemeProvider`, `useTheme`, `useToast`, `DirectionProvider`, `cn`, `cva` and the icons.
 
+## Use it with AI assistants
+
+The [skill/](skill/) folder teaches an AI assistant to build with daybreaker: setup, how the components fit together, theming, Next.js rules, and every component's props and working example.
+
+- **Claude (claude.ai):** Settings → Capabilities → Skills → upload [skill/daybreaker.zip](skill/daybreaker.zip).
+- **Claude Code:** copy [skill/daybreaker/](skill/daybreaker/) into `~/.claude/skills/` (for you) or `.claude/skills/` (for one project).
+- **ChatGPT and other assistants:** add [skill/daybreaker-single-file.md](skill/daybreaker-single-file.md) to a project's files or a custom GPT's knowledge.
+
+The skill is generated from the library; run `npm run build:skill` after changing components or examples.
+
 ## Customize
 
 Every component accepts `className`; components with inner parts also accept `classList` to target them:
