@@ -19,8 +19,8 @@ import {
   CardTitle,
   Chart,
   Checkbox,
+  CheckIcon,
   ChevronDownIcon,
-  CircleCheckIcon,
   cn,
   Empty,
   EmptyActions,
@@ -34,8 +34,8 @@ import {
   Input,
   InputGroup,
   InputGroupAddon,
+  Kbd,
   Meter,
-  PencilIcon,
   PlusIcon,
   Radio,
   RadioGroup,
@@ -51,125 +51,225 @@ import {
   SidebarItem,
   Slider,
   Switch,
+  Tab,
+  Tabs,
+  TabsList,
+  TabsPanel,
   Textarea,
   UserIcon,
+  useTheme,
   useToast,
 } from "daybreaker";
-import { type FormEvent, type ReactNode, useState } from "react";
+import {
+  type ComponentType,
+  type CSSProperties,
+  type FormEvent,
+  Fragment,
+  type ReactNode,
+  useState,
+} from "react";
+import { version } from "../package.json";
 import {
   ArrowUpRightIcon,
   agency,
-  ContrastIcon,
+  ChatGPTIcon,
+  ClaudeIcon,
+  CodeBlock,
   CopyButton,
   focus,
   Logo,
+  MarkdownIcon,
   pill,
 } from "./parts";
 import { components, example } from "./registry";
 
 const install = "npm install daybreaker";
 
-// the agency's own headline style: large, light, ending on a red full stop
-const display = "font-light tracking-tighter";
+// headings across the page: bold and tight, ending on a red full stop
+const display = "font-semibold tracking-tighter";
 
 const Stop = () => <span className="text-brand">.</span>;
 
+// every section shares one column, so everything lines up on the same edges
+const column = "mx-auto w-full max-w-7xl px-4 sm:px-6";
+
 /**
- * Set like epika.ad's: a red line over a big staggered headline that comes
- * into focus, with live components in the corners the stagger leaves empty.
+ * Set like epika.ad's: a red line over a big two-line headline that comes into
+ * focus, then a ruled line with the pitch on one side and the way in on the
+ * other.
+ */
+/** A line of the headline whose words come into focus one after another. */
+const Words = ({ text, from, last }: Words.Props) =>
+  text.split(" ").map((word, index, all) => (
+    <Fragment key={word}>
+      <span
+        className="inline-block animate-focus-in motion-reduce:animate-none"
+        style={{ animationDelay: `${from + index * 70}ms` }}
+      >
+        {word}
+        {index === all.length - 1 && last}
+      </span>
+      {index < all.length - 1 && " "}
+    </Fragment>
+  ));
+namespace Words {
+  export type Props = { text: string; from: number; last?: ReactNode };
+}
+
+const facts = [
+  `v${version}`,
+  "React 19",
+  "Tailwind CSS v4",
+  "Base UI",
+  "MIT",
+] as const;
+
+/**
+ * Like the strongest kit sites (Untitled UI, Aceternity, HeroUI): a short bold
+ * pitch on the left, and the product itself on the right, as a tilted wall of
+ * the real components drifting past.
  */
 const Hero = () => (
-  <section className="relative mx-auto w-full max-w-7xl px-4 pt-14 sm:pt-20 lg:pt-40 lg:pb-60">
-    <Float className="top-4 right-4 w-72" delay={500}>
-      <Cap />
-    </Float>
-    <Float className="bottom-0 left-4 w-80" delay={650}>
-      <Analytics />
-    </Float>
-    <Float className="right-4 bottom-0 w-72" delay={800}>
-      <Budget />
-    </Float>
-    <p className="text-balance text-brand text-xl tracking-tight sm:text-2xl lg:pl-[8%]">
-      {components.length} accessible React components, styled with Tailwind CSS.
-    </p>
-    <h1
+  <section className="relative isolate overflow-hidden">
+    <div
       className={cn(
-        display,
-        "mt-3 text-[clamp(2.75rem,6.6vw,6rem)] leading-[0.95]",
+        column,
+        "relative z-10 flex flex-col justify-center pt-12 pb-4 sm:pt-16 lg:min-h-[min(calc(100svh-4rem),54rem)] lg:py-24",
       )}
     >
-      <span className="block animate-focus-in motion-reduce:animate-none lg:pl-[8%]">
-        The foundation for
-      </span>{" "}
-      <span
-        className="block animate-focus-in motion-reduce:animate-none lg:text-right"
-        style={{ animationDelay: "150ms" }}
-      >
-        every Epika interface
-        <Stop />
-      </span>
-    </h1>
-    <div className="mt-10 flex flex-col items-start gap-5 lg:mt-14 lg:items-center">
-      <div className="flex flex-wrap items-center gap-3">
-        <Button size="lg" nativeButton={false} render={<a href="#/docs" />}>
-          Get started
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          nativeButton={false}
-          render={<a href="#/components" />}
+      <div className="flex max-w-xl flex-col items-start">
+        <a
+          href="#/components/questionnaire"
+          className={cn(
+            pill,
+            "flex animate-focus-in items-center gap-2 py-1 pr-3 pl-1 text-sm transition-colors hover:border-brand motion-reduce:animate-none",
+            focus,
+          )}
         >
-          View components
-        </Button>
-      </div>
-      <div
-        className={cn(
-          pill,
-          "flex items-center gap-2 py-1 pr-1 pl-4 font-mono text-sm",
-        )}
-      >
-        <span aria-hidden="true" className="text-brand">
-          $
-        </span>
-        {install}
-        <CopyButton text={install} className="rounded-full" />
+          <span className="rounded-full bg-brand px-2 py-0.5 font-medium text-primary-foreground text-xs">
+            New
+          </span>
+          Questionnaire component
+          <ArrowUpRightIcon className="size-3.5 rotate-45 text-foreground-dimmed" />
+        </a>
+        <h1 className="mt-7 text-balance font-semibold text-5xl leading-[1.02] tracking-tighter sm:text-6xl xl:text-7xl">
+          <Words
+            text="The foundation for every Epika interface"
+            from={120}
+            last={<Stop />}
+          />
+        </h1>
+        <p className="mt-6 max-w-lg animate-focus-in text-pretty text-foreground-dimmed text-lg motion-reduce:animate-none [animation-delay:500ms] sm:text-xl">
+          {components.length} accessible React components, built on Base UI and
+          styled with Tailwind CSS. Free and open source.
+        </p>
+        <div className="mt-9 flex animate-focus-in flex-wrap items-center gap-3 motion-reduce:animate-none [animation-delay:620ms]">
+          <Button size="lg" nativeButton={false} render={<a href="#/docs" />}>
+            Get started
+            <ArrowUpRightIcon className="rotate-45" />
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            nativeButton={false}
+            render={<a href="#/components" />}
+          >
+            Browse components
+          </Button>
+        </div>
+        <div
+          className={cn(
+            pill,
+            "mt-4 flex h-10 animate-focus-in items-center gap-2 pr-1 pl-4 font-mono text-sm motion-reduce:animate-none [animation-delay:720ms]",
+          )}
+        >
+          <span aria-hidden="true" className="text-brand">
+            $
+          </span>
+          {install}
+          <CopyButton text={install} className="rounded-full" />
+        </div>
+        <ul className="mt-10 flex animate-focus-in flex-wrap items-center gap-x-3 gap-y-1 text-foreground-dimmed text-sm motion-reduce:animate-none [animation-delay:820ms]">
+          {facts.map((fact, index) => (
+            <li key={fact} className="flex items-center gap-3">
+              {index > 0 && (
+                <span
+                  aria-hidden="true"
+                  className="size-1 rounded-full bg-border"
+                />
+              )}
+              {fact}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
+    <Isometric
+      stacks={[
+        [Budget, Controls, Reach],
+        [Schedule, Notifications, Chat],
+        [Analytics, Brief, Start],
+        [Cap, Survey, Navigation],
+      ]}
+      className="relative h-[30rem] lg:absolute lg:inset-y-0 lg:right-0 lg:left-[44%] lg:h-auto"
+    />
   </section>
 );
 
-/** A live component set loose in a corner of the hero, on wide screens. */
-const Float = ({ className, delay, children }: Float.Props) => (
-  <div
-    style={{ animationDelay: `${delay}ms` }}
-    className={cn(
-      "absolute hidden animate-pop-in drop-shadow-[0_24px_32px_rgb(53_10_63/0.14)] motion-reduce:animate-none lg:block [&>*]:mb-0",
-      className,
-    )}
-  >
-    {children}
-  </div>
-);
-namespace Float {
+/**
+ * The tilted wall beside the headline. The cards are the real components but
+ * only a picture here, so the wall is hidden from assistive technology and
+ * cannot be focused; the same components are usable further down the page.
+ */
+const Isometric = ({ stacks, className }: Isometric.Props) => {
+  return (
+    <div
+      aria-hidden="true"
+      inert
+      className={cn("pointer-events-none select-none", className)}
+    >
+      {/* masked rather than covered, so it fades into any background */}
+      <div className="wall-fade absolute inset-0 overflow-hidden">
+        <div
+          className="absolute top-1/2 left-1/2 flex w-max gap-6"
+          style={{
+            transform:
+              "translate(-42%, -50%) rotateX(50deg) rotateZ(-36deg) scale(0.92)",
+          }}
+        >
+          {stacks.map((stack, column) => (
+            <div
+              key={stack.map((Card) => Card.name).join()}
+              className={cn(
+                "flex w-80 animate-drift flex-col gap-6 motion-reduce:animate-none",
+                column % 2 === 1 && "[animation-direction:reverse]",
+              )}
+            >
+              {/* each column twice over, so its loop has no seam */}
+              {[0, 1].flatMap((copy) =>
+                stack.map((Card) => (
+                  <div
+                    key={`${copy}-${Card.name}`}
+                    className="drop-shadow-[0_24px_40px_rgb(53_10_63/0.10)]"
+                  >
+                    <Card />
+                  </div>
+                )),
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+namespace Isometric {
   export type Props = {
+    /** Columns of live cards. */
+    stacks: readonly (readonly ComponentType[])[];
     className?: string;
-    delay: number;
-    children: ReactNode;
   };
 }
-
-/** The logo's sunrise, with its horizon line carried out to both edges. */
-const Horizon = () => (
-  <div
-    aria-hidden="true"
-    className="mx-auto flex w-full max-w-7xl items-end px-4 pt-12"
-  >
-    <span className="mb-px h-1 flex-1 bg-linear-to-r from-transparent to-brand" />
-    <Logo className="-mx-px h-14" />
-    <span className="mb-px h-1 flex-1 bg-linear-to-l from-transparent to-brand" />
-  </div>
-);
 
 // Every card on the wall is the real component, wired up enough to play with.
 
@@ -178,25 +278,33 @@ const Panel = ({ slug, className, children }: Panel.Props) => {
   const entry = components.find((item) => item.slug === slug);
 
   return (
-    // the button shares the card's grid cell instead of being positioned
-    // over it: absolute positioning inside the wall's columns stops the
-    // browser from balancing them
-    <div className="group/panel mb-5 grid break-inside-avoid">
-      <Card
-        className={cn("col-start-1 row-start-1 min-w-0 gap-5 p-5", className)}
+    <Card className="gap-0 border border-border bg-background p-0">
+      {entry && (
+        <header className="flex items-center justify-between gap-3 px-5 py-2">
+          <a
+            href={`#/components/${slug}`}
+            className={cn(
+              "rounded-sm font-medium text-foreground-dimmed text-xs transition-colors hover:text-foreground",
+              focus,
+            )}
+          >
+            {entry.name}
+          </a>
+          {found && (
+            <CopyButton
+              text={found.source}
+              label={`Copy ${entry.name} code`}
+              className="-mr-1.5"
+            />
+          )}
+        </header>
+      )}
+      <div
+        className={cn("flex flex-1 flex-col gap-5 px-5 pt-1 pb-5", className)}
       >
         {children}
-      </Card>
-      {found && entry && (
-        <CopyButton
-          text={found.source}
-          label={`Copy ${entry.name} code`}
-          // on the corner, so it never covers the card's own controls; it
-          // shows on hover or focus, and always where there is no hover
-          className="-mt-2.5 -mr-2.5 z-1 col-start-1 row-start-1 self-start justify-self-end rounded-full border border-border bg-background opacity-0 transition-[opacity,color] hover:bg-background focus-visible:opacity-100 group-hover/panel:opacity-100 [@media(hover:none)]:opacity-100"
-        />
-      )}
-    </div>
+      </div>
+    </Card>
   );
 };
 namespace Panel {
@@ -306,8 +414,11 @@ const Navigation = () => {
   const [current, setCurrent] = useState("Overview");
 
   return (
-    <Panel slug="sidebar" className="p-2">
-      <Sidebar aria-label="Example navigation" className="w-full p-0">
+    <Panel slug="sidebar">
+      <Sidebar
+        aria-label="Example navigation"
+        className="-mx-3 w-auto bg-transparent p-0"
+      >
         {navigation.map((group) => (
           <SidebarGroup key={group.label}>
             <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
@@ -329,7 +440,7 @@ const Navigation = () => {
 };
 
 const Schedule = () => (
-  <Panel slug="calendar" className="items-center p-3">
+  <Panel slug="calendar" className="items-center">
     <Calendar defaultValue={new Date()} />
   </Panel>
 );
@@ -559,7 +670,7 @@ const Survey = () => {
 };
 
 const Start = () => (
-  <Panel slug="empty" className="p-2">
+  <Panel slug="empty">
     <Empty className="border-none">
       <EmptyMedia>
         <PlusIcon />
@@ -643,134 +754,550 @@ const Notifications = () => (
   </Panel>
 );
 
-const reasons = [
-  {
-    icon: CircleCheckIcon,
-    title: "Accessible by default",
-    text: "Keyboard navigation, focus management and screen reader support are built in, on top of Base UI.",
-  },
-  {
-    icon: ContrastIcon,
-    title: "On brand, light and dark",
-    text: "Epika red on warm paper, with plum ink. One set of tokens drives both themes.",
-  },
-  {
-    icon: PencilIcon,
-    title: "Yours to restyle",
-    text: "Override any token to rebrand. Use it with Tailwind CSS v4 or the precompiled stylesheet.",
-  },
+/** The heading every section after the hero opens with. */
+const Intro = ({ eyebrow, title, children }: Intro.Props) => (
+  <div className="max-w-3xl">
+    <p className="font-medium text-brand">{eyebrow}</p>
+    <h2
+      className={cn(
+        display,
+        "mt-3 text-balance text-4xl leading-[1.05] sm:text-5xl",
+      )}
+    >
+      {title}
+      <Stop />
+    </h2>
+    {children && (
+      <p className="mt-4 text-pretty text-foreground-dimmed text-lg">
+        {children}
+      </p>
+    )}
+  </div>
+);
+namespace Intro {
+  export type Props = { eyebrow: string; title: string; children?: ReactNode };
+}
+
+/** One tile of the feature grid: what it is on top, a live demo under it. */
+const Tile = ({ title, text, className, children }: Tile.Props) => (
+  <article
+    className={cn(
+      "flex min-w-0 flex-col gap-8 rounded-[2rem] border border-border bg-background-dimmed p-5 sm:p-8",
+      className,
+    )}
+  >
+    <div>
+      <h3 className="font-semibold text-xl tracking-tight">{title}</h3>
+      <p className="mt-2 max-w-md text-pretty text-foreground-dimmed">{text}</p>
+    </div>
+    <div className="mt-auto">{children}</div>
+  </article>
+);
+namespace Tile {
+  export type Props = {
+    title: string;
+    text: string;
+    className?: string;
+    children: ReactNode;
+  };
+}
+
+// colours to rebrand the demo with; Epika keeps the theme's own red
+const brands = [
+  { name: "Epika", color: undefined },
+  { name: "Ocean", color: "oklch(0.56 0.19 255)" },
+  { name: "Forest", color: "oklch(0.55 0.14 155)" },
+  { name: "Violet", color: "oklch(0.55 0.22 295)" },
+  { name: "Amber", color: "oklch(0.68 0.16 60)" },
 ] as const;
 
-const Reasons = () => (
-  <section
-    aria-label="Why daybreaker"
-    className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-16 md:grid-cols-3"
-  >
-    {reasons.map(({ icon: Icon, title, text }) => (
-      <div key={title} className="flex flex-col items-start gap-3">
-        <span className="flex size-9 items-center justify-center rounded-control bg-accent text-brand">
-          <Icon />
-        </span>
-        <h2 className="font-semibold tracking-tight">{title}</h2>
-        <p className="max-w-sm text-pretty text-foreground-dimmed text-sm">
-          {text}
-        </p>
+/** Rebrands a handful of live components by overriding one token on them. */
+const Restyle = () => {
+  const [pick, setPick] = useState(0);
+  const color = brands[pick]?.color;
+  // the components only read tokens, so setting them on a wrapper is enough
+  const tokens = color
+    ? ({
+        "--wz-primary": color,
+        "--wz-ring": color,
+        "--wz-primary-dimmed": `color-mix(in oklab, ${color} 82%, black)`,
+      } as CSSProperties)
+    : undefined;
+
+  return (
+    <Tile
+      title="Rebrand it with one token"
+      text="Every component reads the same handful of tokens. Change the primary colour and all of them follow, no class names touched."
+      className="lg:col-span-2"
+    >
+      <div className="grid gap-6 rounded-surface border border-border bg-background p-5 sm:grid-cols-[auto_1fr] sm:gap-8">
+        <div
+          role="radiogroup"
+          aria-label="Brand colour"
+          className="flex gap-2 sm:flex-col"
+        >
+          {brands.map((brand, index) => (
+            // biome-ignore lint/a11y/useSemanticElements: a swatch button reads better than a native radio here
+            <button
+              key={brand.name}
+              type="button"
+              role="radio"
+              aria-checked={pick === index}
+              onClick={() => setPick(index)}
+              className={cn(
+                "flex cursor-pointer items-center gap-2 rounded-full py-1 pr-3 pl-1 text-sm transition-colors hover:bg-accent aria-checked:bg-accent aria-checked:font-medium",
+                focus,
+              )}
+            >
+              <span
+                className="size-5 rounded-full border border-border"
+                style={{ background: brand.color ?? "var(--wz-primary)" }}
+              />
+              <span className="max-sm:sr-only">{brand.name}</span>
+            </button>
+          ))}
+        </div>
+        <div style={tokens} className="grid content-center gap-5">
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm">Publish</Button>
+            <Button size="sm" variant="outline">
+              Preview
+            </Button>
+            <Badge>New</Badge>
+            <Badge variant="outline">Draft</Badge>
+          </div>
+          <div className="flex items-center gap-4">
+            <Switch defaultChecked aria-label="Notifications" />
+            <Checkbox defaultChecked aria-label="Remember me" />
+            <Slider defaultValue={64} aria-label="Volume" className="flex-1" />
+          </div>
+          <Meter label="Storage used" value={72} />
+        </div>
       </div>
-    ))}
+    </Tile>
+  );
+};
+
+// the tokens a theme is mostly made of, drawn with whatever they are right now
+const palette = [
+  { name: "Background", swatch: "bg-background" },
+  { name: "Ink", swatch: "bg-foreground" },
+  { name: "Primary", swatch: "bg-primary" },
+  { name: "Accent", swatch: "bg-accent" },
+] as const;
+
+/** Flips the whole page between light and dark, to show one set of tokens. */
+const Themes = () => {
+  const [theme, setTheme] = useTheme();
+  const dark =
+    theme === "dark" ||
+    (theme === "system" &&
+      typeof document !== "undefined" &&
+      document.documentElement.classList.contains("dark"));
+
+  return (
+    <Tile
+      title="Light and dark, built in"
+      text="One set of tokens drives both themes. Flip this and the whole page follows."
+    >
+      <ul
+        aria-label="Theme colours in use"
+        className="mb-3 grid grid-cols-4 gap-2"
+      >
+        {palette.map((token) => (
+          <li key={token.name} className="grid gap-1.5">
+            <span
+              className={cn(
+                "h-14 rounded-item border border-border",
+                token.swatch,
+              )}
+            />
+            <span className="truncate text-foreground-dimmed text-xs">
+              {token.name}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div className="flex items-center justify-between gap-4 rounded-surface border border-border bg-background p-5">
+        <div>
+          <p className="font-medium">{dark ? "Dark" : "Light"} mode</p>
+          <p className="text-foreground-dimmed text-sm">
+            {dark ? "Plum night, paper ink" : "Warm paper, plum ink"}
+          </p>
+        </div>
+        <Switch
+          checked={dark}
+          onCheckedChange={(on) => setTheme(on ? "dark" : "light")}
+          aria-label="Dark mode"
+        />
+      </div>
+    </Tile>
+  );
+};
+
+/** Keyboard support you can try right in the tile. */
+const Access = () => (
+  <Tile
+    title="Accessible by default"
+    text="Focus, keyboard and screen reader support come from Base UI. Tab into the tabs, then use the arrow keys."
+  >
+    <div className="grid gap-4 rounded-surface border border-border bg-background p-5">
+      <Tabs defaultValue="week">
+        <TabsList>
+          <Tab value="day">Day</Tab>
+          <Tab value="week">Week</Tab>
+          <Tab value="month">Month</Tab>
+        </TabsList>
+        <TabsPanel value="day" className="text-foreground-dimmed">
+          Today at a glance.
+        </TabsPanel>
+        <TabsPanel value="week" className="text-foreground-dimmed">
+          The next seven days.
+        </TabsPanel>
+        <TabsPanel value="month" className="text-foreground-dimmed">
+          The month ahead.
+        </TabsPanel>
+      </Tabs>
+      <p className="flex flex-wrap items-center gap-1.5">
+        <Kbd>Tab</Kbd>
+        <Kbd>←</Kbd>
+        <Kbd>→</Kbd>
+        <Kbd>Enter</Kbd>
+      </p>
+    </div>
+  </Tile>
+);
+
+/** The docs pages hand any component to an AI assistant. */
+const Agents = () => (
+  <Tile
+    title="Made for agents too"
+    text="Every component page copies its docs as Markdown, or opens them straight in Claude or ChatGPT."
+  >
+    <div className="rounded-surface border border-border bg-background p-2">
+      {[
+        { icon: MarkdownIcon, label: "Copy as Markdown", tint: "" },
+        { icon: ClaudeIcon, label: "Open in Claude", tint: "text-[#d97757]" },
+        { icon: ChatGPTIcon, label: "Open in ChatGPT", tint: "" },
+      ].map(({ icon: Icon, label, tint }) => (
+        <p
+          key={label}
+          className="flex items-center gap-3 rounded-item px-3 py-2.5 text-sm first:bg-accent"
+        >
+          <Icon className={tint} />
+          {label}
+        </p>
+      ))}
+    </div>
+  </Tile>
+);
+
+// where the library runs, each checked rather than promised
+const runs = [
+  "React 19",
+  "Next.js App Router",
+  "Vite and any React setup",
+  "Tailwind CSS v4 or plain CSS",
+  "Typed for TypeScript",
+] as const;
+
+const Runs = () => (
+  <Tile
+    title="Runs where React does"
+    text="The bundle is marked “use client”, so it drops into Server Components as well as single-page apps."
+  >
+    <ul className="grid gap-2.5 rounded-surface border border-border bg-background p-5 text-sm">
+      {runs.map((item) => (
+        <li key={item} className="flex items-center gap-2.5">
+          <span className="flex size-5 items-center justify-center rounded-full bg-brand text-primary-foreground">
+            <CheckIcon className="size-3" />
+          </span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  </Tile>
+);
+
+const Features = () => (
+  <section className={cn(column, "py-24 sm:py-32")}>
+    <Intro
+      eyebrow="Why daybreaker"
+      title="Everything you need, nothing to fight"
+    >
+      The parts teams usually build three times over, done once and done
+      carefully.
+    </Intro>
+    <div className="mt-14 grid gap-4 lg:grid-cols-3">
+      <Restyle />
+      <Themes />
+      <Access />
+      <Agents />
+      <Runs />
+    </div>
   </section>
 );
 
 const Wall = () => (
-  <section className="mx-auto w-full max-w-7xl px-4 pb-24">
-    <div className="flex flex-wrap items-end justify-between gap-4 pb-8">
-      <div>
-        <h2 className={cn(display, "text-4xl sm:text-5xl")}>
-          Real components, not screenshots
-          <Stop />
-        </h2>
-        <p className="mt-2 text-foreground-dimmed">
-          Every card on this page is live. Hover one to copy its code.
-        </p>
+  <section className="border-border border-y bg-background-dimmed">
+    <div className={cn(column, "py-24 sm:py-32")}>
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+        <Intro
+          eyebrow="The components"
+          title="Real components, not screenshots"
+        >
+          Every card below is live. Copy the code behind any of them.
+        </Intro>
+        <a
+          href="#/components"
+          className={cn(
+            "group flex shrink-0 items-center gap-1.5 rounded-sm font-medium",
+            focus,
+          )}
+        >
+          Browse all {components.length}
+          <ArrowUpRightIcon className="group-hover:-translate-y-0.5 text-brand transition-transform group-hover:translate-x-0.5" />
+        </a>
       </div>
-      <a
-        href="#/components"
-        className={cn(
-          "group flex items-center gap-1.5 rounded-sm font-medium text-sm",
-          focus,
-        )}
-      >
-        Browse all {components.length}
-        <ArrowUpRightIcon className="group-hover:-translate-y-0.5 text-brand transition-transform group-hover:translate-x-0.5" />
-      </a>
-    </div>
-    <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4">
-      <Controls />
-      <Navigation />
-      <Schedule />
-      <Reach />
-      <Brief />
-      <Chat />
-      <Survey />
-      <Start />
-      <Notifications />
+      {/* rows of cards with matching heights, so the grid ends on one line */}
+      <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Controls />
+        <Schedule />
+        <Brief />
+        <Chat />
+        <Survey />
+        <Reach />
+        <Navigation />
+        <Start />
+        <Notifications />
+      </div>
     </div>
   </section>
 );
 
-/** The way to the studio: who makes the kit, and how to hire them. */
-const Work = () => (
-  <section className="mx-auto w-full max-w-7xl px-4 pb-24">
-    {/* the whole panel is the link; the sun rises on hover. It is the page
-        in reverse: plum in the light theme, paper in the dark one */}
-    <a
-      href={agency}
-      target="_blank"
-      rel="noreferrer"
-      aria-label="Work with Epika"
-      className={cn(
-        "group relative flex min-h-[26rem] flex-col justify-between gap-16 overflow-hidden rounded-surface bg-foreground p-8 text-background sm:min-h-[30rem] sm:p-14",
-        focus,
-      )}
-    >
-      <Logo className="-right-6 sm:-right-10 absolute bottom-0 h-44 origin-bottom-right scale-90 transition-[scale] duration-700 ease-spring group-hover:scale-100 motion-reduce:transition-none sm:h-72 lg:h-[26rem]" />
-      <p className="relative text-brand text-xl tracking-tight sm:text-2xl">
-        Need a custom UI?
-      </p>
-      <div className="relative">
-        <h2
-          className={cn(
-            display,
-            "text-6xl leading-[0.9] sm:text-8xl lg:text-9xl",
-          )}
-        >
-          Work with
-          <br />
-          Epika
-          <Stop />
-        </h2>
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-6">
-          <p className="max-w-sm text-pretty text-background/75 text-lg">
-            Daybreaker is built and maintained by the team at Epika, a creative
-            studio for brands and digital experiences.
-          </p>
-          <span className="flex h-12 items-center gap-2 rounded-full bg-background pr-2 pl-6 font-medium text-foreground transition-[gap] duration-400 ease-spring group-hover:gap-4 motion-reduce:transition-none">
-            Get in touch
-            <span className="flex size-8 items-center justify-center rounded-full bg-brand text-primary-foreground">
-              <ArrowUpRightIcon />
+const steps = [
+  {
+    title: "Install the package",
+    code: install,
+  },
+  {
+    title: "Add the styles",
+    code: '@import "tailwindcss";\n@import "daybreaker/theme.css";',
+  },
+  {
+    title: "Use a component",
+    code: 'import { Button } from "daybreaker";\n\n<Button>Ship it</Button>',
+  },
+] as const;
+
+const Steps = () => (
+  <section className={cn(column, "py-24 sm:py-32")}>
+    <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <Intro
+        eyebrow="Get started"
+        title="From install to on screen in a minute"
+      >
+        No Tailwind? Import{" "}
+        <code className="font-mono text-base">daybreaker/styles.css</code>{" "}
+        instead and skip the second step.
+      </Intro>
+      <a
+        href="#/docs"
+        className={cn(
+          "group flex shrink-0 items-center gap-1.5 rounded-sm font-medium",
+          focus,
+        )}
+      >
+        Read the docs
+        <ArrowUpRightIcon className="group-hover:-translate-y-0.5 text-brand transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+    <ol className="mt-14 grid gap-4 lg:grid-cols-3">
+      {steps.map((step, index) => (
+        <li key={step.title} className="flex min-w-0 flex-col gap-4">
+          <p className="flex items-center gap-3 font-medium">
+            <span className="flex size-7 items-center justify-center rounded-full bg-brand font-mono text-primary-foreground text-xs">
+              {index + 1}
             </span>
-          </span>
-        </div>
+            {step.title}
+          </p>
+          <CodeBlock code={step.code} className="flex-1" />
+        </li>
+      ))}
+    </ol>
+  </section>
+);
+
+// what the studio does, in its own words from epika.ad
+const crafts = ["Brands", "Strategy", "Digital experiences"] as const;
+
+const needs = ["Product UI", "Website", "Brand", "Design system"] as const;
+
+/**
+ * A short project brief, made of the library's own form components. There is
+ * no backend yet, so sending copies the brief and opens epika.ad.
+ */
+const ProjectBrief = () => {
+  const toast = useToast();
+
+  const send = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const picked = needs.filter((need) => form.get(need) === "on");
+    const text = [
+      `Name: ${form.get("name")}`,
+      `Email: ${form.get("email")}`,
+      `Needs: ${picked.join(", ") || "Not sure yet"}`,
+      "",
+      String(form.get("about") ?? ""),
+    ].join("\n");
+    // a blocked clipboard should not stop the brief from going out
+    navigator.clipboard?.writeText(text).catch(() => {});
+    window.open(agency, "_blank", "noopener");
+    toast.add({
+      type: "success",
+      title: "Brief copied",
+      description: "Paste it to Epika on epika.ad.",
+    });
+  };
+
+  return (
+    <form
+      onSubmit={send}
+      aria-label="Start a project"
+      className="grid gap-5 rounded-surface bg-background p-6 text-foreground shadow-[0_32px_64px_rgb(0_0_0/0.25)] sm:p-8"
+    >
+      <div>
+        <h3 className="font-semibold text-xl tracking-tight">
+          Start a project
+        </h3>
+        <p className="mt-1 text-foreground-dimmed text-sm">
+          A few lines is plenty. We take it from there.
+        </p>
       </div>
-    </a>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field>
+          <FieldLabel>Name</FieldLabel>
+          <Input
+            name="name"
+            required
+            autoComplete="name"
+            placeholder="Ada Lovelace"
+          />
+        </Field>
+        <Field>
+          <FieldLabel>Email</FieldLabel>
+          <Input
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder="ada@company.com"
+          />
+        </Field>
+      </div>
+      <fieldset className="grid gap-2">
+        <legend className="mb-2 font-medium text-sm">What do you need?</legend>
+        <div className="flex flex-wrap gap-2">
+          {needs.map((need) => (
+            <label
+              key={need}
+              className="cursor-pointer rounded-full border border-border px-3.5 py-1.5 text-sm transition-colors hover:bg-accent has-checked:border-primary has-checked:bg-primary has-checked:text-primary-foreground has-focus-visible:ring-2 has-focus-visible:ring-ring"
+            >
+              <input type="checkbox" name={need} className="sr-only" />
+              {need}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      {/* a plain label: Field only names the library's own inputs, and the
+          textarea is a native element */}
+      {/* biome-ignore lint/a11y/noLabelWithoutControl: Textarea renders the control */}
+      <label className="flex flex-col gap-1.5">
+        <span className="font-medium text-foreground text-sm">
+          About the project
+        </span>
+        <Textarea
+          name="about"
+          rows={3}
+          placeholder="What are you building, and by when?"
+        />
+      </label>
+      <Button type="submit" size="lg" className="w-full">
+        Send brief
+        <ArrowUpRightIcon />
+      </Button>
+    </form>
+  );
+};
+
+/**
+ * The page ends here: who makes the kit, and a brief to hire them with. It is
+ * the page in reverse: plum in the light theme, paper in the dark one.
+ */
+const Work = () => (
+  <section className={cn(column, "pb-24 sm:pb-32")}>
+    <div className="relative isolate overflow-hidden rounded-[2rem] bg-foreground p-6 text-background sm:p-14">
+      {/* a warm light from behind the brief */}
+      <div
+        aria-hidden="true"
+        className="-z-10 absolute inset-0 bg-[radial-gradient(ellipse_55%_75%_at_85%_60%,color-mix(in_srgb,var(--wz-primary)_30%,transparent),transparent)]"
+      />
+      <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-16">
+        <div className="flex flex-col items-start">
+          <p className="flex items-center gap-3 font-medium text-brand">
+            <Logo className="h-4" />
+            Need a custom UI?
+          </p>
+          <h2
+            className={cn(display, "mt-5 text-5xl leading-[0.98] sm:text-7xl")}
+          >
+            Work with Epika
+            <Stop />
+          </h2>
+          <p className="mt-6 max-w-md text-pretty text-background/70 text-lg">
+            Epika is the creative studio behind daybreaker, shaping brands,
+            strategy and digital experiences. Bring us the product, and we will
+            bring the interface.
+          </p>
+          <ul className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-background/60 text-sm">
+            {crafts.map((craft, index) => (
+              <li key={craft} className="flex items-center gap-3">
+                {index > 0 && (
+                  <span
+                    aria-hidden="true"
+                    className="size-1 rounded-full bg-background/30"
+                  />
+                )}
+                {craft}
+              </li>
+            ))}
+          </ul>
+          <a
+            href={agency}
+            target="_blank"
+            rel="noreferrer"
+            className={cn(
+              "group mt-10 flex items-center gap-1.5 rounded-sm font-medium",
+              focus,
+            )}
+          >
+            See our work
+            <ArrowUpRightIcon className="group-hover:-translate-y-0.5 text-brand transition-transform group-hover:translate-x-0.5" />
+          </a>
+        </div>
+        <ProjectBrief />
+      </div>
+    </div>
   </section>
 );
 
 export const Landing = () => (
   <>
     <Hero />
-    <Horizon />
-    <Reasons />
+    <Features />
     <Wall />
+    <Steps />
     <Work />
   </>
 );

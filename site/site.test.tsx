@@ -57,9 +57,10 @@ describe("site", () => {
 
     render(<App />);
 
-    expect(
-      screen.getByRole("link", { name: "Work with Epika" }),
-    ).toHaveAttribute("href", "https://epika.ad");
+    expect(screen.getByRole("link", { name: "See our work" })).toHaveAttribute(
+      "href",
+      "https://epika.ad",
+    );
   });
 
   it("lets a card on the home page hand over its component's code", () => {

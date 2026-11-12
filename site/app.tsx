@@ -12,8 +12,6 @@ import {
   agency,
   ContrastIcon,
   focus,
-  GitHubIcon,
-  pill,
   Wordmark,
 } from "./parts";
 
@@ -23,6 +21,24 @@ const links = [
   { href: "#/", label: "Home", match: /^\/$/ },
   { href: "#/components", label: "Components", match: /^\/components/ },
   { href: "#/docs", label: "Docs", match: /^\/docs/ },
+] as const;
+
+const footerLinks = [
+  {
+    title: "Library",
+    links: [
+      { label: "Components", href: "#/components" },
+      { label: "Docs", href: "#/docs" },
+      { label: "GitHub", href: repository },
+    ],
+  },
+  {
+    title: "Epika",
+    links: [
+      { label: "epika.ad", href: agency },
+      { label: "Work with us", href: agency },
+    ],
+  },
 ] as const;
 
 const subscribe = (callback: () => void) => {
@@ -51,75 +67,65 @@ const ThemeToggle = () => {
       onClick={toggle}
       aria-label="Toggle dark mode"
       className={cn(
-        pill,
-        "flex size-11 cursor-pointer items-center justify-center text-foreground-dimmed transition-colors hover:text-foreground",
+        "flex size-9 cursor-pointer items-center justify-center rounded-full text-foreground-dimmed transition-colors hover:bg-accent hover:text-foreground",
         focus,
       )}
     >
-      <ContrastIcon className="size-5" />
+      <ContrastIcon className="size-[18px]" />
     </button>
   );
 };
 
+const navLink = cn(
+  "rounded-full px-3 py-1.5 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground aria-[current=page]:text-foreground",
+  focus,
+);
+
+// one bar across the page, on the same column as everything under it
 const Header = ({ route }: { route: string }) => (
-  <header className="sticky top-0 z-40 flex justify-center px-4 pt-5">
-    <div className="flex w-full max-w-4xl items-center justify-between gap-2">
+  <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl">
+    <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
       <a
         href="#/"
         aria-label="daybreaker home"
-        className={cn(pill, "flex h-11 items-center px-3 sm:pr-4", focus)}
+        className={cn("rounded-md", focus)}
       >
         <Wordmark />
       </a>
-      <nav
-        aria-label="Main"
-        className={cn(pill, "flex h-11 items-center px-1.5 text-sm")}
-      >
-        {links.map((link) => (
+      <div className="flex items-center gap-1">
+        <nav aria-label="Main" className="flex items-center">
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              aria-current={link.match.test(route) ? "page" : undefined}
+              className={cn(
+                navLink,
+                // the logo already leads home
+                link.href === "#/" && "hidden",
+              )}
+            >
+              {link.label}
+            </a>
+          ))}
           <a
-            key={link.href}
-            href={link.href}
-            aria-current={link.match.test(route) ? "page" : undefined}
-            className={cn(
-              "rounded-full px-2.5 py-1.5 font-medium text-foreground-dimmed transition-colors hover:text-foreground aria-[current=page]:text-foreground sm:px-4",
-              // on the narrowest phones the logo is the way home
-              link.href === "#/" && "max-[400px]:hidden",
-              focus,
-            )}
+            href={repository}
+            target="_blank"
+            rel="noreferrer"
+            className={cn(navLink, "max-sm:hidden")}
           >
-            {link.label}
+            GitHub
           </a>
-        ))}
-      </nav>
-      <div className="flex items-center gap-2">
-        <a
-          href={agency}
-          target="_blank"
-          rel="noreferrer"
-          className={cn(
-            pill,
-            // dropped where the bar has no room for it
-            "flex h-11 items-center gap-1 px-4 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground max-md:hidden",
-            focus,
-          )}
-        >
-          epika.ad
-          <ArrowUpRightIcon className="size-3.5" />
-        </a>
-        <a
-          href={repository}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="daybreaker on GitHub"
-          className={cn(
-            pill,
-            // dropped on phones, where the bar has no room for it
-            "flex size-11 items-center justify-center text-foreground-dimmed transition-colors hover:text-foreground max-sm:hidden",
-            focus,
-          )}
-        >
-          <GitHubIcon />
-        </a>
+          <a
+            href={agency}
+            target="_blank"
+            rel="noreferrer"
+            className={cn(navLink, "flex items-center gap-1 max-md:hidden")}
+          >
+            Epika
+            <ArrowUpRightIcon className="size-3.5" />
+          </a>
+        </nav>
         <ThemeToggle />
       </div>
     </div>
@@ -162,32 +168,45 @@ const Shell = () => {
       <main className="flex-1 overflow-x-clip">
         <Page route={route} />
       </main>
-      <footer className="border-border border-t px-4 py-8 text-center text-foreground-dimmed text-sm">
-        MIT licensed. Source on{" "}
-        <a
-          href={repository}
-          target="_blank"
-          rel="noreferrer"
-          className={cn(
-            "rounded-sm text-foreground underline underline-offset-4",
-            focus,
-          )}
-        >
-          GitHub
-        </a>
-        . Made by{" "}
-        <a
-          href={agency}
-          target="_blank"
-          rel="noreferrer"
-          className={cn(
-            "rounded-sm text-foreground underline underline-offset-4",
-            focus,
-          )}
-        >
-          Epika
-        </a>
-        .
+      <footer className="border-border border-t">
+        <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-14 sm:grid-cols-[1fr_auto_auto] sm:gap-16 sm:px-6">
+          <div className="grid content-start gap-3">
+            <Wordmark />
+            <p className="max-w-xs text-pretty text-foreground-dimmed text-sm">
+              Accessible React components, made by Epika and free to use.
+            </p>
+          </div>
+          {footerLinks.map((group) => (
+            <nav
+              key={group.title}
+              aria-label={group.title}
+              className="grid content-start gap-2.5 text-sm"
+            >
+              <p className="font-medium">{group.title}</p>
+              {group.links.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  {...(link.href.startsWith("http") && {
+                    target: "_blank",
+                    rel: "noreferrer",
+                  })}
+                  className={cn(
+                    "w-fit rounded-sm text-foreground-dimmed transition-colors hover:text-foreground",
+                    focus,
+                  )}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          ))}
+        </div>
+        <div className="border-border border-t">
+          <p className="mx-auto w-full max-w-7xl px-4 py-6 text-foreground-dimmed text-xs sm:px-6">
+            MIT licensed. © {new Date().getFullYear()} Epika.
+          </p>
+        </div>
       </footer>
     </div>
   );

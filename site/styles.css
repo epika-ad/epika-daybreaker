@@ -10,6 +10,35 @@
   --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
 
   --animate-focus-in: site-focus-in 900ms var(--wz-smooth) both;
+  --animate-drift: site-drift 80s linear infinite;
+}
+
+/* the tilted wall of cards fades out at its edges; beside text on wide
+   screens, it also fades in from the left */
+.wall-fade {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 22%,
+    black 66%,
+    transparent
+  );
+}
+
+@media (width >= 64rem) {
+  .wall-fade {
+    mask-image:
+      linear-gradient(to bottom, transparent, black 22%, black 66%, transparent),
+      linear-gradient(to right, transparent, rgb(0 0 0 / 0.35) 30%, black 65%);
+    mask-composite: intersect;
+  }
+}
+
+/* a column of cards moving up by one copy of itself, then starting over */
+@keyframes site-drift {
+  to {
+    translate: 0 -50%;
+  }
 }
 
 /* text that comes into focus out of a blur, as on epika.ad */
