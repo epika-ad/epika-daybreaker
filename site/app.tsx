@@ -21,6 +21,7 @@ const links = [
   { href: "#/", label: "Home", match: /^\/$/ },
   { href: "#/components", label: "Components", match: /^\/components/ },
   { href: "#/docs", label: "Docs", match: /^\/docs/ },
+  { href: "#/figma", label: "Figma", match: /^\/figma/ },
 ] as const;
 
 const footerLinks = [
@@ -29,6 +30,7 @@ const footerLinks = [
     links: [
       { label: "Components", href: "#/components" },
       { label: "Docs", href: "#/docs" },
+      { label: "Figma file", href: "#/figma" },
       { label: "GitHub", href: repository },
     ],
   },
@@ -103,6 +105,8 @@ const Header = ({ route }: { route: string }) => (
                 navLink,
                 // the logo already leads home
                 link.href === "#/" && "hidden",
+                // phones keep the two main links
+                link.href === "#/figma" && "max-sm:hidden",
               )}
             >
               {link.label}
@@ -157,9 +161,10 @@ const Page = ({ route }: { route: string }) =>
 const Shell = () => {
   const route = useRoute();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: scroll resets whenever the route changes
+  // scroll resets whenever the route changes, except on the Figma routes,
+  // which scroll to their own section on the home page
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (!route.startsWith("/figma")) window.scrollTo(0, 0);
   }, [route]);
 
   return (
@@ -173,7 +178,8 @@ const Shell = () => {
           <div className="grid content-start gap-3">
             <Wordmark />
             <p className="max-w-xs text-pretty text-foreground-dimmed text-sm">
-              Accessible React components, made by Epika and free to use.
+              Accessible React components, made by Epika in Tirana and free to
+              use.
             </p>
           </div>
           {footerLinks.map((group) => (

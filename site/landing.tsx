@@ -66,7 +66,10 @@ import {
   type FormEvent,
   Fragment,
   type ReactNode,
+  useEffect,
+  useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
 import { version } from "../package.json";
 import {
@@ -152,16 +155,17 @@ const Hero = () => (
           Questionnaire component
           <ArrowUpRightIcon className="size-3.5 rotate-45 text-foreground-dimmed" />
         </a>
-        <h1 className="mt-7 text-balance font-semibold text-5xl leading-[1.02] tracking-tighter sm:text-6xl xl:text-7xl">
-          <Words
-            text="The foundation for every Epika interface"
-            from={120}
-            last={<Stop />}
-          />
+        {/* on wide screens each sentence keeps to one line, running out over
+            the faded edge of the wall */}
+        <h1 className="mt-7 text-balance font-semibold text-5xl leading-[1.02] tracking-tighter sm:text-6xl xl:w-max xl:text-[4rem]">
+          <Words text="The kit we build client work on." from={120} />{" "}
+          <br className="max-xl:hidden" />
+          <Words text="Now it's yours" from={540} last={<Stop />} />
         </h1>
         <p className="mt-6 max-w-lg animate-focus-in text-pretty text-foreground-dimmed text-lg motion-reduce:animate-none [animation-delay:500ms] sm:text-xl">
-          {components.length} accessible React components, built on Base UI and
-          styled with Tailwind CSS. Free and open source.
+          {components.length} accessible React components from Epika, a creative
+          studio in Tirana. Built on Base UI, styled with Tailwind CSS v4, MIT
+          licensed. Free, and no, there's no catch.
         </p>
         <div className="mt-9 flex animate-focus-in flex-wrap items-center gap-3 motion-reduce:animate-none [animation-delay:620ms]">
           <Button size="lg" nativeButton={false} render={<a href="#/docs" />}>
@@ -177,6 +181,16 @@ const Hero = () => (
             Browse components
           </Button>
         </div>
+        <a
+          href="#/figma"
+          className={cn(
+            "group mt-4 flex animate-focus-in items-center gap-1 rounded-sm text-foreground-dimmed text-sm transition-colors hover:text-foreground motion-reduce:animate-none [animation-delay:680ms]",
+            focus,
+          )}
+        >
+          Working in Figma? Get the file
+          <ArrowUpRightIcon className="size-3.5 rotate-45 text-brand transition-transform group-hover:translate-x-0.5" />
+        </a>
         <div
           className={cn(
             pill,
@@ -561,9 +575,9 @@ const Brief = () => {
 };
 
 const markets = [
-  { value: "eu", label: "EUR — Europe" },
-  { value: "us", label: "USD — United States" },
-  { value: "uk", label: "GBP — United Kingdom" },
+  { value: "eu", label: "EUR, Europe" },
+  { value: "us", label: "USD, United States" },
+  { value: "uk", label: "GBP, United Kingdom" },
 ] as const;
 
 const Cap = () => {
@@ -675,9 +689,9 @@ const Start = () => (
       <EmptyMedia>
         <PlusIcon />
       </EmptyMedia>
-      <EmptyTitle>Launch a campaign</EmptyTitle>
+      <EmptyTitle>Nothing here yet</EmptyTitle>
       <EmptyDescription>
-        Upload your first creative to start reaching people on every channel.
+        Which is the best time to start a campaign.
       </EmptyDescription>
       <EmptyActions>
         <Button size="sm">New campaign</Button>
@@ -765,7 +779,8 @@ const Intro = ({ eyebrow, title, children }: Intro.Props) => (
       )}
     >
       {title}
-      <Stop />
+      {/* a question keeps its own mark */}
+      {!title.endsWith("?") && <Stop />}
     </h2>
     {children && (
       <p className="mt-4 text-pretty text-foreground-dimmed text-lg">
@@ -1128,38 +1143,239 @@ const Steps = () => (
   </section>
 );
 
-// what the studio does, in its own words from epika.ad
-const crafts = ["Brands", "Strategy", "Digital experiences"] as const;
+// the routes the Figma section answers to: its link in the nav, and where
+// api/confirm sends people back to after they click the email's link
+const useFigmaRoute = () =>
+  useSyncExternalStore(
+    (callback) => {
+      window.addEventListener("hashchange", callback);
+      return () => window.removeEventListener("hashchange", callback);
+    },
+    () => window.location.hash.replace(/^#\/?/, ""),
+    () => "",
+  );
+
+const inbox = "info@epika.ad";
+
+type FigmaState =
+  | "idle"
+  | "sending"
+  | "sent"
+  | "confirmed"
+  | "expired"
+  | "invalid"
+  | "broken";
+
+const fromRoute = (route: string): FigmaState =>
+  route === "figma-confirmed"
+    ? "confirmed"
+    : route === "figma-expired"
+      ? "expired"
+      : route === "figma-error"
+        ? "broken"
+        : "idle";
+
+/**
+ * The Figma file, by email with a double opt-in: api/subscribe emails a
+ * confirmation link, and api/confirm sends the file once it is clicked. The
+ * hidden "company" field is a trap for bots.
+ */
+const FigmaKit = () => {
+  const route = useFigmaRoute();
+  const [state, setState] = useState<FigmaState>(() => fromRoute(route));
+  const section = useRef<HTMLElement>(null);
+
+  // the nav link and the way back from the email both land on this section
+  useEffect(() => {
+    if (!route.startsWith("figma")) return;
+    setState(fromRoute(route));
+    section.current?.scrollIntoView({ block: "start" });
+  }, [route]);
+
+  const send = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    setState("sending");
+    try {
+      const response = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.get("email"),
+          pro: form.get("pro") === "on",
+          company: form.get("company"),
+        }),
+      });
+      if (response.ok) return setState("sent");
+      const result = (await response.json().catch(() => ({}))) as {
+        error?: string;
+      };
+      setState(result.error === "invalid_email" ? "invalid" : "broken");
+    } catch {
+      setState("broken");
+    }
+  };
+
+  const done = {
+    sent: {
+      title: "Check your inbox",
+      text: "We've sent a confirmation link, and the file comes right after you click it.",
+    },
+    confirmed: {
+      title: "You're in",
+      text: "The file is on its way to your inbox.",
+    },
+  } as const;
+  const message =
+    state === "invalid"
+      ? "That email doesn't look right. One more try?"
+      : state === "broken"
+        ? `Something broke on our side. Try again in a minute, or write to ${inbox}.`
+        : state === "expired"
+          ? "That link has expired. Leave your email again and we'll send a fresh one."
+          : undefined;
+
+  return (
+    <section
+      id="figma"
+      ref={section}
+      // Get started underneath brings its own top spacing
+      className={cn(column, "scroll-mt-20 pt-24 sm:pt-32")}
+    >
+      <div className="grid gap-10 rounded-[2rem] border border-border bg-background-dimmed p-6 sm:p-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-end lg:gap-16">
+        <Intro eyebrow="Figma" title="Prefer to start in Figma?">
+          The same components as a Figma file you can duplicate and make your
+          own: every component with its variants, the tokens as variables, and a
+          foundations page. Leave your email and we'll send you the link.
+        </Intro>
+        {state === "sent" || state === "confirmed" ? (
+          <div role="status" className="flex flex-col gap-2">
+            <p className="flex items-center gap-2 font-medium text-lg">
+              <CheckIcon className="text-brand" />
+              {done[state].title}.
+            </p>
+            <p className="text-foreground-dimmed text-sm">
+              {done[state].text} Nothing after a few minutes? Look in spam, or{" "}
+              <button
+                type="button"
+                onClick={() => setState("idle")}
+                className={cn("rounded-sm underline", focus)}
+              >
+                try another address
+              </button>
+              .
+            </p>
+          </div>
+        ) : (
+          <form
+            onSubmit={send}
+            aria-label="Get the Figma file"
+            noValidate
+            className="grid gap-4"
+          >
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Input
+                name="email"
+                type="email"
+                required
+                autoComplete="email"
+                aria-label="Email"
+                aria-invalid={state === "invalid" || undefined}
+                aria-describedby={message ? "figma-message" : undefined}
+                placeholder="you@studio.com"
+                className="sm:flex-1"
+              />
+              <Button type="submit" loading={state === "sending"}>
+                Send me the file
+              </Button>
+            </div>
+            {message && (
+              <p id="figma-message" role="alert" className="text-error text-sm">
+                {message}
+              </p>
+            )}
+            {/* a trap for bots: people never see or fill it */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="hidden"
+            />
+            {/* biome-ignore lint/a11y/noLabelWithoutControl: Checkbox renders the control */}
+            <label className="flex items-center gap-2.5 text-sm">
+              <Checkbox name="pro" />
+              Tell me when daybreaker Pro is out.
+            </label>
+            <p className="text-foreground-dimmed text-xs">
+              One email with the file. Anything else only if you tick the box.
+              Unsubscribe any time.
+            </p>
+          </form>
+        )}
+      </div>
+    </section>
+  );
+};
+
+// what the studio does
+const crafts = [
+  "Product UI",
+  "Websites",
+  "Brand identity",
+  "Design systems",
+] as const;
 
 const needs = ["Product UI", "Website", "Brand", "Design system"] as const;
 
 /**
- * A short project brief, made of the library's own form components. There is
- * no backend yet, so sending copies the brief and opens epika.ad.
+ * A short project brief, made of the library's own form components. It goes
+ * to the studio's inbox through api/brief, with Reply-To set to the sender.
  */
 const ProjectBrief = () => {
-  const toast = useToast();
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "broken">(
+    "idle",
+  );
 
-  const send = (event: FormEvent<HTMLFormElement>) => {
+  const send = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const picked = needs.filter((need) => form.get(need) === "on");
-    const text = [
-      `Name: ${form.get("name")}`,
-      `Email: ${form.get("email")}`,
-      `Needs: ${picked.join(", ") || "Not sure yet"}`,
-      "",
-      String(form.get("about") ?? ""),
-    ].join("\n");
-    // a blocked clipboard should not stop the brief from going out
-    navigator.clipboard?.writeText(text).catch(() => {});
-    window.open(agency, "_blank", "noopener");
-    toast.add({
-      type: "success",
-      title: "Brief copied",
-      description: "Paste it to Epika on epika.ad.",
-    });
+    setState("sending");
+    try {
+      const response = await fetch("/api/brief", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.get("name"),
+          email: form.get("email"),
+          needs: needs.filter((need) => form.get(need) === "on"),
+          about: form.get("about"),
+          company: form.get("company"),
+        }),
+      });
+      setState(response.ok ? "sent" : "broken");
+    } catch {
+      setState("broken");
+    }
   };
+
+  if (state === "sent") {
+    return (
+      <div
+        role="status"
+        className="grid gap-2 rounded-surface bg-background p-6 text-foreground shadow-[0_32px_64px_rgb(0_0_0/0.25)] sm:p-8"
+      >
+        <p className="flex items-center gap-2 font-semibold text-xl tracking-tight">
+          <CheckIcon className="text-brand" />
+          Got it.
+        </p>
+        <p className="text-foreground-dimmed">
+          We read every brief ourselves and reply within 2 working days.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <form
@@ -1172,7 +1388,7 @@ const ProjectBrief = () => {
           Start a project
         </h3>
         <p className="mt-1 text-foreground-dimmed text-sm">
-          A few lines is plenty. We take it from there.
+          A few lines is plenty. We'll take it from there.
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -1220,10 +1436,30 @@ const ProjectBrief = () => {
         <Textarea
           name="about"
           rows={3}
-          placeholder="What are you building, and by when?"
+          placeholder="What you're building, and by when."
         />
       </label>
-      <Button type="submit" size="lg" className="w-full">
+      {/* the same trap for bots as the Figma form */}
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="hidden"
+      />
+      {state === "broken" && (
+        <p role="alert" className="text-error text-sm">
+          Something broke on our side. Try again in a minute, or write to{" "}
+          {inbox}.
+        </p>
+      )}
+      <Button
+        type="submit"
+        size="lg"
+        loading={state === "sending"}
+        className="w-full"
+      >
         Send brief
         <ArrowUpRightIcon />
       </Button>
@@ -1256,9 +1492,10 @@ const Work = () => (
             <Stop />
           </h2>
           <p className="mt-6 max-w-md text-pretty text-background/70 text-lg">
-            Epika is the creative studio behind daybreaker, shaping brands,
-            strategy and digital experiences. Bring us the product, and we will
-            bring the interface.
+            daybreaker is the part we could give away. The rest is judgement:
+            what your product should say, and how it should feel when someone
+            uses it on a Tuesday morning. Bring us the product, we'll bring the
+            interface.
           </p>
           <ul className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-background/60 text-sm">
             {crafts.map((craft, index) => (
@@ -1274,7 +1511,7 @@ const Work = () => (
             ))}
           </ul>
           <a
-            href={agency}
+            href={`${agency}/projects`}
             target="_blank"
             rel="noreferrer"
             className={cn(
@@ -1297,6 +1534,7 @@ export const Landing = () => (
     <Hero />
     <Features />
     <Wall />
+    <FigmaKit />
     <Steps />
     <Work />
   </>

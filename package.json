@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/epika-ad/epika-daybreaker.git"
   },
-  "homepage": "https://github.com/epika-ad/epika-daybreaker#readme",
+  "homepage": "https://daybreaker.epika.ad",
   "bugs": "https://github.com/epika-ad/epika-daybreaker/issues",
   "keywords": [
     "react",

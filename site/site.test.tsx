@@ -36,7 +36,7 @@ describe("thumbnails", () => {
 
 describe("site", () => {
   it.each([
-    ["#/", "The foundation for every Epika interface."],
+    ["#/", "The kit we build client work on. Now it's yours."],
     ["#/components", `${components.length} components, ready to use`],
     ["#/components/dialog", "Dialog"],
     ["#/docs", "Get started"],
@@ -59,7 +59,7 @@ describe("site", () => {
 
     expect(screen.getByRole("link", { name: "See our work" })).toHaveAttribute(
       "href",
-      "https://epika.ad",
+      "https://epika.ad/projects",
     );
   });
 

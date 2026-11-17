@@ -1,0 +1,16 @@
+name: Idea
+description: A new component, prop or improvement.
+labels: [idea]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What are you trying to build?
+      description: The problem first. It helps us find the right shape for the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      placeholder: A `size` prop on Avatar, or a new Stepper component.

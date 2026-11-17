@@ -1,11 +1,16 @@
 # daybreaker
 
-<!-- TODO before launch: add the preview GIF here, e.g. ![daybreaker components](docs/preview.gif) -->
+[![npm](https://img.shields.io/npm/v/daybreaker?color=ee1c4d&label=npm)](https://www.npmjs.com/package/daybreaker)
+[![CI](https://github.com/epika-ad/epika-daybreaker/actions/workflows/ci.yml/badge.svg)](https://github.com/epika-ad/epika-daybreaker/actions/workflows/ci.yml)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-350a3f)](LICENSE)
 
-76 accessible React components styled with Tailwind CSS, made by [Epika](https://epika.ad). Keyboard navigation, focus management and screen reader support are built in (via [Base UI](https://base-ui.com)); the look is driven by a small set of design tokens you can override.
+[![daybreaker: accessible React components by Epika](site/public/og.png)](https://daybreaker.epika.ad)
 
-<!-- TODO before launch: replace with the landing page address once the domain is settled -->
-Live previews and docs: **link added at launch**.
+The kit we build client work on, now yours. 76 accessible React components from [Epika](https://epika.ad), a creative studio in Tirana. Built on [Base UI](https://base-ui.com), styled with Tailwind CSS v4, MIT licensed.
+
+Keyboard navigation, focus management and screen reader support are built in. The look comes from a small set of design tokens you can override.
+
+**[Docs and live previews](https://daybreaker.epika.ad)** · **[Components](https://daybreaker.epika.ad/#/components)** · **[Figma file](https://daybreaker.epika.ad/#/figma)** · **[npm](https://www.npmjs.com/package/daybreaker)**
 
 ## Install
 
@@ -17,14 +22,14 @@ Requires React 19.
 
 ## Set up styles
 
-**With Tailwind CSS v4** — import the theme after Tailwind. It registers the tokens and tells Tailwind to scan the library's classes:
+**With Tailwind CSS v4:** import the theme after Tailwind. It registers the tokens and tells Tailwind to scan the library's classes:
 
 ```css
 @import "tailwindcss";
 @import "daybreaker/theme.css";
 ```
 
-**Without Tailwind** — import the precompiled stylesheet once, at the root of your app:
+**Without Tailwind:** import the precompiled stylesheet once, at the root of your app:
 
 ```ts
 import "daybreaker/styles.css";
@@ -90,6 +95,10 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "daybreaker/ch
 
 Also exported: `ThemeProvider`, `useTheme`, `useToast`, `DirectionProvider`, `cn`, `cva` and the icons.
 
+## Figma
+
+The same components as a Figma file you can duplicate and make your own: every component with its variants, the tokens as variables with Light and Dark modes, and a foundations page. [Get it on the docs site](https://daybreaker.epika.ad/#/figma) and we'll email you the link.
+
 ## Use it with AI assistants
 
 The [skill/](skill/) folder teaches an AI assistant to build with daybreaker: setup, how the components fit together, theming, Next.js rules, and every component's props and working example.
@@ -100,7 +109,7 @@ The [skill/](skill/) folder teaches an AI assistant to build with daybreaker: se
 
 The skill is generated from the library; run `npm run build:skill` after changing components or examples.
 
-## Customize
+## Customise
 
 Every component accepts `className`; components with inner parts also accept `classList` to target them:
 
@@ -147,6 +156,10 @@ Releases use [Changesets](https://github.com/changesets/changesets).
 
 Publishing from CI needs an `NPM_TOKEN` repository secret.
 
+## Contributing
+
+Bug reports, ideas and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) explains how to run the project and what a good pull request looks like. Found a bug? [Open an issue](https://github.com/epika-ad/epika-daybreaker/issues/new/choose).
+
 ## License
 
-[MIT](LICENSE) © Epika. Need a custom UI? [Work with Epika](https://epika.ad).
+[MIT](LICENSE) © Epika, free for personal and commercial use. Need a custom UI? [Work with Epika](https://epika.ad).

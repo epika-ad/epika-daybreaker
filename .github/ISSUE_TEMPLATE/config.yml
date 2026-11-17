@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Docs and live previews
+    url: https://daybreaker.epika.ad
+    about: Check how a component is meant to work first.
+  - name: Need a custom UI?
+    url: https://epika.ad
+    about: Work with Epika, the studio behind daybreaker.
