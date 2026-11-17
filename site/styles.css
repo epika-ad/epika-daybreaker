@@ -34,10 +34,17 @@
   }
 }
 
-/* a column of cards moving up by one copy of itself, then starting over */
+/* a column of cards moving up by one copy of itself, then starting over.
+   The wall is centred on the middle of each column, so the column runs from
+   half a copy below that to half a copy above it: the view stays on the
+   middle copy, with a whole copy on either side, and the restart lands on an
+   identical frame */
 @keyframes site-drift {
+  from {
+    translate: 0 calc(50% / var(--copies, 3));
+  }
   to {
-    translate: 0 -50%;
+    translate: 0 calc(-50% / var(--copies, 3));
   }
 }
 

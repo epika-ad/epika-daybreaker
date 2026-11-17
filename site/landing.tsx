@@ -12,6 +12,7 @@ import {
   BubbleContent,
   Button,
   ButtonGroup,
+  buttonVariants,
   Calendar,
   Card,
   CardDescription,
@@ -168,18 +169,16 @@ const Hero = () => (
           licensed. Free, and no, there's no catch.
         </p>
         <div className="mt-9 flex animate-focus-in flex-wrap items-center gap-3 motion-reduce:animate-none [animation-delay:620ms]">
-          <Button size="lg" nativeButton={false} render={<a href="#/docs" />}>
+          <a href="#/docs" className={buttonVariants({ size: "lg" })}>
             Get started
             <ArrowUpRightIcon className="rotate-45" />
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            nativeButton={false}
-            render={<a href="#/components" />}
+          </a>
+          <a
+            href="#/components"
+            className={buttonVariants({ size: "lg", variant: "outline" })}
           >
             Browse components
-          </Button>
+          </a>
         </div>
         <a
           href="#/figma"
@@ -235,7 +234,15 @@ const Hero = () => (
  * only a picture here, so the wall is hidden from assistive technology and
  * cannot be focused; the same components are usable further down the page.
  */
+// how many times each column repeats: one copy always sits above the view,
+// so the loop never shows a column's start or end
+const copies = ["first", "second", "third"] as const;
+
 const Isometric = ({ stacks, className }: Isometric.Props) => {
+  // an extra column on each side, so the tilted wall never shows its edges
+  const columns = [stacks.at(-1), ...stacks, stacks[0]].filter(
+    (stack) => stack !== undefined,
+  );
   return (
     <div
       aria-hidden="true"
@@ -245,22 +252,27 @@ const Isometric = ({ stacks, className }: Isometric.Props) => {
       {/* masked rather than covered, so it fades into any background */}
       <div className="wall-fade absolute inset-0 overflow-hidden">
         <div
-          className="absolute top-1/2 left-1/2 flex w-max gap-6"
+          // items-start: a stretched column would no longer be exactly three
+          // copies tall, and its loop would jump
+          className="absolute top-1/2 left-1/2 flex w-max items-start gap-6"
           style={{
             transform:
-              "translate(-42%, -50%) rotateX(50deg) rotateZ(-36deg) scale(0.92)",
+              "translate(-44.7%, -50%) rotateX(50deg) rotateZ(-36deg) scale(0.92)",
           }}
         >
-          {stacks.map((stack, column) => (
+          {columns.map((stack, column) => (
             <div
-              key={stack.map((Card) => Card.name).join()}
+              // biome-ignore lint/suspicious/noArrayIndexKey: the side columns repeat a stack, so its place is what tells them apart
+              key={column}
+              // the bottom padding matches the gap, so every copy is exactly
+              // one third of the column and the loop lands without a jump
               className={cn(
-                "flex w-80 animate-drift flex-col gap-6 motion-reduce:animate-none",
+                "flex w-80 animate-drift flex-col gap-6 pb-6 motion-reduce:animate-none",
                 column % 2 === 1 && "[animation-direction:reverse]",
               )}
+              style={{ "--copies": copies.length } as CSSProperties}
             >
-              {/* each column twice over, so its loop has no seam */}
-              {[0, 1].flatMap((copy) =>
+              {copies.flatMap((copy) =>
                 stack.map((Card) => (
                   <div
                     key={`${copy}-${Card.name}`}
@@ -1319,14 +1331,6 @@ const FigmaKit = () => {
   );
 };
 
-// what the studio does
-const crafts = [
-  "Product UI",
-  "Websites",
-  "Brand identity",
-  "Design systems",
-] as const;
-
 const needs = ["Product UI", "Website", "Brand", "Design system"] as const;
 
 /**
@@ -1362,15 +1366,15 @@ const ProjectBrief = () => {
 
   if (state === "sent") {
     return (
-      <div
-        role="status"
-        className="grid gap-2 rounded-surface bg-background p-6 text-foreground shadow-[0_32px_64px_rgb(0_0_0/0.25)] sm:p-8"
-      >
-        <p className="flex items-center gap-2 font-semibold text-xl tracking-tight">
-          <CheckIcon className="text-brand" />
-          Got it.
+      <div role="status" className="grid content-start gap-3">
+        <p className={cn(display, "flex items-center gap-3 text-3xl")}>
+          <CheckIcon className="size-6 text-brand" />
+          <span>
+            Got it
+            <Stop />
+          </span>
         </p>
-        <p className="text-foreground-dimmed">
+        <p className="max-w-sm text-foreground-dimmed">
           We read every brief ourselves and reply within 2 working days.
         </p>
       </div>
@@ -1378,11 +1382,7 @@ const ProjectBrief = () => {
   }
 
   return (
-    <form
-      onSubmit={send}
-      aria-label="Start a project"
-      className="grid gap-5 rounded-surface bg-background p-6 text-foreground shadow-[0_32px_64px_rgb(0_0_0/0.25)] sm:p-8"
-    >
+    <form onSubmit={send} aria-label="Start a project" className="grid gap-6">
       <div>
         <h3 className="font-semibold text-xl tracking-tight">
           Start a project
@@ -1412,13 +1412,15 @@ const ProjectBrief = () => {
           />
         </Field>
       </div>
-      <fieldset className="grid gap-2">
-        <legend className="mb-2 font-medium text-sm">What do you need?</legend>
+      <fieldset>
+        <legend className="mb-2.5 font-medium text-sm">
+          What do you need?
+        </legend>
         <div className="flex flex-wrap gap-2">
           {needs.map((need) => (
             <label
               key={need}
-              className="cursor-pointer rounded-full border border-border px-3.5 py-1.5 text-sm transition-colors hover:bg-accent has-checked:border-primary has-checked:bg-primary has-checked:text-primary-foreground has-focus-visible:ring-2 has-focus-visible:ring-ring"
+              className="cursor-pointer select-none rounded-full border border-border px-3 py-1.5 text-sm transition-colors hover:border-foreground-dimmed has-checked:border-primary has-checked:bg-primary has-checked:text-primary-foreground has-focus-visible:ring-2 has-focus-visible:ring-ring"
             >
               <input type="checkbox" name={need} className="sr-only" />
               {need}
@@ -1430,13 +1432,12 @@ const ProjectBrief = () => {
           textarea is a native element */}
       {/* biome-ignore lint/a11y/noLabelWithoutControl: Textarea renders the control */}
       <label className="flex flex-col gap-1.5">
-        <span className="font-medium text-foreground text-sm">
-          About the project
-        </span>
+        <span className="font-medium text-sm">About the project</span>
         <Textarea
           name="about"
           rows={3}
           placeholder="What you're building, and by when."
+          className="resize-none"
         />
       </label>
       {/* the same trap for bots as the Figma form */}
@@ -1454,75 +1455,58 @@ const ProjectBrief = () => {
           {inbox}.
         </p>
       )}
-      <Button
-        type="submit"
-        size="lg"
-        loading={state === "sending"}
-        className="w-full"
-      >
-        Send brief
-        <ArrowUpRightIcon />
-      </Button>
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+        <Button type="submit" size="lg" loading={state === "sending"}>
+          Send brief
+          <ArrowUpRightIcon />
+        </Button>
+        <p className="text-foreground-dimmed text-sm">
+          We reply within 2 working days.
+        </p>
+      </div>
     </form>
   );
 };
 
 /**
- * The page ends here: who makes the kit, and a brief to hire them with. It is
- * the page in reverse: plum in the light theme, paper in the dark one.
+ * The page ends here: who makes the kit, and a brief to hire them with. The
+ * block runs in the library's own dark theme, so the form is the real
+ * components in dark mode. One hairline divides the pitch from the brief.
  */
 const Work = () => (
-  <section className={cn(column, "pb-24 sm:pb-32")}>
-    <div className="relative isolate overflow-hidden rounded-[2rem] bg-foreground p-6 text-background sm:p-14">
-      {/* a warm light from behind the brief */}
-      <div
-        aria-hidden="true"
-        className="-z-10 absolute inset-0 bg-[radial-gradient(ellipse_55%_75%_at_85%_60%,color-mix(in_srgb,var(--wz-primary)_30%,transparent),transparent)]"
-      />
-      <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-16">
-        <div className="flex flex-col items-start">
-          <p className="flex items-center gap-3 font-medium text-brand">
-            <Logo className="h-4" />
-            Need a custom UI?
-          </p>
-          <h2
-            className={cn(display, "mt-5 text-5xl leading-[0.98] sm:text-7xl")}
-          >
-            Work with Epika
-            <Stop />
-          </h2>
-          <p className="mt-6 max-w-md text-pretty text-background/70 text-lg">
-            daybreaker is the part we could give away. The rest is judgement:
-            what your product should say, and how it should feel when someone
-            uses it on a Tuesday morning. Bring us the product, we'll bring the
-            interface.
-          </p>
-          <ul className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-background/60 text-sm">
-            {crafts.map((craft, index) => (
-              <li key={craft} className="flex items-center gap-3">
-                {index > 0 && (
-                  <span
-                    aria-hidden="true"
-                    className="size-1 rounded-full bg-background/30"
-                  />
-                )}
-                {craft}
-              </li>
-            ))}
-          </ul>
-          <a
-            href={`${agency}/projects`}
-            target="_blank"
-            rel="noreferrer"
-            className={cn(
-              "group mt-10 flex items-center gap-1.5 rounded-sm font-medium",
-              focus,
-            )}
-          >
-            See our work
-            <ArrowUpRightIcon className="group-hover:-translate-y-0.5 text-brand transition-transform group-hover:translate-x-0.5" />
-          </a>
-        </div>
+  <section id="brief" className={cn(column, "scroll-mt-20 pb-24 sm:pb-32")}>
+    <div className="dark grid rounded-[2rem] bg-background-dimmed p-6 text-foreground sm:p-12 lg:grid-cols-2 lg:p-16">
+      <div className="flex flex-col items-start border-border max-lg:border-b max-lg:pb-12 lg:border-r lg:pr-16">
+        <p className="flex items-center gap-3 font-medium text-brand">
+          <Logo className="h-4" />
+          Need a custom UI?
+        </p>
+        <h2 className={cn(display, "mt-5 text-5xl leading-[0.95] sm:text-7xl")}>
+          Work with Epika
+          <Stop />
+        </h2>
+        <p className="mt-6 max-w-md text-pretty text-foreground-dimmed text-lg">
+          daybreaker is the part we could give away. The rest is judgement: what
+          your product should say, and how it should feel when someone uses it
+          on a Tuesday morning. Bring us the product, we'll bring the interface.
+        </p>
+        <p className="mt-6 max-w-md text-foreground">
+          We design product UI, websites, brand identities and design systems.
+        </p>
+        <a
+          href={`${agency}/projects`}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(
+            "group mt-auto flex items-center gap-1.5 rounded-sm pt-10 font-medium",
+            focus,
+          )}
+        >
+          See our work
+          <ArrowUpRightIcon className="group-hover:-translate-y-0.5 text-brand transition-transform group-hover:translate-x-0.5" />
+        </a>
+      </div>
+      <div className="max-lg:pt-12 lg:pl-16">
         <ProjectBrief />
       </div>
     </div>

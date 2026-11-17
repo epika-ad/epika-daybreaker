@@ -1,16 +1,24 @@
 import {
+  buttonVariants,
   cn,
+  Navbar,
+  NavbarActions,
+  NavbarBrand,
+  NavbarLink,
+  NavbarLinks,
   ThemeProvider,
   ToastProvider,
   TooltipProvider,
   useTheme,
 } from "daybreaker";
 import { useEffect, useSyncExternalStore } from "react";
+import { version } from "../package.json";
 import { Browse, Component, Components, Docs, Home } from "./pages";
 import {
   ArrowUpRightIcon,
   agency,
   ContrastIcon,
+  CopyButton,
   focus,
   Wordmark,
 } from "./parts";
@@ -35,13 +43,28 @@ const footerLinks = [
     ],
   },
   {
+    title: "Resources",
+    links: [
+      { label: "Changelog", href: `${repository}/blob/main/CHANGELOG.md` },
+      {
+        label: "Contributing",
+        href: `${repository}/blob/main/CONTRIBUTING.md`,
+      },
+      { label: "Report a bug", href: `${repository}/issues/new/choose` },
+      { label: "npm", href: "https://www.npmjs.com/package/daybreaker" },
+    ],
+  },
+  {
     title: "Epika",
     links: [
       { label: "epika.ad", href: agency },
-      { label: "Work with us", href: agency },
+      { label: "Our work", href: `${agency}/projects` },
+      { label: "Start a project", href: "#/brief" },
     ],
   },
 ] as const;
+
+const install = "npm install daybreaker";
 
 const subscribe = (callback: () => void) => {
   window.addEventListener("hashchange", callback);
@@ -78,61 +101,54 @@ const ThemeToggle = () => {
   );
 };
 
-const navLink = cn(
-  "rounded-full px-3 py-1.5 font-medium text-foreground-dimmed text-sm transition-colors hover:text-foreground aria-[current=page]:text-foreground",
-  focus,
-);
-
-// one bar across the page, on the same column as everything under it
+// the site's own header is the library's Navbar: a floating glass bar whose
+// pill glides to the page being viewed
 const Header = ({ route }: { route: string }) => (
-  <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl">
-    <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-      <a
-        href="#/"
-        aria-label="daybreaker home"
-        className={cn("rounded-md", focus)}
-      >
+  <header className="sticky top-0 z-40 px-4 pt-3 sm:px-6">
+    <Navbar aria-label="Main" className="mx-auto max-w-7xl">
+      <NavbarBrand href="#/" aria-label="daybreaker home">
         <Wordmark />
-      </a>
-      <div className="flex items-center gap-1">
-        <nav aria-label="Main" className="flex items-center">
-          {links.map((link) => (
-            <a
+      </NavbarBrand>
+      <NavbarLinks>
+        {links
+          // the logo already leads home
+          .filter((link) => link.href !== "#/")
+          .map((link) => (
+            <NavbarLink
               key={link.href}
               href={link.href}
-              aria-current={link.match.test(route) ? "page" : undefined}
-              className={cn(
-                navLink,
-                // the logo already leads home
-                link.href === "#/" && "hidden",
-                // phones keep the two main links
-                link.href === "#/figma" && "max-sm:hidden",
-              )}
+              current={link.match.test(route)}
+              // phones keep the two main links
+              className={cn(link.href === "#/figma" && "max-sm:hidden")}
             >
               {link.label}
-            </a>
+            </NavbarLink>
           ))}
-          <a
-            href={repository}
-            target="_blank"
-            rel="noreferrer"
-            className={cn(navLink, "max-sm:hidden")}
-          >
-            GitHub
-          </a>
-          <a
-            href={agency}
-            target="_blank"
-            rel="noreferrer"
-            className={cn(navLink, "flex items-center gap-1 max-md:hidden")}
-          >
-            Epika
-            <ArrowUpRightIcon className="size-3.5" />
-          </a>
-        </nav>
+        <NavbarLink
+          href={repository}
+          target="_blank"
+          rel="noreferrer"
+          className="max-sm:hidden"
+        >
+          GitHub
+        </NavbarLink>
+      </NavbarLinks>
+      <NavbarActions>
+        <a
+          href={agency}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(
+            buttonVariants({ size: "sm", variant: "outline" }),
+            "max-md:hidden",
+          )}
+        >
+          Epika
+          <ArrowUpRightIcon className="size-3.5" />
+        </a>
         <ThemeToggle />
-      </div>
-    </div>
+      </NavbarActions>
+    </Navbar>
   </header>
 );
 
@@ -161,10 +177,15 @@ const Page = ({ route }: { route: string }) =>
 const Shell = () => {
   const route = useRoute();
 
-  // scroll resets whenever the route changes, except on the Figma routes,
-  // which scroll to their own section on the home page
+  // scroll resets whenever the route changes, except on the routes that
+  // stand for a section of the home page: the brief, and the Figma ones,
+  // which scroll themselves
   useEffect(() => {
-    if (!route.startsWith("/figma")) window.scrollTo(0, 0);
+    if (route === "/brief") {
+      document.getElementById("brief")?.scrollIntoView({ block: "start" });
+    } else if (!route.startsWith("/figma")) {
+      window.scrollTo(0, 0);
+    }
   }, [route]);
 
   return (
@@ -173,45 +194,55 @@ const Shell = () => {
       <main className="flex-1 overflow-x-clip">
         <Page route={route} />
       </main>
-      <footer className="border-border border-t">
-        <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 py-14 sm:grid-cols-[1fr_auto_auto] sm:gap-16 sm:px-6">
-          <div className="grid content-start gap-3">
-            <Wordmark />
-            <p className="max-w-xs text-pretty text-foreground-dimmed text-sm">
-              Accessible React components, made by Epika in Tirana and free to
-              use.
-            </p>
-          </div>
-          {footerLinks.map((group) => (
-            <nav
-              key={group.title}
-              aria-label={group.title}
-              className="grid content-start gap-2.5 text-sm"
-            >
-              <p className="font-medium">{group.title}</p>
-              {group.links.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  {...(link.href.startsWith("http") && {
-                    target: "_blank",
-                    rel: "noreferrer",
-                  })}
-                  className={cn(
-                    "w-fit rounded-sm text-foreground-dimmed transition-colors hover:text-foreground",
-                    focus,
-                  )}
+      <footer className="mt-8 border-border border-t">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
+          <div className="grid gap-12 py-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-24">
+            <div className="grid content-start justify-items-start gap-5">
+              <Wordmark />
+              <p className="max-w-sm text-pretty text-foreground-dimmed">
+                Accessible React components, made by Epika in Tirana and free to
+                use.
+              </p>
+              <div className="flex h-10 items-center gap-2 rounded-full border border-border pr-1 pl-4 font-mono text-sm">
+                <span aria-hidden="true" className="text-brand">
+                  $
+                </span>
+                {install}
+                <CopyButton text={install} className="rounded-full" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-x-12 gap-y-10 sm:grid-cols-3">
+              {footerLinks.map((group) => (
+                <nav
+                  key={group.title}
+                  aria-label={group.title}
+                  className="grid content-start gap-3 text-sm"
                 >
-                  {link.label}
-                </a>
+                  <p className="font-medium">{group.title}</p>
+                  {group.links.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      {...(link.href.startsWith("http") && {
+                        target: "_blank",
+                        rel: "noreferrer",
+                      })}
+                      className={cn(
+                        "w-fit rounded-sm text-foreground-dimmed transition-colors hover:text-foreground",
+                        focus,
+                      )}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </nav>
               ))}
-            </nav>
-          ))}
-        </div>
-        <div className="border-border border-t">
-          <p className="mx-auto w-full max-w-7xl px-4 py-6 text-foreground-dimmed text-xs sm:px-6">
-            MIT licensed. © {new Date().getFullYear()} Epika.
-          </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-border border-t py-6 text-foreground-dimmed text-xs">
+            <p>MIT licensed. © {new Date().getFullYear()} Epika.</p>
+            <p>v{version} · Made in Tirana</p>
+          </div>
         </div>
       </footer>
     </div>
