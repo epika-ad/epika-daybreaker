@@ -5,7 +5,7 @@ export const Example = () => (
     <h1>Release notes</h1>
     <p>
       Version 2.4 is out. It makes <strong>every animation a spring</strong> and
-      adds a dozen new components. Read the <a href="#/docs">upgrade guide</a>{" "}
+      adds a dozen new components. Read the <a href="/docs">upgrade guide</a>{" "}
       before you update.
     </p>
     <h2>What changed</h2>

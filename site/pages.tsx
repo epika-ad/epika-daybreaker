@@ -26,8 +26,8 @@ import { components, type Entry, example, groups } from "./registry";
 export const Home = () => <Landing />;
 
 const sections = [
-  { href: "#/docs", route: "/docs", label: "Introduction" },
-  { href: "#/components", route: "/components", label: "Components" },
+  { href: "/docs", route: "/docs", label: "Introduction" },
+  { href: "/components", route: "/components", label: "Components" },
 ] as const;
 
 /** The docs and component pages, beside a sidebar that lists all of them. */
@@ -72,7 +72,7 @@ export const Browse = ({ route, children }: Browse.Props) => {
             {group.components.map((entry) => (
               <SidebarItem
                 key={entry.slug}
-                href={`#/components/${entry.slug}`}
+                href={`/components/${entry.slug}`}
                 current={route === `/components/${entry.slug}`}
               >
                 {entry.name}
@@ -142,7 +142,7 @@ export const Component = ({ slug }: { slug: string }) => {
   return (
     <article className="mx-auto w-full max-w-3xl pt-14 pb-24">
       {/* the sidebar does this job once there is room for it */}
-      <a href="#/components" className={cn(link, "w-fit lg:hidden")}>
+      <a href="/components" className={cn(link, "w-fit lg:hidden")}>
         <ArrowLeftIcon />
         Components
       </a>
@@ -166,7 +166,7 @@ export const Component = ({ slug }: { slug: string }) => {
         className="mt-12 flex justify-between gap-4 border-border border-t pt-6"
       >
         {previous ? (
-          <a href={`#/components/${previous.slug}`} className={link}>
+          <a href={`/components/${previous.slug}`} className={link}>
             <ArrowLeftIcon />
             {previous.name}
           </a>
@@ -174,7 +174,7 @@ export const Component = ({ slug }: { slug: string }) => {
           <span />
         )}
         {next && (
-          <a href={`#/components/${next.slug}`} className={link}>
+          <a href={`/components/${next.slug}`} className={link}>
             {next.name}
             <ArrowUpRightIcon className="rotate-45" />
           </a>

@@ -15,7 +15,7 @@ import {
 
 export async function GET(request: Request): Promise<Response> {
   const site = siteOf(request);
-  const back = (route: string) => Response.redirect(`${site}/#/${route}`, 303);
+  const back = (route: string) => Response.redirect(`${site}/${route}`, 303);
 
   const secret = process.env.KIT_SECRET;
   const token = new URL(request.url).searchParams.get("t") ?? "";

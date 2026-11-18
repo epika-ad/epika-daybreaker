@@ -11,8 +11,9 @@ import {
   TooltipProvider,
   useTheme,
 } from "daybreaker";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { version } from "../package.json";
+import { enabled, readConsent, setConsent } from "./analytics";
 import { Browse, Component, Components, Docs, Home } from "./pages";
 import {
   ArrowUpRightIcon,
@@ -22,23 +23,25 @@ import {
   focus,
   Wordmark,
 } from "./parts";
+import { useRoute } from "./router";
+import { metaFor, notFound } from "./seo";
 
 const repository = "https://github.com/epika-ad/epika-daybreaker";
 
 const links = [
-  { href: "#/", label: "Home", match: /^\/$/ },
-  { href: "#/components", label: "Components", match: /^\/components/ },
-  { href: "#/docs", label: "Docs", match: /^\/docs/ },
-  { href: "#/figma", label: "Figma", match: /^\/figma/ },
+  { href: "/", label: "Home", match: /^\/$/ },
+  { href: "/components", label: "Components", match: /^\/components/ },
+  { href: "/docs", label: "Docs", match: /^\/docs/ },
+  { href: "/figma", label: "Figma", match: /^\/figma/ },
 ] as const;
 
 const footerLinks = [
   {
     title: "Library",
     links: [
-      { label: "Components", href: "#/components" },
-      { label: "Docs", href: "#/docs" },
-      { label: "Figma file", href: "#/figma" },
+      { label: "Components", href: "/components" },
+      { label: "Docs", href: "/docs" },
+      { label: "Figma file", href: "/figma" },
       { label: "GitHub", href: repository },
     ],
   },
@@ -59,24 +62,12 @@ const footerLinks = [
     links: [
       { label: "epika.ad", href: agency },
       { label: "Our work", href: `${agency}/projects` },
-      { label: "Start a project", href: "#/brief" },
+      { label: "Start a project", href: "/brief" },
     ],
   },
 ] as const;
 
 const install = "npm install daybreaker";
-
-const subscribe = (callback: () => void) => {
-  window.addEventListener("hashchange", callback);
-  return () => window.removeEventListener("hashchange", callback);
-};
-
-// hash routing keeps the site a static bundle that works on any host
-const useRoute = () =>
-  useSyncExternalStore(
-    subscribe,
-    () => window.location.hash.replace(/^#/, "") || "/",
-  );
 
 const ThemeToggle = () => {
   const [, setTheme] = useTheme();
@@ -106,20 +97,20 @@ const ThemeToggle = () => {
 const Header = ({ route }: { route: string }) => (
   <header className="sticky top-0 z-40 px-4 pt-3 sm:px-6">
     <Navbar aria-label="Main" className="mx-auto max-w-7xl">
-      <NavbarBrand href="#/" aria-label="daybreaker home">
+      <NavbarBrand href="/" aria-label="daybreaker home">
         <Wordmark />
       </NavbarBrand>
       <NavbarLinks>
         {links
           // the logo already leads home
-          .filter((link) => link.href !== "#/")
+          .filter((link) => link.href !== "/")
           .map((link) => (
             <NavbarLink
               key={link.href}
               href={link.href}
               current={link.match.test(route)}
               // phones keep the two main links
-              className={cn(link.href === "#/figma" && "max-sm:hidden")}
+              className={cn(link.href === "/figma" && "max-sm:hidden")}
             >
               {link.label}
             </NavbarLink>
@@ -170,9 +161,65 @@ const Page = ({ route }: { route: string }) =>
     <Browse route={route}>
       <Reference route={route} />
     </Browse>
+  ) : metaFor(route) === notFound ? (
+    <NotFound />
   ) : (
     <Home />
   );
+
+const NotFound = () => (
+  <section className="mx-auto grid w-full max-w-7xl justify-items-start gap-4 px-4 py-32 sm:px-6">
+    <h1 className="font-bold text-4xl tracking-tighter sm:text-5xl">
+      Page not found<span className="text-brand">.</span>
+    </h1>
+    <p className="text-foreground-dimmed text-lg">
+      There's nothing at this address.
+    </p>
+    <a href="/components" className={buttonVariants()}>
+      Browse components
+    </a>
+  </section>
+);
+
+// asks once whether we may record visits; until then, and after a no,
+// visitors are only counted
+const Consent = () => {
+  const [open, setOpen] = useState(() => enabled && readConsent() === null);
+  if (!open) return null;
+
+  const choose = (consent: "granted" | "denied") => {
+    setConsent(consent);
+    setOpen(false);
+  };
+
+  return (
+    <section
+      aria-label="Recording visits"
+      className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-xl flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl border border-border bg-background p-4 pl-5 text-sm shadow-lg sm:inset-x-6"
+    >
+      <p className="min-w-56 flex-1 text-pretty text-foreground-dimmed">
+        Can we record your visit? It helps us make the site better. What you
+        type is never recorded.
+      </p>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => choose("denied")}
+          className={buttonVariants({ size: "sm", variant: "ghost" })}
+        >
+          No thanks
+        </button>
+        <button
+          type="button"
+          onClick={() => choose("granted")}
+          className={buttonVariants({ size: "sm" })}
+        >
+          Accept
+        </button>
+      </div>
+    </section>
+  );
+};
 
 const Shell = () => {
   const route = useRoute();
@@ -180,6 +227,15 @@ const Shell = () => {
   // scroll resets whenever the route changes, except on the routes that
   // stand for a section of the home page: the brief, and the Figma ones,
   // which scroll themselves
+  // the title and description follow the page, as in the built HTML
+  useEffect(() => {
+    const meta = metaFor(route);
+    document.title = meta.title;
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", meta.description);
+  }, [route]);
+
   useEffect(() => {
     if (route === "/brief") {
       document.getElementById("brief")?.scrollIntoView({ block: "start" });
@@ -245,6 +301,7 @@ const Shell = () => {
           </div>
         </div>
       </footer>
+      <Consent />
     </div>
   );
 };

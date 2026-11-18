@@ -24,7 +24,7 @@ export const Example = () => (
       <NavigationMenuTrigger>Products</NavigationMenuTrigger>
       <NavigationMenuContent className="grid w-96 grid-cols-2">
         {products.map((product) => (
-          <NavigationMenuLink key={product.title} href="#/components">
+          <NavigationMenuLink key={product.title} href="/components">
             <p className="font-medium">{product.title}</p>
             <p className="text-foreground-dimmed">{product.description}</p>
           </NavigationMenuLink>
@@ -35,7 +35,7 @@ export const Example = () => (
       <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
       <NavigationMenuContent className="grid w-60">
         {resources.map((resource) => (
-          <NavigationMenuLink key={resource.title} href="#/docs">
+          <NavigationMenuLink key={resource.title} href="/docs">
             <p className="font-medium">{resource.title}</p>
             <p className="text-foreground-dimmed">{resource.description}</p>
           </NavigationMenuLink>
@@ -43,7 +43,7 @@ export const Example = () => (
       </NavigationMenuContent>
     </NavigationMenuItem>
     <NavigationMenuItem>
-      <NavigationMenuLink bare href="#/docs">
+      <NavigationMenuLink bare href="/docs">
         Pricing
       </NavigationMenuLink>
     </NavigationMenuItem>

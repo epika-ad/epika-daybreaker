@@ -70,9 +70,9 @@ import {
   useEffect,
   useRef,
   useState,
-  useSyncExternalStore,
 } from "react";
 import { version } from "../package.json";
+import { track } from "./analytics";
 import {
   ArrowUpRightIcon,
   agency,
@@ -86,6 +86,7 @@ import {
   pill,
 } from "./parts";
 import { components, example } from "./registry";
+import { useRoute } from "./router";
 
 const install = "npm install daybreaker";
 
@@ -143,7 +144,7 @@ const Hero = () => (
     >
       <div className="flex max-w-xl flex-col items-start">
         <a
-          href="#/components/questionnaire"
+          href="/components/questionnaire"
           className={cn(
             pill,
             "flex animate-focus-in items-center gap-2 py-1 pr-3 pl-1 text-sm transition-colors hover:border-brand motion-reduce:animate-none",
@@ -169,19 +170,19 @@ const Hero = () => (
           licensed. Free, and no, there's no catch.
         </p>
         <div className="mt-9 flex animate-focus-in flex-wrap items-center gap-3 motion-reduce:animate-none [animation-delay:620ms]">
-          <a href="#/docs" className={buttonVariants({ size: "lg" })}>
+          <a href="/docs" className={buttonVariants({ size: "lg" })}>
             Get started
             <ArrowUpRightIcon className="rotate-45" />
           </a>
           <a
-            href="#/components"
+            href="/components"
             className={buttonVariants({ size: "lg", variant: "outline" })}
           >
             Browse components
           </a>
         </div>
         <a
-          href="#/figma"
+          href="/figma"
           className={cn(
             "group mt-4 flex animate-focus-in items-center gap-1 rounded-sm text-foreground-dimmed text-sm transition-colors hover:text-foreground motion-reduce:animate-none [animation-delay:680ms]",
             focus,
@@ -308,7 +309,7 @@ const Panel = ({ slug, className, children }: Panel.Props) => {
       {entry && (
         <header className="flex items-center justify-between gap-3 px-5 py-2">
           <a
-            href={`#/components/${slug}`}
+            href={`/components/${slug}`}
             className={cn(
               "rounded-sm font-medium text-foreground-dimmed text-xs transition-colors hover:text-foreground",
               focus,
@@ -1076,7 +1077,7 @@ const Wall = () => (
           Every card below is live. Copy the code behind any of them.
         </Intro>
         <a
-          href="#/components"
+          href="/components"
           className={cn(
             "group flex shrink-0 items-center gap-1.5 rounded-sm font-medium",
             focus,
@@ -1129,7 +1130,7 @@ const Steps = () => (
         instead and skip the second step.
       </Intro>
       <a
-        href="#/docs"
+        href="/docs"
         className={cn(
           "group flex shrink-0 items-center gap-1.5 rounded-sm font-medium",
           focus,
@@ -1157,15 +1158,7 @@ const Steps = () => (
 
 // the routes the Figma section answers to: its link in the nav, and where
 // api/confirm sends people back to after they click the email's link
-const useFigmaRoute = () =>
-  useSyncExternalStore(
-    (callback) => {
-      window.addEventListener("hashchange", callback);
-      return () => window.removeEventListener("hashchange", callback);
-    },
-    () => window.location.hash.replace(/^#\/?/, ""),
-    () => "",
-  );
+const useFigmaRoute = () => useRoute().replace(/^\//, "");
 
 const inbox = "info@epika.ad";
 
@@ -1201,6 +1194,7 @@ const FigmaKit = () => {
   useEffect(() => {
     if (!route.startsWith("figma")) return;
     setState(fromRoute(route));
+    if (route === "figma-confirmed") track("figma_confirmed");
     section.current?.scrollIntoView({ block: "start" });
   }, [route]);
 
@@ -1218,7 +1212,10 @@ const FigmaKit = () => {
           company: form.get("company"),
         }),
       });
-      if (response.ok) return setState("sent");
+      if (response.ok) {
+        track("figma_requested", { pro: form.get("pro") === "on" });
+        return setState("sent");
+      }
       const result = (await response.json().catch(() => ({}))) as {
         error?: string;
       };
@@ -1358,6 +1355,11 @@ const ProjectBrief = () => {
           company: form.get("company"),
         }),
       });
+      if (response.ok) {
+        track("brief_sent", {
+          needs: needs.filter((need) => form.get(need) === "on"),
+        });
+      }
       setState(response.ok ? "sent" : "broken");
     } catch {
       setState("broken");

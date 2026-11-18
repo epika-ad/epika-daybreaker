@@ -17,7 +17,7 @@ export const Example = () => {
 
   return (
     <Navbar className="max-w-2xl">
-      <NavbarBrand href="#/components/navbar">
+      <NavbarBrand href="/components/navbar">
         <span className="size-5 rounded-full bg-primary" />
         Acme
       </NavbarBrand>
@@ -25,7 +25,7 @@ export const Example = () => {
         {links.map((link) => (
           <NavbarLink
             key={link}
-            href="#/components/navbar"
+            href="/components/navbar"
             current={link === current}
             onClick={() => setCurrent(link)}
           >

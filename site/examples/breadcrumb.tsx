@@ -9,11 +9,11 @@ import {
 export const Example = () => (
   <Breadcrumb>
     <BreadcrumbItem>
-      <BreadcrumbLink href="#/">Home</BreadcrumbLink>
+      <BreadcrumbLink href="/">Home</BreadcrumbLink>
     </BreadcrumbItem>
     <BreadcrumbSeparator />
     <BreadcrumbItem>
-      <BreadcrumbLink href="#/components">Components</BreadcrumbLink>
+      <BreadcrumbLink href="/components">Components</BreadcrumbLink>
     </BreadcrumbItem>
     <BreadcrumbSeparator />
     <BreadcrumbItem>

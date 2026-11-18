@@ -259,7 +259,7 @@ export const Docs = () => (
     </Section>
 
     <a
-      href="#/components"
+      href="/components"
       className={`group flex items-center justify-between rounded-surface border border-border bg-background-dimmed p-6 transition-colors hover:border-brand ${focus}`}
     >
       <span>

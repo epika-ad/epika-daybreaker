@@ -17,12 +17,18 @@
       property="og:description"
       content="The kit we build client work on. 76 accessible React components, free and open source."
     />
-    <!-- link previews need a full address: put the site's domain in front of
-         og.png once it is settled -->
-    <meta property="og:image" content="./og.png" />
+    <meta property="og:site_name" content="daybreaker" />
+    <meta property="og:image" content="https://daybreaker.epika.ad/og.png" />
+    <meta
+      property="og:image:alt"
+      content="daybreaker: accessible React components by Epika"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#f7f6f4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14021a" media="(prefers-color-scheme: dark)" />
+    <meta name="author" content="Epika" />
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='16 -22 94 94'%3E%3Cpath fill='%23ee1c4d' d='M40.5749 44.9709C40.7154 42.93 41.1262 40.9649 41.7747 39.1134C42.153 38.0198 42.6177 36.9642 43.1582 35.9518C44.0769 34.2249 45.2118 32.6387 46.5304 31.2149C47.3086 30.365 48.1571 29.58 49.0542 28.8654C50.4971 27.7123 52.086 26.7324 53.7883 25.9583C54.8259 25.4819 55.9122 25.0867 57.0254 24.7727C58.7062 24.3017 60.4733 24.0202 62.2892 23.9553C62.554 23.9444 62.8242 23.939 63.0944 23.939C63.9861 23.939 64.867 23.9932 65.7317 24.096V0H62.2838V20.5068C60.014 20.5772 57.8145 20.9399 55.723 21.5624L48.2111 2.90711L45.0172 4.20097L52.5021 22.7534C50.3836 23.7008 48.4165 24.9243 46.6439 26.3806L33.0955 12.4676L30.6311 14.8766L44.1255 28.7355C42.488 30.4787 41.0883 32.4492 39.9859 34.593L22.6815 27.2305L21.3358 30.4083L38.6078 37.7546C37.7864 40.0283 37.2784 42.4482 37.1324 44.9655H16.8125V48.414H109.484V44.9655H40.5749V44.9709Z'/%3E%3C/svg%3E"
@@ -33,6 +39,9 @@
       href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <!-- the static copy of each page is for crawlers; React replaces it -->
+    <style>.prerender { opacity: 0; }</style>
+    <noscript><style>.prerender { opacity: 1; }</style></noscript>
   </head>
   <body>
     <div id="root"></div>

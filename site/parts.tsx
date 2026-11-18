@@ -10,6 +10,7 @@ import {
   useToast,
 } from "daybreaker";
 import { type ComponentProps, type ReactNode, useState } from "react";
+import { track } from "./analytics";
 import { type Entry, example } from "./registry";
 import { Thumbnail } from "./thumbnails";
 
@@ -159,6 +160,7 @@ export const CopyButton = ({
 
   const copy = () => {
     void navigator.clipboard.writeText(text);
+    if (text.startsWith("npm install")) track("install_copied", { text });
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
@@ -374,7 +376,7 @@ export const PreviewCard = ({ entry }: PreviewCard.Props) => {
         <Thumbnail slug={entry.slug} />
       </div>
       <a
-        href={`#/components/${entry.slug}`}
+        href={`/components/${entry.slug}`}
         className={cn(
           "group flex items-center justify-between rounded-2xl px-3 pt-3 pb-2",
           focus,

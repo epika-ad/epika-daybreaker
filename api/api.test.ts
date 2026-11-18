@@ -61,7 +61,7 @@ describe("the Figma file", () => {
       reply_to: "info@epika.ad",
     });
 
-    expect(await landing(linkIn(first))).toBe(`${site}/#/figma-confirmed`);
+    expect(await landing(linkIn(first))).toBe(`${site}/figma-confirmed`);
     const second = calls[1];
     expect(second?.body.subject).toBe("Your daybreaker Figma file");
     expect(second?.body.html).toContain("https://www.figma.com/design/");
@@ -99,13 +99,13 @@ describe("the Figma file", () => {
     ).toString("base64url");
     expect(
       await landing(`${site}/api/confirm?t=${forged}.${token.split(".")[1]}`),
-    ).toBe(`${site}/#/figma-error`);
+    ).toBe(`${site}/figma-error`);
 
     const old = sign("old@epika.ad", false, "test-secret");
     vi.useFakeTimers({ now: Date.now() + 8 * 24 * 60 * 60 * 1000 });
     expect(
       await landing(`${site}/api/confirm?t=${encodeURIComponent(old)}`),
-    ).toBe(`${site}/#/figma-expired`);
+    ).toBe(`${site}/figma-expired`);
   });
 });
 

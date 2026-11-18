@@ -3,6 +3,8 @@ import { ToastProvider, TooltipProvider } from "daybreaker";
 import { describe, expect, it } from "vitest";
 import { App } from "./app";
 import { components, example } from "./registry";
+import { currentRoute, startRouter } from "./router";
+import { metaFor, notFound, routes } from "./seo";
 import { hasThumbnail } from "./thumbnails";
 
 // every documented example must exist and render without throwing
@@ -36,12 +38,12 @@ describe("thumbnails", () => {
 
 describe("site", () => {
   it.each([
-    ["#/", "The kit we build client work on. Now it's yours."],
-    ["#/components", `${components.length} components, ready to use`],
-    ["#/components/dialog", "Dialog"],
-    ["#/docs", "Get started"],
-  ])("shows the right page for %s", (hash, heading) => {
-    window.location.hash = hash;
+    ["/", "The kit we build client work on. Now it's yours."],
+    ["/components", `${components.length} components, ready to use`],
+    ["/components/dialog", "Dialog"],
+    ["/docs", "Get started"],
+  ])("shows the right page for %s", (path, heading) => {
+    window.history.replaceState(null, "", path);
     window.scrollTo = () => {};
 
     render(<App />);
@@ -52,7 +54,7 @@ describe("site", () => {
   });
 
   it("links to the agency's site from the home page", () => {
-    window.location.hash = "#/";
+    window.history.replaceState(null, "", "/");
     window.scrollTo = () => {};
 
     render(<App />);
@@ -64,7 +66,7 @@ describe("site", () => {
   });
 
   it("lets a card on the home page hand over its component's code", () => {
-    window.location.hash = "#/";
+    window.history.replaceState(null, "", "/");
     window.scrollTo = () => {};
 
     render(<App />);
@@ -75,7 +77,7 @@ describe("site", () => {
   });
 
   it("offers the code to copy instead of printing it", () => {
-    window.location.hash = "#/components/dialog";
+    window.history.replaceState(null, "", "/components/dialog");
     window.scrollTo = () => {};
 
     const { container } = render(<App />);
@@ -88,7 +90,7 @@ describe("site", () => {
   });
 
   it("lists every component in the sidebar and marks the current one", () => {
-    window.location.hash = "#/components/dialog";
+    window.history.replaceState(null, "", "/components/dialog");
     window.scrollTo = () => {};
 
     render(<App />);
@@ -99,10 +101,41 @@ describe("site", () => {
     for (const entry of components) {
       expect(
         within(sidebar).getByRole("link", { name: entry.name }),
-      ).toHaveAttribute("href", `#/components/${entry.slug}`);
+      ).toHaveAttribute("href", `/components/${entry.slug}`);
     }
     expect(
       within(sidebar).getByRole("link", { current: "page" }),
     ).toHaveTextContent("Dialog");
+  });
+});
+
+describe("search", () => {
+  it("gives every component a page, and every page its own title", () => {
+    for (const entry of components) {
+      expect(routes).toContain(`/components/${entry.slug}`);
+    }
+    const titles = routes.map((route) => metaFor(route).title);
+    const listed = routes.filter((route) => !metaFor(route).hidden);
+    expect(new Set(listed.map((route) => metaFor(route).title)).size).toBe(
+      listed.length,
+    );
+    expect(titles.every((title) => title.length <= 70)).toBe(true);
+    expect(metaFor("/nowhere")).toBe(notFound);
+  });
+
+  it("moves an old #/ link to its real address", () => {
+    window.history.replaceState(null, "", "/#/components/dialog");
+    startRouter();
+    expect(currentRoute()).toBe("/components/dialog");
+    expect(window.location.hash).toBe("");
+  });
+
+  it("titles the page it shows", () => {
+    window.history.replaceState(null, "", "/components/dialog");
+    window.scrollTo = () => {};
+
+    render(<App />);
+
+    expect(document.title).toBe(metaFor("/components/dialog").title);
   });
 });
