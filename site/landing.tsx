@@ -85,6 +85,7 @@ import {
   MarkdownIcon,
   pill,
 } from "./parts";
+import { capture, log } from "./posthog";
 import { components, example } from "./registry";
 
 const install = "npm install daybreaker";
@@ -1218,7 +1219,12 @@ const FigmaKit = () => {
           company: form.get("company"),
         }),
       });
-      if (response.ok) return setState("sent");
+      if (response.ok) {
+        const proOptIn = form.get("pro") === "on";
+        capture("figma_file_request_submitted", { pro_opt_in: proOptIn });
+        log.info("figma file request accepted", { pro_opt_in: proOptIn });
+        return setState("sent");
+      }
       const result = (await response.json().catch(() => ({}))) as {
         error?: string;
       };
@@ -1358,7 +1364,14 @@ const ProjectBrief = () => {
           company: form.get("company"),
         }),
       });
-      setState(response.ok ? "sent" : "broken");
+      if (response.ok) {
+        const serviceNeeds = needs.filter((need) => form.get(need) === "on");
+        capture("project_brief_submitted", { service_needs: serviceNeeds });
+        log.info("project brief accepted", { service_needs: serviceNeeds });
+        setState("sent");
+      } else {
+        setState("broken");
+      }
     } catch {
       setState("broken");
     }
