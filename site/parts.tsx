@@ -10,6 +10,7 @@ import {
   useToast,
 } from "daybreaker";
 import { type ComponentProps, type ReactNode, useState } from "react";
+import { capture } from "./posthog";
 import { type Entry, example } from "./registry";
 import { Thumbnail } from "./thumbnails";
 
@@ -159,6 +160,9 @@ export const CopyButton = ({
 
   const copy = () => {
     void navigator.clipboard.writeText(text);
+    capture("documentation_copied", {
+      content_type: label === "Copy" ? "code_snippet" : "component_source",
+    });
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
@@ -193,6 +197,7 @@ export const CopyAction = ({ text, className, children }: CopyAction.Props) => {
 
   const copy = () => {
     void navigator.clipboard.writeText(text);
+    capture("documentation_copied", { content_type: "component_source" });
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
@@ -232,6 +237,7 @@ export const AgentMenu = ({ name, markdown }: AgentMenu.Props) => {
 
   const copy = () => {
     void navigator.clipboard.writeText(markdown);
+    capture("documentation_copied", { content_type: "markdown" });
     toast.add({
       type: "success",
       title: "Markdown copied",
@@ -240,6 +246,9 @@ export const AgentMenu = ({ name, markdown }: AgentMenu.Props) => {
   };
 
   const open = (assistant: (typeof assistants)[number]) => {
+    capture("component_docs_shared_with_agent", {
+      assistant: assistant.name.toLowerCase(),
+    });
     const ask = `Help me use the daybreaker ${name} component.`;
     const full = encodeURIComponent(`${ask}\n\n${markdown}`);
     // a page too long for the URL goes on the clipboard instead
