@@ -3,12 +3,15 @@
  * link, sending through Resend, and the two emails.
  *
  * Environment variables (Vercel › Settings › Environment Variables):
- * - RESEND_API_KEY      required, a sending key for the epika.ad domain
+ * - RESEND_API_KEY      required, a full-access key (sending only is not
+ *                       enough to save sign-ups to the audience)
  * - KIT_SECRET          required, signs the confirmation links
  * - RESEND_FROM         the sender, "Epika <info@epika.ad>" once epika.ad is
  *                       verified in Resend; until then the default only
  *                       delivers to the Resend account's own address
- * - RESEND_AUDIENCE_ID  optional, the list for people who want Pro news
+ * - RESEND_AUDIENCE_ID  optional, the list every confirmed sign-up is saved
+ *                       to; people who didn't ask for Pro news are saved as
+ *                       unsubscribed, so a broadcast never reaches them
  * - SITE_URL            optional, the site the emails link to (defaults to
  *                       the one that made the request)
  * - FIGMA_URL           optional, the shared Figma file (defaults to Epika's)
@@ -102,13 +105,13 @@ export const send = async (email: {
   return response.ok;
 };
 
-/** Adds someone to the Pro news list, when there is one. */
-export const remember = async (email: string) => {
+/** Saves a confirmed sign-up to the audience, when there is one. */
+export const remember = async (email: string, pro: boolean) => {
   const audience = process.env.RESEND_AUDIENCE_ID;
   if (!audience) return;
   const response = await call(`/audiences/${audience}/contacts`, {
     email,
-    unsubscribed: false,
+    unsubscribed: !pro,
   }).catch((error: unknown) => error);
   if (!(response instanceof Response) || !response.ok) {
     console.error("resend audience add failed", response);
@@ -239,4 +242,15 @@ export const briefEmail = (brief: {
     "",
     brief.about || "No details yet.",
   ].join("\n"),
+});
+
+export const leadEmail = (email: string, pro: boolean) => ({
+  subject: `New Figma sign-up: ${email}`,
+  html: layout(
+    pro ? "Wants Pro news" : "Figma file only",
+    `${heading("Someone got the Figma file")}
+     ${paragraph(`<strong>Email:</strong> ${safe(email)}<br><strong>Pro news:</strong> ${pro ? "Yes" : "No"}`)}
+     ${paragraph("Reply to this email to write to them directly.")}`,
+  ),
+  text: [`Email: ${email}`, `Pro news: ${pro ? "Yes" : "No"}`].join("\n"),
 });

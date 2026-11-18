@@ -1,9 +1,17 @@
 /**
  * Step two: the link in the confirmation email lands here. A valid link
- * sends the Figma file, adds the address to the Pro list only if they ticked
- * the box, and sends them back to the site to say so.
+ * sends the Figma file, saves the lead (on the Pro list only if they ticked
+ * the box), tells the studio, and sends them back to the site to say so.
  */
-import { fileEmail, remember, send, siteOf, verify } from "./_kit.js";
+import {
+  fileEmail,
+  inbox,
+  leadEmail,
+  remember,
+  send,
+  siteOf,
+  verify,
+} from "./_kit.js";
 
 export async function GET(request: Request): Promise<Response> {
   const site = siteOf(request);
@@ -19,6 +27,13 @@ export async function GET(request: Request): Promise<Response> {
 
   const sent = await send({ to: signup.email, ...fileEmail(site) });
   if (!sent) return back("figma-error");
-  if (signup.pro) await remember(signup.email);
+  await Promise.all([
+    remember(signup.email, signup.pro),
+    send({
+      to: process.env.BRIEF_TO ?? inbox,
+      replyTo: signup.email,
+      ...leadEmail(signup.email, signup.pro),
+    }),
+  ]);
   return back("figma-confirmed");
 }

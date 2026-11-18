@@ -62,21 +62,33 @@ describe("the Figma file", () => {
     });
 
     expect(await landing(linkIn(first))).toBe(`${site}/#/figma-confirmed`);
-    const second = calls.at(-1);
+    const second = calls[1];
     expect(second?.body.subject).toBe("Your daybreaker Figma file");
     expect(second?.body.html).toContain("https://www.figma.com/design/");
     expect(second?.body.html).toContain(`${site}/daybreaker.fig`);
-    // no box ticked, so no list
-    expect(calls.some((call) => call.url.includes("/audiences/"))).toBe(false);
+    // saved as a lead, but off the Pro list, and the studio hears about it
+    expect(calls).toContainEqual(
+      expect.objectContaining({
+        url: "https://api.resend.com/audiences/aud_1/contacts",
+        body: { email: "olti@epika.ad", unsubscribed: true },
+      }),
+    );
+    expect(calls.at(-1)?.body).toMatchObject({
+      to: ["info@epika.ad"],
+      reply_to: "olti@epika.ad",
+      subject: "New Figma sign-up: olti@epika.ad",
+    });
   });
 
-  it("adds people to the Pro list only when they tick the box", async () => {
+  it("puts people on the Pro list only when they tick the box", async () => {
     await post(subscribe, { email: "mario@epika.ad", pro: true });
     await landing(linkIn(calls[0]));
-    expect(calls.at(-1)).toMatchObject({
-      url: "https://api.resend.com/audiences/aud_1/contacts",
-      body: { email: "mario@epika.ad" },
-    });
+    expect(calls).toContainEqual(
+      expect.objectContaining({
+        url: "https://api.resend.com/audiences/aud_1/contacts",
+        body: { email: "mario@epika.ad", unsubscribed: false },
+      }),
+    );
   });
 
   it("turns away links that were changed or are too old", async () => {
